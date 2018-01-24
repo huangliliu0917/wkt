@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zmj.wkt.mapper.Bs_personMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.zmj.wkt.entity.Bs_person">
+        <id column="ClientID" property="ClientID" />
+        <result column="NickName" property="NickName" />
+        <result column="UserName" property="UserName" />
+        <result column="RealName" property="RealName" />
+        <result column="Sex" property="Sex" />
+        <result column="PersonPassword" property="PersonPassword" />
+        <result column="Email" property="Email" />
+        <result column="Phone" property="Phone" />
+        <result column="CertID" property="CertID" />
+        <result column="PswQuestion" property="PswQuestion" />
+        <result column="PswResult" property="PswResult" />
+        <result column="RegTime" property="RegTime" />
+        <result column="MemberPoints" property="MemberPoints" />
+        <result column="GradeID" property="GradeID" />
+        <result column="Address" property="Address" />
+        <result column="Photo" property="Photo" />
+        <result column="WXOpenID" property="WXOpenID" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        ClientID, NickName, UserName, RealName, Sex, PersonPassword, Email, Phone, CertID, PswQuestion, PswResult, RegTime, MemberPoints, GradeID, Address, Photo ,WXOpenID
+    </sql>
+    <update id="uploadPhoto" parameterType="String">
+        UPDATE bs_person
+          SET Photo = #{photo}
+        where UserName = #{UserName}
+    </update>
+
+    <select id="getAll" resultType="com.zmj.wkt.entity.Bs_person" >
+        SELECT * FROM bs_person
+    </select>
+
+    <select id="findByName" resultType="com.zmj.wkt.entity.Bs_person" parameterType="String">
+        SELECT * FROM bs_person WHERE bs_person.UserName = #{name}
+    </select>
+    <select id="findByWXOpenID" resultType="com.zmj.wkt.entity.Bs_person"  parameterType="String">
+        SELECT * FROM bs_person WHERE bs_person.WXOpenID = #{WXOpenID}
+    </select>
+</mapper>

@@ -1,0 +1,21 @@
+eureka:
+    client:
+        serviceUrl:
+            defaultZone: http://centos.zmjzmj.cn:8761/eureka/
+server:
+    port: 8766
+    context-path: /wkt
+
+spring:
+    application:
+      name: wkt
+    thymeleaf:
+      prefix: classpath:/templates/
+    #包含
+    profiles:
+      active: dev
+
+feign:
+    hystrix:
+        enabled: true
+

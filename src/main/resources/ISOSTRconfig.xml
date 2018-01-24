@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--socket服务接口配置-->
+<config>
+	<server longConnection="false" heartBeatTime="180"
+		minConnectionTime="500" port="9091" poolSize="100" requestEncoding="UTF-8"
+		responseEncoding="UTF-8" end="\r\n" />
+</config>
