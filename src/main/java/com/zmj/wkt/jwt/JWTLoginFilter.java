@@ -35,6 +35,7 @@ import com.zmj.wkt.utils.RestfulResultUtils;
 import com.zmj.wkt.utils.SpringApplicationContextHolder;
 import com.zmj.wkt.utils.ZmjUtil;
 import com.zmj.wkt.utils.sysenum.ErrorCode;
+import com.zmj.wkt.utils.sysenum.SysConstant;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import net.sf.json.JSONObject;
@@ -133,8 +134,8 @@ public class JWTLoginFilter extends UsernamePasswordAuthenticationFilter {
     public static JSONObject getSessionKeyOropenid(String code){
         String requestUrl ="https://api.weixin.qq.com/sns/jscode2session";  //请求地址 https://api.weixin.qq.com/sns/jscode2session
         Map<String,String> requestUrlParam = new HashMap<String,String>();
-        requestUrlParam.put("appid", "wxf61b2a55b1278855");  //开发者设置中的appId
-        requestUrlParam.put("secret", "aa94536b40570662963259f71b6901c3"); //开发者设置中的appSecret
+        requestUrlParam.put("appid", SysConstant.WX_APPID);  //开发者设置中的appId
+        requestUrlParam.put("secret", SysConstant.WX_SECRET); //开发者设置中的appSecret
         requestUrlParam.put("js_code", code); //小程序调用wx.login返回的code
         requestUrlParam.put("grant_type", "authorization_code");    //默认参数
         //发送post请求读取调用微信 https://api.weixin.qq.com/sns/jscode2session 接口获取openid用户唯一标识

@@ -23,6 +23,8 @@
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 		<java.version>1.8</java.version>
 		<spring-cloud.version>Edgware.SR1</spring-cloud.version>
+		<!--跳过测试-->
+		<skipTests>true</skipTests>
 	</properties>
 
 	<dependencies>
@@ -165,6 +167,18 @@
 			<version>1.5.9.RELEASE</version>
 		</dependency>
 
+		<!-- 集成ehcache需要的依赖-->
+		<dependency>
+			<groupId>net.sf.ehcache</groupId>
+			<artifactId>ehcache</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>org.mybatis</groupId>
+			<artifactId>mybatis-ehcache</artifactId>
+			<version>1.0.0</version>
+		</dependency>
+
 		<dependency>
 			<groupId>com.aliyun</groupId>
 			<artifactId>aliyun-java-sdk-core</artifactId>
@@ -199,8 +213,19 @@
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
+				<configuration>
+					<!--包括libs文件-->
+					<includeSystemScope>true</includeSystemScope>
+					<!--libs不打包，瘦身jar-->
+					<layout>ZIP</layout>
+					<includes>
+						<include>
+							<groupId>nothing</groupId>
+							<artifactId>nothing</artifactId>
+						</include>
+					</includes>
+				</configuration>
 			</plugin>
-
 		</plugins>
 	</build>
 

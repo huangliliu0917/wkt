@@ -23,9 +23,9 @@ public class WktApplicationTests {
 
 	@Test
 	public void test(){
-		Bs_person bs_person = bs_personMapper.findByWXOpenID("oc3305bW94d6luN3AMStRjjZQwQE");
+		/*Bs_person bs_person = bs_personMapper.findByWXOpenID("oc3305bW94d6luN3AMStRjjZQwQE");
 		if (bs_person==null){
 			throw new CommonException(ErrorCode.NULL_ERROR,"未找到该用户！");
-		}
+		}*/
 	}
 }

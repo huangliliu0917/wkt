@@ -9,6 +9,7 @@ import com.zmj.wkt.service.Bs_personService;
 import com.zmj.wkt.utils.ZmjUtil;
 import com.zmj.wkt.utils.sysenum.ErrorCode;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
@@ -31,6 +32,7 @@ public class Bs_personServiceImpl extends CommonManagerImpl<Bs_personMapper, Bs_
     @Autowired
     Bs_personMapper bs_personMapper;
 
+    @Cacheable
     @Override
     public Bs_person findByName(String name) {
         Bs_person bs_person = new Bs_person();

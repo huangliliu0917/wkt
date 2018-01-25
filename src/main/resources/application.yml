@@ -13,7 +13,7 @@ spring:
       prefix: classpath:/templates/
     #包含
     profiles:
-      active: dev
+      active: dev,all
 
 feign:
     hystrix:
