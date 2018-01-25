@@ -53,6 +53,11 @@ public class Bs_goodsController extends CommonController{
 
     @Autowired
     Bs_goodsService bs_goodsService;
+
+    /**
+     * 获取微信群类型列表
+     * @return
+     */
     @Cacheable(key = "'getGoodsType'")
     @GetMapping("/getGoodsType")
     @ResponseBody
@@ -63,6 +68,11 @@ public class Bs_goodsController extends CommonController{
         return RestfulResultUtils.success(list);
     }
 
+    /**
+     * 根据类型获取微信群列表
+     * @param typeID
+     * @return
+     */
     @Cacheable(value = "getGoods",key = "#root.caches[0].name + ':' + #typeID")
     @GetMapping("/getGoods")
     @ResponseBody
