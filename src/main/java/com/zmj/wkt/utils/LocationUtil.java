@@ -55,14 +55,14 @@ public class LocationUtil {
         return res;
     }
 
-    public static String getAddrArrary(String log, String lat){
+    public static JSONArray getAddrArrary(String log, String lat){
         String add = getAdd(log, lat);
         JSONObject jsonObject = JSONObject.fromObject(add);
         JSONArray jsonArray = JSONArray.fromObject(jsonObject.getString("addrList"));
         JSONObject j_2 = JSONObject.fromObject(jsonArray.get(0));
         String allAdd = j_2.getString("admName");
         String arr[] = allAdd.split(",");
-        return JSONArray.fromObject(arr).toString();
+        return JSONArray.fromObject(arr);
     }
 
     public static void main(String[] args) {
