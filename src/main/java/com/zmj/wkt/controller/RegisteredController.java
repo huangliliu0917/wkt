@@ -82,8 +82,6 @@ public class RegisteredController extends CommonController {
             bs_person.setMemberPoints(0L);
             bs_person.setGradeID(1L);
             String ClientID = bs_personService.registered(bs_person,null);
-            //默认权限
-            bs_role_personService.addPersonAsRoleName(ClientID,RoleCode.ROLE_USER.getCode());
             return RestfulResultUtils.success("注册成功！");
         }catch (Exception e){
             e.printStackTrace();
@@ -126,9 +124,7 @@ public class RegisteredController extends CommonController {
             bs_person.setRegTime(DateUtil.getNowTimestamp());
             bs_person.setMemberPoints(0L);
             bs_person.setGradeID(1L);
-            String ClientID = bs_personService.registered(bs_person,"WX");
-            //默认权限
-            bs_role_personService.addPersonAsRoleName(ClientID, RoleCode.ROLE_USER.getCode());
+            bs_personService.registered(bs_person,"WX");
             return RestfulResultUtils.success("注册成功！");
         }catch (Exception e){
             e.printStackTrace();
@@ -163,7 +159,6 @@ public class RegisteredController extends CommonController {
             bs_person.setMemberPoints(0L);
             bs_person.setGradeID(1L);
             String ClientID = bs_personService.registered(bs_person,"mobile");
-            bs_role_personService.addPersonAsRoleName(ClientID,"ROLE_USER");
             return RestfulResultUtils.success("注册成功！");
         }catch (Exception e){
             e.printStackTrace();

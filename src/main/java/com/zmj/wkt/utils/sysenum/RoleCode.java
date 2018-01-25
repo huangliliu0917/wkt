@@ -41,7 +41,7 @@ public enum  RoleCode implements CodeInterface {
      */
     String description;
 
-    RoleCode(String description, String code) {
+    RoleCode(String code,String description) {
         this.description = description;
         this.code = code;
     }

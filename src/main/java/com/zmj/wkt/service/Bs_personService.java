@@ -18,4 +18,10 @@ public interface Bs_personService extends IService<Bs_person> {
     public String registered(Bs_person bs_person, String registerWay);
     public Boolean updatePersonInfo(Bs_person bs_person);
     Bs_person findByWXOpenID(String WXOpenID);
+    /**
+     * 新增人员加入角色，入参为人员ID和角色名
+     * @param roleName
+     * @return
+     */
+    public boolean addPersonAsRoleName(String ClientID, String roleName);
 }

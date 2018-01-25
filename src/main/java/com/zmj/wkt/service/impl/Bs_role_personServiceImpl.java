@@ -25,21 +25,5 @@ import java.util.List;
 @Transactional(rollbackFor = Exception.class)
 public class Bs_role_personServiceImpl extends ServiceImpl<Bs_role_personMapper, Bs_role_person> implements Bs_role_personService {
 
-    @Autowired
-    Bs_role_personMapper bs_role_personMapper;
 
-    @Autowired
-    Bs_roleMapper bs_roleMapper;
-
-    @Override
-    public boolean addPersonAsRoleName(String ClientID, String roleName) {
-        EntityWrapper entityWrapper = new EntityWrapper();
-        entityWrapper.setEntity(new Bs_role());
-        List<Bs_role> selectList = bs_roleMapper.selectList(entityWrapper.where("name={0}", roleName));
-        Bs_role_person bs_role_person = new Bs_role_person();
-        bs_role_person.setPerson_id(ClientID);
-        bs_role_person.setRole_id(selectList.get(0).getId());
-        bs_role_personMapper.insert(bs_role_person);
-        return false;
-    }
 }
