@@ -15,10 +15,7 @@ import com.zmj.wkt.utils.sysenum.ErrorCode;
 import com.zmj.wkt.utils.sysenum.RoleCode;
 import net.sf.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.Objects;
 
@@ -225,5 +222,21 @@ public class RegisteredController extends CommonController {
             e.printStackTrace();
             throw new CommonException(ErrorCode.VERIFY_ERROR,"验证码异常!");
         }
+    }
+
+    /**
+     * 根据经纬度获取用户地理位置
+     * @param log
+     * @param lat
+     * @return
+     * @throws CommonException
+     */
+    @PostMapping("/getUserAddr")
+    @ResponseBody
+    public RestfulResult getUserAddr(String log, String lat)throws CommonException{
+        if(ZmjUtil.isNullOrEmpty(log)||ZmjUtil.isNullOrEmpty(lat)){
+            throw new CommonException(ErrorCode.VERIFY_ERROR,"经纬度不能为空！");
+        }
+        return RestfulResultUtils.success(LocationUtil.getAddrArrary(log,lat));
     }
 }

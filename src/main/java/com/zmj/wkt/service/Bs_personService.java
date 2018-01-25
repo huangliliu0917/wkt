@@ -24,4 +24,10 @@ public interface Bs_personService extends IService<Bs_person> {
      * @return
      */
     public boolean addPersonAsRoleName(String ClientID, String roleName);
+    /**
+     * 根据账户名获取用户信息
+     * @param name
+     * @return
+     */
+    public Bs_person findPersonByName(String name);
 }

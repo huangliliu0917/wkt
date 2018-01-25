@@ -14,7 +14,7 @@ import java.io.Serializable;
  * </p>
  *
  * @author zmj
- * @since 2018-01-23
+ * @since 2018-01-25
  */
 @TableName("bs_permission_role")
 public class Bs_permission_role extends Model<Bs_permission_role> {

@@ -6,11 +6,13 @@ import com.zmj.wkt.common.exception.CommonException;
 import com.zmj.wkt.entity.Bs_person;
 import com.zmj.wkt.jwt.JWTAuthenticationFilter;
 import com.zmj.wkt.mapper.Bs_personMapper;
+import com.zmj.wkt.service.Bs_personService;
 import com.zmj.wkt.utils.RestfulResultUtils;
 import com.zmj.wkt.utils.ZmjUtil;
 import com.zmj.wkt.utils.sysenum.ErrorCode;
 import io.jsonwebtoken.Jwts;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheConfig;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -50,6 +52,9 @@ code is far away from bug with the animal protecting
  */
 @Controller
 public class CommonController {
+    @Autowired
+    Bs_personService bs_personService;
+
     @Autowired
     Bs_personMapper bs_personMapper;
 
@@ -91,7 +96,6 @@ public class CommonController {
      * @return
      * @throws Exception
      */
-    @Cacheable(cacheNames = "content")
     public Bs_person getThisUser() throws Exception{
         String username="";
         try {
@@ -108,12 +112,10 @@ public class CommonController {
             }
         }
         if(!ZmjUtil.isNullOrEmpty(username)){
-            Bs_person sysUser= bs_personMapper.findByName(username);
-            return sysUser;
+            return bs_personService.findPersonByName(username);
         }else {
             throw new CommonException(ErrorCode.NOT_FIND_ERROR,"无法获取当前用户对象，请检查！");
         }
     }
-
 
 }

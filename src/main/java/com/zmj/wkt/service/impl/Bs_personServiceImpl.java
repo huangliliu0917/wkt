@@ -113,4 +113,15 @@ public class Bs_personServiceImpl extends CommonManagerImpl<Bs_personMapper, Bs_
         bs_role_personMapper.insert(bs_role_person);
         return false;
     }
+
+    /**
+     * 根据账户名获取用户信息
+     * @param name
+     * @return
+     */
+    @Cacheable(value = "findPersonByName",key = "#root.caches[0].name + ':' + #name")
+    @Override
+    public Bs_person findPersonByName(String name){
+        return  bs_personMapper.findByName(name);
+    }
 }

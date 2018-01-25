@@ -13,10 +13,10 @@ import java.io.Serializable;
  * </p>
  *
  * @author zmj
- * @since 2018-01-23
+ * @since 2018-01-25
  */
 @TableName("bs_person")
-public class Bs_person extends Model<Bs_person> {
+public class Bs_person extends Model<Bs_person> implements Serializable{
 
     private static final long serialVersionUID = 1L;
 
@@ -40,9 +40,6 @@ public class Bs_person extends Model<Bs_person> {
      * 性别（0男 1女）
      */
 	private Integer Sex;
-	/**
-	 * 用户密码
-	 */
 	private String PersonPassword;
     /**
      * 邮箱
@@ -84,11 +81,11 @@ public class Bs_person extends Model<Bs_person> {
      * 头像
      */
 	private String Photo;
-
-	/**
-	 * 微信OPENID
-	 */
+    /**
+     * 微信唯一标识
+     */
 	private String WXOpenID;
+
 
 	public String getClientID() {
 		return ClientID;

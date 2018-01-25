@@ -8,6 +8,7 @@ import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
+import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
 import org.springframework.cloud.netflix.feign.EnableFeignClients;
 import org.springframework.context.annotation.Bean;
@@ -22,6 +23,7 @@ import java.util.concurrent.Executors;
 @EnableFeignClients
 @ConfigurationProperties
 @EnableAutoConfiguration
+@EnableCaching
 @MapperScan("com.zmj.wkt.mapper")
 public class WktApplication {
 	public static void main(String[] args) {
