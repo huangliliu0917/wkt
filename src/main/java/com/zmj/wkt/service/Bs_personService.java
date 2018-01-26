@@ -3,6 +3,7 @@ package com.zmj.wkt.service;
 import com.baomidou.mybatisplus.service.IService;
 import com.zmj.wkt.entity.Bs_person;
 import org.apache.ibatis.annotations.Param;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.web.multipart.MultipartFile;
 
 /**
@@ -24,10 +25,4 @@ public interface Bs_personService extends IService<Bs_person> {
      * @return
      */
     public boolean addPersonAsRoleName(String ClientID, String roleName);
-    /**
-     * 根据账户名获取用户信息
-     * @param name
-     * @return
-     */
-    public Bs_person findPersonByName(String name);
 }

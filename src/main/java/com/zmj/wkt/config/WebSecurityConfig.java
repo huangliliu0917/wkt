@@ -123,6 +123,12 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         return authenticationLogoutSuccessHandler;
     }
 
+    public JWTLoginFilter jwtLoginFilter() throws Exception {
+        JWTLoginFilter jwtLoginFilter = new JWTLoginFilter(authenticationManager());
+        jwtLoginFilter.setAuthenticationFailureHandler(authenticationFailureHandler());
+        return jwtLoginFilter;
+    }
+
 
     @Bean
     PersistentTokenRepository persistentTokenRepository() {

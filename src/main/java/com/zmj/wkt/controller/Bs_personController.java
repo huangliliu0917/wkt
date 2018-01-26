@@ -41,7 +41,7 @@ import org.springframework.web.bind.annotation.RestController;
  */
 @Controller
 @RestController
-@RequestMapping("/noRoot")
+@RequestMapping("")
 public class Bs_personController extends CommonController {
     @Autowired
     Bs_personService bs_personService;

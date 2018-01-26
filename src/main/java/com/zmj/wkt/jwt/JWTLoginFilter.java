@@ -28,8 +28,10 @@ package com.zmj.wkt.jwt;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.zmj.wkt.common.RestfulResult;
 import com.zmj.wkt.common.exception.CommonException;
+import com.zmj.wkt.entity.Bs_permission;
 import com.zmj.wkt.entity.Bs_person;
 import com.zmj.wkt.mapper.Bs_personMapper;
+import com.zmj.wkt.service.Bs_permissionService;
 import com.zmj.wkt.service.Bs_personService;
 import com.zmj.wkt.utils.RestfulResultUtils;
 import com.zmj.wkt.utils.SpringApplicationContextHolder;
@@ -44,6 +46,10 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.web.authentication.AuthenticationFailureHandler;
+import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 import javax.servlet.FilterChain;
@@ -75,9 +81,12 @@ public class JWTLoginFilter extends UsernamePasswordAuthenticationFilter {
     public Authentication attemptAuthentication(HttpServletRequest req,
                                                 HttpServletResponse res) throws CommonException {
         try {
+            res.setHeader("Content-type", "text/html;charset=UTF-8");
+            res.setHeader("Access-Control-Allow-Origin",req.getHeader("Origin"));
+            res.setHeader("Access-Control-Allow-Credentials", "true");
             String code = req.getParameter("code");
             if(ZmjUtil.isNullOrEmpty(code)) {
-                throw new CommonException(ErrorCode.NULL_ERROR, "code为空！");
+                throw new CommonException(ErrorCode.NULL_ERROR,"code为空！");
             }
             JSONObject sessionKeyOropenid = getSessionKeyOropenid(code);
             String openid = (String) sessionKeyOropenid.get("openid");
@@ -90,7 +99,7 @@ public class JWTLoginFilter extends UsernamePasswordAuthenticationFilter {
             }
             Bs_person bs_person = bs_personService.findByWXOpenID(openid.toString());
             if (bs_person==null){
-                throw new CommonException(ErrorCode.NULL_ERROR,"未找到该用户！");
+                throw new CommonException(ErrorCode.NOT_LOGIN,"未找到该用户！");
             }
             return authenticationManager.authenticate(
                     new UsernamePasswordAuthenticationToken(
@@ -111,7 +120,8 @@ public class JWTLoginFilter extends UsernamePasswordAuthenticationFilter {
                                             Authentication auth) throws IOException, ServletException {
         String token = Jwts.builder()
                 .setSubject(((org.springframework.security.core.userdetails.User) auth.getPrincipal()).getUsername())
-                .setExpiration(new Date(System.currentTimeMillis() + 60 * 60 * 24 * 1000))
+                //设置有效时间（毫秒）
+                .setExpiration(new Date(System.currentTimeMillis() + 60 * 60 * 24 * 1000 *15))
                 .signWith(SignatureAlgorithm.HS512, "MyJwtSecret")
                 .compact();
         res.addHeader("Authorization", "Bearer " + token);

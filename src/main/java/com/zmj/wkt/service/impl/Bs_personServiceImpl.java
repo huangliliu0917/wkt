@@ -14,6 +14,7 @@ import com.zmj.wkt.utils.ZmjUtil;
 import com.zmj.wkt.utils.sysenum.ErrorCode;
 import com.zmj.wkt.utils.sysenum.RoleCode;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheConfig;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -33,6 +34,7 @@ import java.util.UUID;
  */
 @Service
 @Transactional(rollbackFor = Exception.class)
+@CacheConfig(cacheNames = "Bs_person")
 public class Bs_personServiceImpl extends CommonManagerImpl<Bs_personMapper, Bs_person> implements Bs_personService {
     @Autowired
     Bs_personMapper bs_personMapper;
@@ -44,8 +46,13 @@ public class Bs_personServiceImpl extends CommonManagerImpl<Bs_personMapper, Bs_
     Bs_roleMapper bs_roleMapper;
 
 
-    @Cacheable
+    /**
+     * 根据账户名获取用户信息
+     * @param name
+     * @return
+     */
     @Override
+    @Cacheable(key = "#root.caches[0].name + '.name:'+ #name")
     public Bs_person findByName(String name) {
         Bs_person bs_person = new Bs_person();
         bs_person.setUserName(name);
@@ -93,6 +100,7 @@ public class Bs_personServiceImpl extends CommonManagerImpl<Bs_personMapper, Bs_
     }
 
     @Override
+    @Cacheable(key = "#root.caches[0].name + '.WXOpenID:'+ #WXOpenID")
     public Bs_person findByWXOpenID(String WXOpenID) {
         return bs_personMapper.findByWXOpenID(WXOpenID);
     }
@@ -114,14 +122,4 @@ public class Bs_personServiceImpl extends CommonManagerImpl<Bs_personMapper, Bs_
         return false;
     }
 
-    /**
-     * 根据账户名获取用户信息
-     * @param name
-     * @return
-     */
-    @Cacheable(value = "findPersonByName",key = "#root.caches[0].name + ':' + #name")
-    @Override
-    public Bs_person findPersonByName(String name){
-        return  bs_personMapper.findByName(name);
-    }
 }

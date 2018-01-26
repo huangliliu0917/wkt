@@ -102,8 +102,8 @@ public class RedisCacheConfig extends CachingConfigurerSupport {
     @Bean
     public CacheManager cacheManager(RedisTemplate redisTemplate) {
         RedisCacheManager cacheManager = new RedisCacheManager(redisTemplate);
-        // 设置key-value超时时间
-        cacheManager.setDefaultExpiration(60*3);
+        // 设置key-value超时时间(秒)
+        cacheManager.setDefaultExpiration(60*10);
         return cacheManager;
     }
 

@@ -112,7 +112,7 @@ public class CommonController {
             }
         }
         if(!ZmjUtil.isNullOrEmpty(username)){
-            return bs_personService.findPersonByName(username);
+            return bs_personService.findByName(username);
         }else {
             throw new CommonException(ErrorCode.NOT_FIND_ERROR,"无法获取当前用户对象，请检查！");
         }
