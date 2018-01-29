@@ -1,6 +1,7 @@
 package com.zmj.wkt.controller;
 
 import com.baomidou.mybatisplus.mapper.EntityWrapper;
+import com.google.common.base.Strings;
 import com.zmj.wkt.common.CommonController;
 import com.zmj.wkt.common.RestfulResult;
 import com.zmj.wkt.common.exception.CommonException;
@@ -8,13 +9,16 @@ import com.zmj.wkt.entity.Bs_goods;
 import com.zmj.wkt.entity.Bs_goods_type;
 import com.zmj.wkt.service.Bs_goodsService;
 import com.zmj.wkt.service.Bs_goods_typeService;
+import com.zmj.wkt.utils.DateUtil;
 import com.zmj.wkt.utils.RestfulResultUtils;
 import com.zmj.wkt.utils.ZmjUtil;
 import com.zmj.wkt.utils.sysenum.ErrorCode;
+import com.zmj.wkt.utils.sysenum.SysCode;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CacheConfig;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -43,7 +47,6 @@ import java.util.List;
  * ---------------------------------
  */
 @RestController
-@RequestMapping("/noRoot")
 @CacheConfig(cacheNames = "Bs_goodsController")
 public class Bs_goodsController extends CommonController{
 
@@ -68,21 +71,44 @@ public class Bs_goodsController extends CommonController{
     }
 
     /**
-     * 根据类型获取微信群列表
+     * 根据类型和地区获取微信群列表
      * @param typeID
+     * @param addr
      * @return
      */
-    @Cacheable(value = "getGoods",key = "#root.caches[0].name + ':' + #typeID")
-    @GetMapping("/getGoods")
+    @Cacheable(value = "getGoods",key = "#root.caches[0].name + ':' + #typeID +','+ #addr")
+    @RequestMapping("/getGoods")
     @ResponseBody
-    public RestfulResult getGoods(String typeID){
-        if(ZmjUtil.isNullOrEmpty(typeID)){
+    public RestfulResult getGoods(String typeID,String addr){
+        if(Strings.isNullOrEmpty(typeID)){
             throw new CommonException(ErrorCode.NULL_ERROR,"类型ID不能为空！");
+        }
+        if(Strings.isNullOrEmpty(typeID)){
+            throw new CommonException(ErrorCode.NULL_ERROR,"地区类型不能为空！");
         }
         EntityWrapper entityWrapper = new EntityWrapper();
         entityWrapper.setEntity(new Bs_goods());
-        entityWrapper.where("GTypeID ={0}",typeID);
+        entityWrapper.where("GAddress = {1} and (GTypeID1 ={0} or GTypeID2 ={0} or GTypeID3 ={0})",typeID,addr)
+        .and("State = {0} and IsAble = {1}", SysCode.STATE_T.getCode(),SysCode.STATE_T.getCode());
         List list = bs_goodsService.selectList(entityWrapper);
         return RestfulResultUtils.success(list);
+    }
+
+    @PostMapping("/goodsApply")
+    public RestfulResult goodsApply(Bs_goods bs_goods,@RequestParam("file") MultipartFile imgFile){
+        try {
+            if (imgFile.isEmpty()) {
+                throw new CommonException(ErrorCode.NULL_ERROR,"上传图片文件为空！");
+            }
+            bs_goods.setState(SysCode.STATE_T.getCode());
+            bs_goods.setIsAble(SysCode.IS_ABLE_WAIT.getCode());
+            bs_goods.setGDateTime(DateUtil.getNowTimestamp());
+            bs_goods.setGClientID(this.getThisUser().getClientID());
+            bs_goods.setGCount(0L);
+            bs_goodsService.goodsApply(bs_goods,imgFile);
+            return RestfulResultUtils.success("上传成功！等待审核...");
+        }catch (Exception e){
+            throw new CommonException(e.getMessage());
+        }
     }
 }

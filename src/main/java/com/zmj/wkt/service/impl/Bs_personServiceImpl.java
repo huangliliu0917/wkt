@@ -3,9 +3,11 @@ package com.zmj.wkt.service.impl;
 import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.zmj.wkt.common.CommonManagerImpl;
 import com.zmj.wkt.common.exception.CommonException;
+import com.zmj.wkt.entity.Acc_person;
 import com.zmj.wkt.entity.Bs_person;
 import com.zmj.wkt.entity.Bs_role;
 import com.zmj.wkt.entity.Bs_role_person;
+import com.zmj.wkt.mapper.Acc_personMapper;
 import com.zmj.wkt.mapper.Bs_personMapper;
 import com.zmj.wkt.mapper.Bs_roleMapper;
 import com.zmj.wkt.mapper.Bs_role_personMapper;
@@ -45,6 +47,8 @@ public class Bs_personServiceImpl extends CommonManagerImpl<Bs_personMapper, Bs_
     @Autowired
     Bs_roleMapper bs_roleMapper;
 
+    @Autowired
+    Acc_personMapper acc_personMapper;
 
     /**
      * 根据账户名获取用户信息
@@ -78,6 +82,8 @@ public class Bs_personServiceImpl extends CommonManagerImpl<Bs_personMapper, Bs_
         bs_personMapper.insert(bs_person);
         //默认权限
         addPersonAsRoleName(bs_person.getClientID(), RoleCode.ROLE_USER.getCode());
+        //添加账户表
+        addAccPerson(bs_person.getClientID());
         return bs_person.getClientID();
     }
 
@@ -119,7 +125,23 @@ public class Bs_personServiceImpl extends CommonManagerImpl<Bs_personMapper, Bs_
         bs_role_person.setPerson_id(ClientID);
         bs_role_person.setRole_id(selectList.get(0).getId());
         bs_role_personMapper.insert(bs_role_person);
-        return false;
+        return true;
     }
+
+    /**
+     * 添加用户账户
+     * @param ClientID
+     * @return
+     */
+    @Override
+    public boolean addAccPerson(String ClientID){
+        Acc_person acc_person = new Acc_person();
+        acc_person.setBalance(0);
+        acc_person.setClientID(ClientID);
+        acc_personMapper.insert(acc_person);
+        return true;
+    }
+
+
 
 }

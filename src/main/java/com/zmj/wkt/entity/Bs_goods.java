@@ -13,7 +13,7 @@ import java.io.Serializable;
  * </p>
  *
  * @author zmj
- * @since 2018-01-25
+ * @since 2018-01-29
  */
 @TableName("bs_goods")
 public class Bs_goods extends Model<Bs_goods> {
@@ -29,15 +29,27 @@ public class Bs_goods extends Model<Bs_goods> {
      */
 	private String GClientID;
     /**
-     * 商品名称
+     * 群人数
+     */
+	private Integer GWXPersonNumber;
+    /**
+     * 群主微信号
+     */
+	private String GWXUserNumber;
+    /**
+     * 群微信号
+     */
+	private String GWXNumber;
+    /**
+     * 群名称
      */
 	private String GName;
     /**
-     * 商品价格
+     * 群单价
      */
 	private Double GPrice;
     /**
-     * 商品活动价格
+     * 群活动价格
      */
 	private Double GActivePrice;
     /**
@@ -47,7 +59,15 @@ public class Bs_goods extends Model<Bs_goods> {
     /**
      * 商品类别
      */
-	private Long GTypeID;
+	private Long GTypeID1;
+    /**
+     * 商品类别
+     */
+	private Long GTypeID2;
+    /**
+     * 商品类别
+     */
+	private Long GTypeID3;
     /**
      * 邮箱
      */
@@ -80,6 +100,14 @@ public class Bs_goods extends Model<Bs_goods> {
      * 位置
      */
 	private String GAddress;
+    /**
+     * 状态(1有效，0无效)
+     */
+	private Integer State;
+    /**
+     * 是否通过审核（0通过，1未通过）
+     */
+	private Integer IsAble;
 
 
 	public String getGoodsID() {
@@ -96,6 +124,30 @@ public class Bs_goods extends Model<Bs_goods> {
 
 	public void setGClientID(String GClientID) {
 		this.GClientID = GClientID;
+	}
+
+	public Integer getGWXPersonNumber() {
+		return GWXPersonNumber;
+	}
+
+	public void setGWXPersonNumber(Integer GWXPersonNumber) {
+		this.GWXPersonNumber = GWXPersonNumber;
+	}
+
+	public String getGWXUserNumber() {
+		return GWXUserNumber;
+	}
+
+	public void setGWXUserNumber(String GWXUserNumber) {
+		this.GWXUserNumber = GWXUserNumber;
+	}
+
+	public String getGWXNumber() {
+		return GWXNumber;
+	}
+
+	public void setGWXNumber(String GWXNumber) {
+		this.GWXNumber = GWXNumber;
 	}
 
 	public String getGName() {
@@ -130,12 +182,28 @@ public class Bs_goods extends Model<Bs_goods> {
 		this.GInfo = GInfo;
 	}
 
-	public Long getGTypeID() {
-		return GTypeID;
+	public Long getGTypeID1() {
+		return GTypeID1;
 	}
 
-	public void setGTypeID(Long GTypeID) {
-		this.GTypeID = GTypeID;
+	public void setGTypeID1(Long GTypeID1) {
+		this.GTypeID1 = GTypeID1;
+	}
+
+	public Long getGTypeID2() {
+		return GTypeID2;
+	}
+
+	public void setGTypeID2(Long GTypeID2) {
+		this.GTypeID2 = GTypeID2;
+	}
+
+	public Long getGTypeID3() {
+		return GTypeID3;
+	}
+
+	public void setGTypeID3(Long GTypeID3) {
+		this.GTypeID3 = GTypeID3;
 	}
 
 	public String getGIntro() {
@@ -202,6 +270,22 @@ public class Bs_goods extends Model<Bs_goods> {
 		this.GAddress = GAddress;
 	}
 
+	public Integer getState() {
+		return State;
+	}
+
+	public void setState(Integer State) {
+		this.State = State;
+	}
+
+	public Integer getIsAble() {
+		return IsAble;
+	}
+
+	public void setIsAble(Integer IsAble) {
+		this.IsAble = IsAble;
+	}
+
 	@Override
 	protected Serializable pkVal() {
 		return this.GoodsID;
@@ -212,11 +296,16 @@ public class Bs_goods extends Model<Bs_goods> {
 		return "Bs_goods{" +
 			", GoodsID=" + GoodsID +
 			", GClientID=" + GClientID +
+			", GWXPersonNumber=" + GWXPersonNumber +
+			", GWXUserNumber=" + GWXUserNumber +
+			", GWXNumber=" + GWXNumber +
 			", GName=" + GName +
 			", GPrice=" + GPrice +
 			", GActivePrice=" + GActivePrice +
 			", GInfo=" + GInfo +
-			", GTypeID=" + GTypeID +
+			", GTypeID1=" + GTypeID1 +
+			", GTypeID2=" + GTypeID2 +
+			", GTypeID3=" + GTypeID3 +
 			", GIntro=" + GIntro +
 			", GImage=" + GImage +
 			", GCount=" + GCount +
@@ -225,6 +314,8 @@ public class Bs_goods extends Model<Bs_goods> {
 			", GDateTime=" + GDateTime +
 			", GSize=" + GSize +
 			", GAddress=" + GAddress +
+			", State=" + State +
+			", IsAble=" + IsAble +
 			"}";
 	}
 }

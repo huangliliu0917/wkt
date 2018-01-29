@@ -12,7 +12,7 @@ import java.io.Serializable;
  * </p>
  *
  * @author zmj
- * @since 2018-01-25
+ * @since 2018-01-29
  */
 @TableName("bs_producer")
 public class Bs_producer extends Model<Bs_producer> {

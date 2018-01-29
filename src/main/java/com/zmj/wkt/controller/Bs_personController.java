@@ -3,6 +3,7 @@ package com.zmj.wkt.controller;
 import com.zmj.wkt.common.CommonController;
 import com.zmj.wkt.common.RestfulResult;
 import com.zmj.wkt.common.exception.CommonException;
+import com.zmj.wkt.entity.Acc_person;
 import com.zmj.wkt.entity.Bs_person;
 import com.zmj.wkt.service.Bs_personService;
 import com.zmj.wkt.utils.RestfulResultUtils;
@@ -61,4 +62,5 @@ public class Bs_personController extends CommonController {
             throw new CommonException(ErrorCode.UNKNOWNS_ERROR,e.getMessage());
         }
     }
+
 }

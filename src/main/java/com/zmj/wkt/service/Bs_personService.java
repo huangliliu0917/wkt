@@ -1,6 +1,7 @@
 package com.zmj.wkt.service;
 
 import com.baomidou.mybatisplus.service.IService;
+import com.zmj.wkt.entity.Acc_person;
 import com.zmj.wkt.entity.Bs_person;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.cache.annotation.Cacheable;
@@ -25,4 +26,11 @@ public interface Bs_personService extends IService<Bs_person> {
      * @return
      */
     public boolean addPersonAsRoleName(String ClientID, String roleName);
+    /**
+     * 添加用户账户
+     * @param ClientID
+     * @return
+     */
+    public boolean addAccPerson(String ClientID);
+
 }

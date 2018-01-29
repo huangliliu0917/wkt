@@ -17,6 +17,14 @@ public enum SysCode implements CodeInterface {
     SLIDESHOW_STATE_ON(0,"启用"),
     SLIDESHOW_STATE_OFF(1,"关闭"),
 
+    //State
+    STATE_T(0,"有效"),
+    STATE_F(1,"无效"),
+
+    //Able
+    IS_ABLE_YES(0,"已审核"),
+    IS_ABLE_NO(1,"未通过"),
+    IS_ABLE_WAIT(2,"待审核"),
     ;
 
     /**

@@ -3,6 +3,7 @@ package com.zmj.wkt.security;
 import com.zmj.wkt.entity.Bs_permission;
 import com.zmj.wkt.mapper.Bs_permissionMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.security.access.ConfigAttribute;
 import org.springframework.security.access.SecurityConfig;
 import org.springframework.security.web.FilterInvocation;
@@ -27,7 +28,7 @@ public class MyInvocationSecurityMetadataSourceService implements FilterInvocati
         map = new HashMap<>();
         Collection<ConfigAttribute> array;
         ConfigAttribute cfg;
-        List<Bs_permission> permissions = bs_permissionMapper.findAll();
+        List<Bs_permission> permissions = getAllPermissions();
         for(Bs_permission permission : permissions) {
             array = new ArrayList<>();
             cfg = new SecurityConfig(permission.getId().toString());
@@ -68,5 +69,13 @@ public class MyInvocationSecurityMetadataSourceService implements FilterInvocati
     @Override
     public boolean supports(Class<?> aClass) {
         return true;
+    }
+
+    /**
+     * 获取所有权限列表
+     * @return
+     */
+    public List<Bs_permission> getAllPermissions(){
+        return  bs_permissionMapper.findAll();
     }
 }

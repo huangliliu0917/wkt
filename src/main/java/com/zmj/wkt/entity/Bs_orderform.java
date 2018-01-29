@@ -13,7 +13,7 @@ import java.io.Serializable;
  * </p>
  *
  * @author zmj
- * @since 2018-01-25
+ * @since 2018-01-29
  */
 @TableName("bs_orderform")
 public class Bs_orderform extends Model<Bs_orderform> {

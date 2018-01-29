@@ -13,10 +13,10 @@ import java.io.Serializable;
  * </p>
  *
  * @author zmj
- * @since 2018-01-25
+ * @since 2018-01-29
  */
 @TableName("bs_person")
-public class Bs_person extends Model<Bs_person>{
+public class Bs_person extends Model<Bs_person> {
 
     private static final long serialVersionUID = 1L;
 

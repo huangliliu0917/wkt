@@ -26,9 +26,10 @@ public class Bs_permissionServiceImpl extends CommonManagerImpl<Bs_permissionMap
     @Autowired
     Bs_permissionMapper bs_permissionMapper;
 
-    @Cacheable(key = "#root.caches[0].name + '.ClientID:'+ #ClientID")
     @Override
+    @Cacheable(key = "#root.caches[0].name + '.ClientID:'+ #ClientID")
     public List<Bs_permission> findAllByPersonId(String ClientID) {
         return bs_permissionMapper.findAllByPersonId(ClientID);
     }
+
 }

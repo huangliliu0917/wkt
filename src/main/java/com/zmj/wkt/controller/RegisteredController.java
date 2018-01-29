@@ -152,6 +152,7 @@ public class RegisteredController extends CommonController {
             bs_person.setUserName("mobile_"+mobile);
             bs_person.setNickName("mobile_"+mobile);
             bs_person.setPhone(mobile);
+            //获取系统时间
             bs_person.setRegTime(DateUtil.getNowTimestamp());
             bs_person.setMemberPoints(0L);
             bs_person.setGradeID(1L);
