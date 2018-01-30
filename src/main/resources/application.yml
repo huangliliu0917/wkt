@@ -14,7 +14,9 @@ spring:
     #包含
     profiles:
       active: dev,all
-
+#日志
+logging:
+    config: classpath:logback-spring.xml
 feign:
     hystrix:
         enabled: true

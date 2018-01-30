@@ -91,7 +91,7 @@ public class JWTLoginFilter extends UsernamePasswordAuthenticationFilter {
             JSONObject sessionKeyOropenid = getSessionKeyOropenid(code);
             String openid = (String) sessionKeyOropenid.get("openid");
             if (ZmjUtil.isNullOrEmpty(openid)){
-                throw new CommonException(ErrorCode.NULL_ERROR, "找不到openid！");
+                throw new CommonException(ErrorCode.NULL_ERROR, "根据code找不到对应的openid！");
             }
             System.out.println("openid:"+openid);
             if(bs_personService==null){
@@ -99,7 +99,7 @@ public class JWTLoginFilter extends UsernamePasswordAuthenticationFilter {
             }
             Bs_person bs_person = bs_personService.findByWXOpenID(openid.toString());
             if (bs_person==null){
-                throw new CommonException(ErrorCode.NOT_LOGIN,"未找到该用户！");
+                throw new CommonException(ErrorCode.NOT_FIND_USER_ERROR,"未找到该用户！");
             }
             return authenticationManager.authenticate(
                     new UsernamePasswordAuthenticationToken(
