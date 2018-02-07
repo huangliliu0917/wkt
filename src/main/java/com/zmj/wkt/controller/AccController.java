@@ -50,6 +50,10 @@ public class AccController extends CommonController{
     @Autowired
     Acc_personService acc_personService;
 
+    /**
+     * 获取用户余额
+     * @return
+     */
     @GetMapping("/getUserBalance")
     @ResponseBody
     public RestfulResult getUserBalance(){
@@ -72,6 +76,7 @@ public class AccController extends CommonController{
     public RestfulResult rechargeApply(Recharge_apply recharge_apply){
         try {
             recharge_apply.setApply_date(DateUtil.getNowTimestamp());
+            //生成唯一流水号
             recharge_apply.setAction_no(ZmjUtil.getOrderIdByUUId());
             recharge_apply.setState(SysCode.STATE_T.getCode());
             recharge_apply.setIsAble(SysCode.IS_ABLE_WAIT.getCode());

@@ -11,5 +11,9 @@
     <sql id="Base_Column_List">
         id, name
     </sql>
-
+    <select id="getRoleByClientID" resultType="com.zmj.wkt.entity.Bs_role" parameterType="String">
+        SELECT * FROM bs_role WHERE id IN (
+        SELECT Role_id FROM bs_role_person WHERE bs_role_person.Person_id = #{ClientID}
+        )
+    </select>
 </mapper>

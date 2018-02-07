@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CacheConfig;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -21,6 +22,7 @@ import java.util.List;
  */
 @Service
 @CacheConfig(cacheNames = "Bs_permission")
+@Transactional(rollbackFor = Exception.class)
 public class Bs_permissionServiceImpl extends CommonManagerImpl<Bs_permissionMapper, Bs_permission> implements Bs_permissionService {
 
     @Autowired

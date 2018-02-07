@@ -33,7 +33,7 @@ public class Bs_person_goods_list extends Model<Bs_person_goods_list> {
     /**
      * 群id
      */
-	private Integer GoodsID;
+	private String GoodsID;
     /**
      * 状态
      */
@@ -56,11 +56,11 @@ public class Bs_person_goods_list extends Model<Bs_person_goods_list> {
 		this.id = id;
 	}
 
-	public Integer getGoodsID() {
+	public String getGoodsID() {
 		return GoodsID;
 	}
 
-	public void setGoodsID(Integer GoodsID) {
+	public void setGoodsID(String GoodsID) {
 		this.GoodsID = GoodsID;
 	}
 

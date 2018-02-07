@@ -1,6 +1,8 @@
 package com.zmj.wkt.common.exception;
 
 import com.google.common.base.Strings;
+import com.zmj.wkt.utils.sysenum.ErrorCode;
+import com.zmj.wkt.utils.sysenum.SysCode;
 import org.springframework.boot.autoconfigure.web.BasicErrorController;
 import org.springframework.boot.autoconfigure.web.DefaultErrorAttributes;
 import org.springframework.boot.autoconfigure.web.ErrorProperties;
@@ -50,8 +52,14 @@ public class TokenErrorController  extends BasicErrorController {
     public ResponseEntity<Map<String, Object>> error(HttpServletRequest request) {
         Map<String, Object> body = getErrorAttributes(request,
                 isIncludeStackTrace(request, MediaType.ALL));
-        HttpStatus status = getStatus(request);
-        throw new  CommonException(status.value(),body.get("error")+":"+body.get("message").toString());
+        //HttpStatus status = getStatus(request);
+        int status;
+        if(request.getAttribute("myStatus")!=null){
+            status = (int) request.getAttribute("myStatus");
+        }else {
+            status = getStatus(request).value();
+        }
+        throw new  CommonException(status,body.get("error")+":"+body.get("message").toString());
         //return new ResponseEntity<Map<String, Object>>(body, status);
     }
 

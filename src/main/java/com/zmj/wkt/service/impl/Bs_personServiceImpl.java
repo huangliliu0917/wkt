@@ -3,18 +3,13 @@ package com.zmj.wkt.service.impl;
 import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.zmj.wkt.common.CommonManagerImpl;
 import com.zmj.wkt.common.exception.CommonException;
-import com.zmj.wkt.entity.Acc_person;
-import com.zmj.wkt.entity.Bs_person;
-import com.zmj.wkt.entity.Bs_role;
-import com.zmj.wkt.entity.Bs_role_person;
-import com.zmj.wkt.mapper.Acc_personMapper;
-import com.zmj.wkt.mapper.Bs_personMapper;
-import com.zmj.wkt.mapper.Bs_roleMapper;
-import com.zmj.wkt.mapper.Bs_role_personMapper;
+import com.zmj.wkt.entity.*;
+import com.zmj.wkt.mapper.*;
 import com.zmj.wkt.service.Bs_personService;
 import com.zmj.wkt.utils.ZmjUtil;
 import com.zmj.wkt.utils.sysenum.ErrorCode;
 import com.zmj.wkt.utils.sysenum.RoleCode;
+import com.zmj.wkt.utils.sysenum.SysCode;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CacheConfig;
 import org.springframework.cache.annotation.Cacheable;
@@ -49,6 +44,9 @@ public class Bs_personServiceImpl extends CommonManagerImpl<Bs_personMapper, Bs_
 
     @Autowired
     Acc_personMapper acc_personMapper;
+
+    @Autowired
+    Bs_person_goods_listMapper bs_person_goods_listMapper;
 
     /**
      * 根据账户名获取用户信息
@@ -141,6 +139,7 @@ public class Bs_personServiceImpl extends CommonManagerImpl<Bs_personMapper, Bs_
         acc_personMapper.insert(acc_person);
         return true;
     }
+
 
 
 

@@ -13,7 +13,7 @@ import java.io.Serializable;
  * </p>
  *
  * @author zmj
- * @since 2018-01-29
+ * @since 2018-02-02
  */
 @TableName("bs_goods")
 public class Bs_goods extends Model<Bs_goods> {
@@ -37,9 +37,9 @@ public class Bs_goods extends Model<Bs_goods> {
      */
 	private String GWXUserNumber;
     /**
-     * 群微信号
+     * 提供者账号
      */
-	private String GWXNumber;
+	private String GUserName;
     /**
      * 群名称
      */
@@ -105,10 +105,14 @@ public class Bs_goods extends Model<Bs_goods> {
      */
 	private Integer State;
     /**
-     * 是否通过审核（0通过，1未通过）
+     * 是否通过审核（0通过，1未通过，2待审核）
      */
 	private Integer IsAble;
 
+	/**
+	 * 是否显示（0显示，1不显示）
+	 */
+	private Integer IsShow;
 
 	public String getGoodsID() {
 		return GoodsID;
@@ -142,12 +146,12 @@ public class Bs_goods extends Model<Bs_goods> {
 		this.GWXUserNumber = GWXUserNumber;
 	}
 
-	public String getGWXNumber() {
-		return GWXNumber;
+	public String getGUserName() {
+		return GUserName;
 	}
 
-	public void setGWXNumber(String GWXNumber) {
-		this.GWXNumber = GWXNumber;
+	public void setGUserName(String GUserName) {
+		this.GUserName = GUserName;
 	}
 
 	public String getGName() {
@@ -286,6 +290,14 @@ public class Bs_goods extends Model<Bs_goods> {
 		this.IsAble = IsAble;
 	}
 
+	public Integer getIsShow() {
+		return IsShow;
+	}
+
+	public void setIsShow(Integer isShow) {
+		IsShow = isShow;
+	}
+
 	@Override
 	protected Serializable pkVal() {
 		return this.GoodsID;
@@ -298,7 +310,7 @@ public class Bs_goods extends Model<Bs_goods> {
 			", GClientID=" + GClientID +
 			", GWXPersonNumber=" + GWXPersonNumber +
 			", GWXUserNumber=" + GWXUserNumber +
-			", GWXNumber=" + GWXNumber +
+			", GUserName=" + GUserName +
 			", GName=" + GName +
 			", GPrice=" + GPrice +
 			", GActivePrice=" + GActivePrice +
@@ -316,6 +328,7 @@ public class Bs_goods extends Model<Bs_goods> {
 			", GAddress=" + GAddress +
 			", State=" + State +
 			", IsAble=" + IsAble +
+			", IsShow=" + IsShow +
 			"}";
 	}
 }

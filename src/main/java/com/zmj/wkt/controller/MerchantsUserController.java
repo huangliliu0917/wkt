@@ -1,18 +1,17 @@
 package com.zmj.wkt.controller;
 
+import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.zmj.wkt.common.CommonController;
 import com.zmj.wkt.common.RestfulResult;
 import com.zmj.wkt.common.exception.CommonException;
-import com.zmj.wkt.entity.Acc_person;
-import com.zmj.wkt.entity.Bs_person;
-import com.zmj.wkt.service.Bs_personService;
-import com.zmj.wkt.service.Bs_role_personService;
+import com.zmj.wkt.service.Bs_goodsService;
+import com.zmj.wkt.service.Bs_goods_listService;
 import com.zmj.wkt.utils.RestfulResultUtils;
 import com.zmj.wkt.utils.sysenum.ErrorCode;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.cache.annotation.Cacheable;
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 /**
  * code is far away from bug with the animal protecting
@@ -38,27 +37,20 @@ import org.springframework.web.bind.annotation.*;
  * @description :
  * ---------------------------------
  */
-@Controller
 @RestController
-@RequestMapping("")
-public class Bs_personController extends CommonController {
-    @Autowired
-    Bs_personService bs_personService;
+public class MerchantsUserController extends CommonController{
 
     @Autowired
-    Bs_role_personService bs_role_personService;
+    Bs_goodsService bs_goodsService;
 
     /**
-     * 获取用户信息
+     * 获取接单用户的群列表
      * @return
      */
-    @GetMapping("/getUserInfo")
-    @ResponseBody
-    public RestfulResult getUserInfo(){
+    @GetMapping("/getMerchantsGoodsList")
+    public RestfulResult getMerchantsGoodsList(){
         try {
-            Bs_person bs_person = this.getThisUser();
-            bs_person.setPersonPassword(null);
-            return RestfulResultUtils.success(bs_person);
+            return RestfulResultUtils.success(bs_goodsService.selectGoodsListByClientID(this.getThisUser().getClientID()));
         }catch (CommonException ce){
             ce.printStackTrace();
             throw ce;
@@ -67,25 +59,4 @@ public class Bs_personController extends CommonController {
             throw new CommonException(ErrorCode.UNKNOWNS_ERROR,e.getMessage());
         }
     }
-
-    /**
-     * 获取用户权限
-     * @return
-     * @throws CommonException
-     */
-    @GetMapping("/getThisUserRole")
-    public RestfulResult getThisUserRole()throws CommonException{
-        try {
-            return RestfulResultUtils.success(bs_role_personService.getUserRole(getThisUser().getClientID()));
-        }catch (CommonException ce){
-            ce.printStackTrace();
-            throw ce;
-        }catch (Exception e) {
-            e.printStackTrace();
-            throw new CommonException(ErrorCode.UNKNOWNS_ERROR,e.getMessage());
-        }
-    }
-
-
-
 }

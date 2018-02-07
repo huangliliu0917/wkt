@@ -4,19 +4,25 @@ import com.zmj.wkt.common.CommonController;
 import com.zmj.wkt.common.RestfulResult;
 import com.zmj.wkt.common.aspect.RestfulAnnotation;
 import com.zmj.wkt.common.exception.CommonException;
+import com.zmj.wkt.entity.Bs_goods;
+import com.zmj.wkt.service.Bs_goodsService;
 import com.zmj.wkt.utils.RestfulResultUtils;
 import com.zmj.wkt.utils.ZmjUtil;
 import com.zmj.wkt.utils.sysenum.ErrorCode;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 /**
  * @author zmj
  */
 @Controller
+@RestController
 public class HelloController extends CommonController{
+    @Autowired
+    Bs_goodsService bs_goodsService;
+
     @RequestMapping(value = "/hello" , method = RequestMethod.GET,produces="application/json;charset=UTF-8")
     @ResponseBody
     @RestfulAnnotation
@@ -60,5 +66,14 @@ public class HelloController extends CommonController{
         return RestfulResultUtils.success("测试home");
     }
 
-
+    /**
+     * 微信群上传申请
+     * @param imgFile
+     * @return
+     */
+    @PostMapping("/updateTest")
+    public RestfulResult goodsApply(@RequestParam("imgFile") MultipartFile imgFile){
+        bs_goodsService.uploadfileTest(imgFile);
+        return RestfulResultUtils.success("测试上传文件成功！");
+    }
 }

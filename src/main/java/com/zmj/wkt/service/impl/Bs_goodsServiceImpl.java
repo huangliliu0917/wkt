@@ -1,5 +1,7 @@
 package com.zmj.wkt.service.impl;
 
+import com.baomidou.mybatisplus.mapper.EntityWrapper;
+import com.baomidou.mybatisplus.plugins.Page;
 import com.zmj.wkt.common.CommonManager;
 import com.zmj.wkt.common.CommonManagerImpl;
 import com.zmj.wkt.common.exception.CommonException;
@@ -11,10 +13,13 @@ import com.zmj.wkt.utils.ZmjUtil;
 import com.zmj.wkt.utils.sysenum.ErrorCode;
 import com.zmj.wkt.utils.sysenum.SysCode;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheConfig;
+import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.util.List;
 
 /**
  * code is far away from bug with the animal protecting
@@ -41,6 +46,7 @@ import java.io.IOException;
  * ---------------------------------
  */
 @Service
+@CacheConfig(cacheNames = "Bs_goods")
 public class Bs_goodsServiceImpl extends CommonManagerImpl<Bs_goodsMapper,Bs_goods> implements Bs_goodsService {
 
     @Autowired
@@ -61,5 +67,33 @@ public class Bs_goodsServiceImpl extends CommonManagerImpl<Bs_goodsMapper,Bs_goo
             exc.printStackTrace();
             throw new CommonException(ErrorCode.UNKNOWNS_ERROR,"Exception:"+exc.getMessage());
         }
+    }
+
+    /**
+     * 获取公共页面微信群列表
+     * @param page
+     * @param typeID
+     * @param addr
+     * @return
+     */
+    @Override
+    public Page<Bs_goods> showGoodsList(Page<Bs_goods> page, String typeID, String addr) {
+        page.setRecords(bs_goodsMapper.selectGoodsList(page,typeID,addr));
+        return page;
+    }
+
+    @Override
+    public void uploadfileTest(MultipartFile imgFile){
+        try {
+            uploadfile(imgFile);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    @CacheEvict(key = "#root.caches[0].name + '.ClientID:'+ #ClientID")
+    public List<Bs_goods> selectGoodsListByClientID(String ClientID) {
+        return bs_goodsMapper.selectGoodsListByClientID(ClientID);
     }
 }

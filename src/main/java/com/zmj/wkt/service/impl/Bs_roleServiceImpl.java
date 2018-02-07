@@ -1,9 +1,11 @@
 package com.zmj.wkt.service.impl;
 
+import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.zmj.wkt.entity.Bs_role;
 import com.zmj.wkt.mapper.Bs_roleMapper;
 import com.zmj.wkt.service.Bs_roleService;
 import com.zmj.wkt.common.CommonManagerImpl;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 /**

@@ -88,7 +88,11 @@ public class ControllerAspect extends CommonController{
         } catch (Exception e) {
             sys_log.setUsername("null");
         }
-        sys_log.setResponse(object.toString());
+        if (object.toString().length()>500){
+            sys_log.setResponse(object.toString().substring(0,500));
+        }else{
+            sys_log.setResponse(object.toString());
+        }
         sys_log.setEndTime(DateUtil.getNowTimestamp());
         sys_logMapper.insert(sys_log);
     }

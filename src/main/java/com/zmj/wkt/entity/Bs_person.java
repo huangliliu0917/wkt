@@ -13,7 +13,7 @@ import java.io.Serializable;
  * </p>
  *
  * @author zmj
- * @since 2018-01-29
+ * @since 2018-02-07
  */
 @TableName("bs_person")
 public class Bs_person extends Model<Bs_person> {
@@ -85,6 +85,10 @@ public class Bs_person extends Model<Bs_person> {
      * 微信唯一标识
      */
 	private String WXOpenID;
+    /**
+     * 是否是7日试用
+     */
+	private Integer isTry;
 
 
 	public String getClientID() {
@@ -223,6 +227,14 @@ public class Bs_person extends Model<Bs_person> {
 		this.WXOpenID = WXOpenID;
 	}
 
+	public Integer getIsTry() {
+		return isTry;
+	}
+
+	public void setIsTry(Integer isTry) {
+		this.isTry = isTry;
+	}
+
 	@Override
 	protected Serializable pkVal() {
 		return this.ClientID;
@@ -248,6 +260,7 @@ public class Bs_person extends Model<Bs_person> {
 			", Address=" + Address +
 			", Photo=" + Photo +
 			", WXOpenID=" + WXOpenID +
+			", isTry=" + isTry +
 			"}";
 	}
 }

@@ -33,6 +33,7 @@ import com.zmj.wkt.entity.Bs_person;
 import com.zmj.wkt.mapper.Bs_personMapper;
 import com.zmj.wkt.service.Bs_permissionService;
 import com.zmj.wkt.service.Bs_personService;
+import com.zmj.wkt.utils.DateUtil;
 import com.zmj.wkt.utils.RestfulResultUtils;
 import com.zmj.wkt.utils.SpringApplicationContextHolder;
 import com.zmj.wkt.utils.ZmjUtil;
@@ -86,11 +87,13 @@ public class JWTLoginFilter extends UsernamePasswordAuthenticationFilter {
             res.setHeader("Access-Control-Allow-Credentials", "true");
             String code = req.getParameter("code");
             if(ZmjUtil.isNullOrEmpty(code)) {
+                req.setAttribute("myStatus",ErrorCode.NULL_ERROR.getCode());
                 throw new CommonException(ErrorCode.NULL_ERROR,"code为空！");
             }
             JSONObject sessionKeyOropenid = getSessionKeyOropenid(code);
             String openid = (String) sessionKeyOropenid.get("openid");
             if (ZmjUtil.isNullOrEmpty(openid)){
+                req.setAttribute("myStatus",ErrorCode.NULL_ERROR.getCode());
                 throw new CommonException(ErrorCode.NULL_ERROR, "根据code找不到对应的openid！");
             }
             System.out.println("openid:"+openid);
@@ -99,6 +102,7 @@ public class JWTLoginFilter extends UsernamePasswordAuthenticationFilter {
             }
             Bs_person bs_person = bs_personService.findByWXOpenID(openid.toString());
             if (bs_person==null){
+                req.setAttribute("myStatus",ErrorCode.NOT_FIND_USER_ERROR.getCode());
                 throw new CommonException(ErrorCode.NOT_FIND_USER_ERROR,"未找到该用户！");
             }
             return authenticationManager.authenticate(
@@ -107,7 +111,10 @@ public class JWTLoginFilter extends UsernamePasswordAuthenticationFilter {
                             bs_person.getPersonPassword(),
                             new ArrayList<>())
             );
-        } catch (Exception e) {
+        } catch (CommonException ce){
+            throw ce;
+        }catch (Exception e) {
+            e.printStackTrace();
             throw new CommonException("登录失败："+e.getMessage());
         }
     }
@@ -118,10 +125,12 @@ public class JWTLoginFilter extends UsernamePasswordAuthenticationFilter {
                                             HttpServletResponse res,
                                             FilterChain chain,
                                             Authentication auth) throws IOException, ServletException {
+        Date date=new Date(System.currentTimeMillis() + 60 * 60 * 24 * 1000 *15);
+        System.out.println("有效期到："+DateUtil.formatDate(date));
         String token = Jwts.builder()
                 .setSubject(((org.springframework.security.core.userdetails.User) auth.getPrincipal()).getUsername())
                 //设置有效时间（毫秒）
-                .setExpiration(new Date(System.currentTimeMillis() + 60 * 60 * 24 * 1000 *15))
+                .setExpiration(date)
                 .signWith(SignatureAlgorithm.HS512, "MyJwtSecret")
                 .compact();
         res.addHeader("Authorization", "Bearer " + token);

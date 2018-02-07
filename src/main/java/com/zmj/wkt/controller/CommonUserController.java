@@ -3,16 +3,13 @@ package com.zmj.wkt.controller;
 import com.zmj.wkt.common.CommonController;
 import com.zmj.wkt.common.RestfulResult;
 import com.zmj.wkt.common.exception.CommonException;
-import com.zmj.wkt.entity.Acc_person;
-import com.zmj.wkt.entity.Bs_person;
-import com.zmj.wkt.service.Bs_personService;
-import com.zmj.wkt.service.Bs_role_personService;
+import com.zmj.wkt.service.Bs_goods_listService;
 import com.zmj.wkt.utils.RestfulResultUtils;
 import com.zmj.wkt.utils.sysenum.ErrorCode;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.cache.annotation.Cacheable;
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 /**
  * code is far away from bug with the animal protecting
@@ -35,30 +32,26 @@ import org.springframework.web.bind.annotation.*;
  * 　　　┗┻┛　┗┻┛
  *
  * @author : zmj
- * @description :
+ * @description :普通用户控制器
  * ---------------------------------
  */
-@Controller
 @RestController
-@RequestMapping("")
-public class Bs_personController extends CommonController {
-    @Autowired
-    Bs_personService bs_personService;
+public class CommonUserController extends CommonController{
+
 
     @Autowired
-    Bs_role_personService bs_role_personService;
+    Bs_goods_listService bs_goods_listService;
 
     /**
-     * 获取用户信息
+     * 添加群到用户群列表
+     * @param goodsID
      * @return
      */
-    @GetMapping("/getUserInfo")
-    @ResponseBody
-    public RestfulResult getUserInfo(){
+    @PostMapping("/addToPersonGoodsList")
+    public RestfulResult addToPersonGoodsList(String goodsID){
         try {
-            Bs_person bs_person = this.getThisUser();
-            bs_person.setPersonPassword(null);
-            return RestfulResultUtils.success(bs_person);
+            bs_goods_listService.addToPersonGoodsList(goodsID,this.getThisUser().getClientID());
+            return RestfulResultUtils.success("添加成功！");
         }catch (CommonException ce){
             ce.printStackTrace();
             throw ce;
@@ -69,14 +62,13 @@ public class Bs_personController extends CommonController {
     }
 
     /**
-     * 获取用户权限
+     * 获取用户群列表
      * @return
-     * @throws CommonException
      */
-    @GetMapping("/getThisUserRole")
-    public RestfulResult getThisUserRole()throws CommonException{
+    @GetMapping("/getPersonGoodsList")
+    public RestfulResult getPersonGoodsList(){
         try {
-            return RestfulResultUtils.success(bs_role_personService.getUserRole(getThisUser().getClientID()));
+            return RestfulResultUtils.success(bs_goods_listService.getPersonGoodsList(this.getThisUser().getClientID()));
         }catch (CommonException ce){
             ce.printStackTrace();
             throw ce;
@@ -86,6 +78,23 @@ public class Bs_personController extends CommonController {
         }
     }
 
-
+    /**
+     * 删除群从用户群列表
+     * @param goodsID
+     * @return
+     */
+    @PostMapping("/delPersonGoodsList")
+    public RestfulResult delPersonGoodsList(String goodsID){
+        try {
+            bs_goods_listService.delPersonGoodsList(goodsID,this.getThisUser().getClientID());
+            return RestfulResultUtils.success("删除成功！");
+        }catch (CommonException ce){
+            ce.printStackTrace();
+            throw ce;
+        }catch (Exception e) {
+            e.printStackTrace();
+            throw new CommonException(ErrorCode.UNKNOWNS_ERROR,e.getMessage());
+        }
+    }
 
 }

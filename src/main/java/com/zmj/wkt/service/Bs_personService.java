@@ -2,10 +2,14 @@ package com.zmj.wkt.service;
 
 import com.baomidou.mybatisplus.service.IService;
 import com.zmj.wkt.entity.Acc_person;
+import com.zmj.wkt.entity.Bs_goods;
 import com.zmj.wkt.entity.Bs_person;
+import com.zmj.wkt.entity.Bs_person_goods_list;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.web.multipart.MultipartFile;
+
+import java.util.List;
 
 /**
  * <p>
@@ -32,5 +36,6 @@ public interface Bs_personService extends IService<Bs_person> {
      * @return
      */
     public boolean addAccPerson(String ClientID);
+
 
 }

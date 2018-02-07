@@ -1,11 +1,9 @@
 package com.zmj.wkt.service;
 
-import com.baomidou.mybatisplus.mapper.Wrapper;
-import com.baomidou.mybatisplus.plugins.Page;
 import com.zmj.wkt.common.CommonManager;
+import com.zmj.wkt.entity.Acc_person;
 import com.zmj.wkt.entity.Bs_goods;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.multipart.MultipartFile;
+import com.zmj.wkt.entity.Bs_person_goods_list;
 
 import java.util.List;
 
@@ -33,24 +31,27 @@ import java.util.List;
  * @description :
  * ---------------------------------
  */
-public interface Bs_goodsService  extends CommonManager<Bs_goods> {
+public interface Bs_goods_listService extends CommonManager<Bs_person_goods_list> {
     /**
-     * 微信群申请接口
-     * @param bs_goods
-     * @param imgFile
-     */
-    public void goodsApply(Bs_goods bs_goods,@RequestParam("file") MultipartFile imgFile);
-
-    /**
-     * 获取公共微信群列表
-     * @param page
-     * @param typeID
-     * @param addr
+     * 添加到个人群列表
+     * @param GoodsID
+     * @param ClientID
      * @return
      */
-    public Page<Bs_goods> showGoodsList(Page<Bs_goods> page,String typeID,String addr);
+    public boolean addToPersonGoodsList(String GoodsID,String ClientID);
 
-    public void uploadfileTest(MultipartFile imgFile);
+    /**
+     * 获取用户微信群列表
+     * @param ClientID
+     * @return
+     */
+    public List<Bs_goods> getPersonGoodsList(String ClientID);
 
-    public List<Bs_goods> selectGoodsListByClientID(String ClientID);
+    /**
+     * 从用户群列表中删除
+     * @param GoodsID
+     * @param ClientID
+     * @return
+     */
+    public boolean delPersonGoodsList(String GoodsID,String ClientID) ;
 }

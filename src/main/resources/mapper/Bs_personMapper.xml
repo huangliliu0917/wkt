@@ -20,11 +20,12 @@
         <result column="Address" property="Address" />
         <result column="Photo" property="Photo" />
         <result column="WXOpenID" property="WXOpenID" />
+        <result column="isTry" property="isTry" />
     </resultMap>
 
     <!-- 通用查询结果列 -->
     <sql id="Base_Column_List">
-        ClientID, NickName, UserName, RealName, Sex, PersonPassword, Email, Phone, CertID, PswQuestion, PswResult, RegTime, MemberPoints, GradeID, Address, Photo ,WXOpenID
+        ClientID, NickName, UserName, RealName, Sex, PersonPassword, Email, Phone, CertID, PswQuestion, PswResult, RegTime, MemberPoints, GradeID, Address, Photo ,WXOpenID,isTry
     </sql>
     <update id="uploadPhoto" parameterType="String">
         UPDATE bs_person

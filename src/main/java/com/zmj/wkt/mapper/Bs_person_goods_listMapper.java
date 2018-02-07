@@ -1,7 +1,10 @@
 package com.zmj.wkt.mapper;
 
+import com.zmj.wkt.entity.Bs_goods;
 import com.zmj.wkt.entity.Bs_person_goods_list;
 import com.baomidou.mybatisplus.mapper.BaseMapper;
+
+import java.util.List;
 
 /**
  * <p>

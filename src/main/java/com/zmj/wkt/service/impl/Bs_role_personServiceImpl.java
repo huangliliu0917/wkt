@@ -8,6 +8,8 @@ import com.zmj.wkt.mapper.Bs_roleMapper;
 import com.zmj.wkt.mapper.Bs_role_personMapper;
 import com.zmj.wkt.service.Bs_role_personService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheConfig;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -23,7 +25,19 @@ import java.util.List;
  */
 @Service
 @Transactional(rollbackFor = Exception.class)
+@CacheConfig(cacheNames = "Bs_role_person")
 public class Bs_role_personServiceImpl extends ServiceImpl<Bs_role_personMapper, Bs_role_person> implements Bs_role_personService {
-
+    @Autowired
+    Bs_roleMapper bs_roleMapper;
+    /**
+     * 获取用户权限
+     * @param ClientID
+     * @return
+     */
+    @Cacheable(key = "#root.caches[0].name + '.ClientID:'+ #ClientID")
+    @Override
+    public List<Bs_role> getUserRole(String ClientID) {
+        return bs_roleMapper.getRoleByClientID(ClientID);
+    }
 
 }
