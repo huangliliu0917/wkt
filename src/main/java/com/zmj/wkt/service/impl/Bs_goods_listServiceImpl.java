@@ -2,11 +2,14 @@ package com.zmj.wkt.service.impl;
 
 import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.zmj.wkt.common.CommonManagerImpl;
+import com.zmj.wkt.common.exception.CommonException;
 import com.zmj.wkt.entity.Bs_goods;
 import com.zmj.wkt.entity.Bs_person_goods_list;
 import com.zmj.wkt.mapper.Bs_goodsMapper;
 import com.zmj.wkt.mapper.Bs_person_goods_listMapper;
 import com.zmj.wkt.service.Bs_goods_listService;
+import com.zmj.wkt.utils.ZmjUtil;
+import com.zmj.wkt.utils.sysenum.ErrorCode;
 import com.zmj.wkt.utils.sysenum.SysCode;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CacheConfig;
@@ -63,6 +66,13 @@ public class Bs_goods_listServiceImpl extends CommonManagerImpl<Bs_person_goods_
         bs_person_goods_list.setGoodsID(GoodsID);
         bs_person_goods_list.setClientID(ClientID);
         bs_person_goods_list.setState(SysCode.STATE_T.getCode());
+        EntityWrapper entityWrapper = new EntityWrapper();
+        entityWrapper.setEntity(new Bs_person_goods_list());
+        entityWrapper.where("ClientID = {0} ",ClientID).and(" GoodsID = {0}",GoodsID);
+        List selectList = bs_person_goods_listMapper.selectList(entityWrapper);
+        if(ZmjUtil.isNullOrEmpty(selectList)){
+            throw new CommonException(ErrorCode.ISHAVEN_ERROR,"该群已经存在于用户群列表中！");
+        }
         bs_person_goods_listMapper.insert(bs_person_goods_list);
         return true;
     }

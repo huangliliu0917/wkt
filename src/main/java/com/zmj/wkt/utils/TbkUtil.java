@@ -38,7 +38,10 @@ import com.taobao.api.response.WirelessShareTpwdCreateResponse;
  */
 public class TbkUtil {
 
+    //正式环境
     private static final String URL = "https://eco.taobao.com/router/rest";
+    //测试环境
+    //private static final String URL = "https://gw.api.tbsandbox.com/router/rest";
     private static final String APPKEY = "24576611";
     private static final String SECRET = "20171995c8a67b8fecc47058c616704b";
     private static final String PID = "mm_46667186_33352377_118692248";
@@ -121,7 +124,6 @@ public class TbkUtil {
         Long adzoneId = Long.valueOf(PID.split("_")[3]);
         System.out.println(adzoneId);
         getGoodsList(adzoneId,1L,1L,10L);
-
 
         TaobaoClient client = new DefaultTaobaoClient(URL, APPKEY, SECRET);
         TbkItemGetRequest req = new TbkItemGetRequest();

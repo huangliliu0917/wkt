@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.zmj.wkt.mapper.Bs_orderformMapper">
+
     <!-- 通用查询映射结果 -->
     <resultMap id="BaseResultMap" type="com.zmj.wkt.entity.Bs_orderform">
         <id column="SubID" property="SubID" />
@@ -17,12 +18,17 @@
         <result column="Payment" property="Payment" />
         <result column="SendType" property="SendType" />
         <result column="SendPrice" property="SendPrice" />
+        <result column="ItemTitle" property="ItemTitle" />
+        <result column="ItemPrice" property="ItemPrice" />
+        <result column="ItemActivePrice" property="ItemActivePrice" />
+        <result column="ItemDescription" property="ItemDescription" />
+        <result column="ItemPic" property="ItemPic" />
         <result column="State" property="State" />
     </resultMap>
 
     <!-- 通用查询结果列 -->
     <sql id="Base_Column_List">
-        SubID, ClientID, ProductUserName, GoodsID, RAddress, SpDate, SpCount, GPrice, ReceiptID, SpPrice, SendDate, Payment, SendType, SendPrice, State
+        SubID, ClientID, ProductUserName, GoodsID, RAddress, SpDate, SpCount, GPrice, ReceiptID, SpPrice, SendDate, Payment, SendType, SendPrice, ItemTitle, ItemPrice, ItemActivePrice, ItemDescription, ItemPic, State
     </sql>
 
 </mapper>

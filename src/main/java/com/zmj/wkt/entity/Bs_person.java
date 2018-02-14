@@ -13,7 +13,7 @@ import java.io.Serializable;
  * </p>
  *
  * @author zmj
- * @since 2018-02-07
+ * @since 2018-02-08
  */
 @TableName("bs_person")
 public class Bs_person extends Model<Bs_person> {
@@ -89,6 +89,10 @@ public class Bs_person extends Model<Bs_person> {
      * 是否是7日试用
      */
 	private Integer isTry;
+    /**
+     * 激活时间
+     */
+	private Date activationTime;
 
 
 	public String getClientID() {
@@ -235,6 +239,14 @@ public class Bs_person extends Model<Bs_person> {
 		this.isTry = isTry;
 	}
 
+	public Date getActivationTime() {
+		return activationTime;
+	}
+
+	public void setActivationTime(Date activationTime) {
+		this.activationTime = activationTime;
+	}
+
 	@Override
 	protected Serializable pkVal() {
 		return this.ClientID;
@@ -261,6 +273,7 @@ public class Bs_person extends Model<Bs_person> {
 			", Photo=" + Photo +
 			", WXOpenID=" + WXOpenID +
 			", isTry=" + isTry +
+			", activationTime=" + activationTime +
 			"}";
 	}
 }
