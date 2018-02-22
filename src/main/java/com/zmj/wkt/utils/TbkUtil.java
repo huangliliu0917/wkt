@@ -100,13 +100,37 @@ public class TbkUtil {
         return rsp.getBody();
     }
 
+    /**
+     * 获取商品列表
+     * @param pageSize
+     * @param pageNo
+     * @return
+     */
+    public static String getGoodsList2(String Itemloc , String Q ,Long pageNo ,Long pageSize) throws ApiException {
+        TaobaoClient client = new DefaultTaobaoClient(URL, APPKEY, SECRET);
+        TbkItemGetRequest req = new TbkItemGetRequest();
+        req.setFields("num_iid,title,pict_url,small_images,reserve_price,zk_final_price,user_type,provcity,item_url,seller_id,volume,nick");
+        req.setQ(Q);
+        //req.setCat("16,18");
+        req.setItemloc(Itemloc);
+        req.setIsTmall(false);
+        req.setIsOverseas(false);
+        req.setPlatform(1L);
+        req.setPageNo(pageNo);
+        req.setPageSize(pageSize);
+        req.setEndTkRate(10L);
+        TbkItemGetResponse rsp = client.execute(req);
+        System.out.println(rsp.getBody());
+        return rsp.getBody();
+    }
+
     public static void test() throws ApiException {
         TaobaoClient client = new DefaultTaobaoClient(URL, APPKEY, SECRET);
         WirelessShareTpwdCreateRequest req = new WirelessShareTpwdCreateRequest();
         WirelessShareTpwdCreateRequest.GenPwdIsvParamDto obj1 = new WirelessShareTpwdCreateRequest.GenPwdIsvParamDto();
         obj1.setExt("{\"xx\":\"xx\"}");
-        obj1.setLogo("https://img.alicdn.com//tfscom//i3//1981819532//TB1siNISFXXXXaoXVXXXXXXXXXX_!!0-item_pic.jpg");
-        obj1.setUrl("https://item.taobao.com//item.htm?id=551625849471");
+        obj1.setLogo("http://item.taobao.com/item.htm?id=560973826624");
+        obj1.setUrl("https://img.alicdn.com/tfscom/i1/71959883/TB1w0gQXGmWBuNjy1XaXXXCbXXa_!!2-item_pic.png");
         obj1.setText("超值活动，惊喜活动多多");
         obj1.setUserId(131267237L);
         req.setTpwdParam(obj1);
@@ -117,13 +141,19 @@ public class TbkUtil {
 
 
     public static void main(String[] args) throws ApiException {
-        //测试生成淘口令
-        tpwdCreate("131267237","长度大于5个字符","https://item.taobao.com//item.htm?id=551625849471","https://img.alicdn.com//tfscom//i3//1981819532//TB1siNISFXXXXaoXVXXXXXXXXXX_!!0-item_pic.jpg","{}");
+
 
         //测试商品列表获取
         Long adzoneId = Long.valueOf(PID.split("_")[3]);
         System.out.println(adzoneId);
-        getGoodsList(adzoneId,1L,1L,10L);
+        //getGoodsList(adzoneId,1L,1L,10L);
+        getGoodsList2("杭州","女装",1L,10L);
+
+        //url 转换
+
+
+        //测试生成淘口令
+        tpwdCreate("131267237","长度大于5个字符","https://item.taobao.com/item.htm?id=560973826624","https://img.alicdn.com/tfscom/i1/71959883/TB1w0gQXGmWBuNjy1XaXXXCbXXa_!!2-item_pic.png","{\"xx\":\"xx\"}");
 
         TaobaoClient client = new DefaultTaobaoClient(URL, APPKEY, SECRET);
         TbkItemGetRequest req = new TbkItemGetRequest();

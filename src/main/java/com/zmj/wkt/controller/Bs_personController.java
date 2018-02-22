@@ -7,6 +7,7 @@ import com.zmj.wkt.entity.Acc_person;
 import com.zmj.wkt.entity.Bs_person;
 import com.zmj.wkt.service.Bs_personService;
 import com.zmj.wkt.service.Bs_role_personService;
+import com.zmj.wkt.utils.MD5Util;
 import com.zmj.wkt.utils.RestfulResultUtils;
 import com.zmj.wkt.utils.sysenum.ErrorCode;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -86,6 +87,19 @@ public class Bs_personController extends CommonController {
         }
     }
 
+    /**
+     * 修改密码
+     * @param password
+     * @return
+     * @throws CommonException
+     */
+    @PostMapping("/editPassword")
+    public RestfulResult editPassword(String password) throws Exception {
+        Bs_person bs_person = getThisUser();
+        bs_person.setPersonPassword(MD5Util.encode(password));
+        bs_personService.updatePersonInfo(bs_person);
+        return RestfulResultUtils.success("修改成功!");
+    }
 
 
 }

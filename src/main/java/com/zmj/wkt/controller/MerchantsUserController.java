@@ -4,8 +4,10 @@ import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.zmj.wkt.common.CommonController;
 import com.zmj.wkt.common.RestfulResult;
 import com.zmj.wkt.common.exception.CommonException;
+import com.zmj.wkt.entity.Bs_orderform;
 import com.zmj.wkt.service.Bs_goodsService;
 import com.zmj.wkt.service.Bs_goods_listService;
+import com.zmj.wkt.service.Bs_orderformService;
 import com.zmj.wkt.utils.RestfulResultUtils;
 import com.zmj.wkt.utils.sysenum.ErrorCode;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -43,6 +45,9 @@ public class MerchantsUserController extends CommonController{
     @Autowired
     Bs_goodsService bs_goodsService;
 
+    @Autowired
+    Bs_orderformService bs_orderformService;
+
     /**
      * 获取接单用户的群列表
      * @return
@@ -59,4 +64,19 @@ public class MerchantsUserController extends CommonController{
             throw new CommonException(ErrorCode.UNKNOWNS_ERROR,e.getMessage());
         }
     }
+
+    /**
+     * 获取当前接单用户的订单列表
+     * @return
+     */
+    @GetMapping("/getMyOrderFromList")
+    public RestfulResult getMyOrderFromList() throws Exception {
+        EntityWrapper entityWrapper = new EntityWrapper();
+        entityWrapper.setEntity(new Bs_orderform());
+        entityWrapper.where("ClientID ={0}",getThisUser().getClientID());
+        return RestfulResultUtils.success(bs_goodsService.selectList(entityWrapper));
+    }
+
+
+
 }

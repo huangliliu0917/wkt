@@ -68,9 +68,9 @@ public class Bs_goods_listServiceImpl extends CommonManagerImpl<Bs_person_goods_
         bs_person_goods_list.setState(SysCode.STATE_T.getCode());
         EntityWrapper entityWrapper = new EntityWrapper();
         entityWrapper.setEntity(new Bs_person_goods_list());
-        entityWrapper.where("ClientID = {0} ",ClientID).and(" GoodsID = {0}",GoodsID);
+        entityWrapper.where("ClientID = {0} and GoodsID = {1}",ClientID,GoodsID);
         List selectList = bs_person_goods_listMapper.selectList(entityWrapper);
-        if(ZmjUtil.isNullOrEmpty(selectList)){
+        if(!ZmjUtil.isNullOrEmpty(selectList)){
             throw new CommonException(ErrorCode.ISHAVEN_ERROR,"该群已经存在于用户群列表中！");
         }
         bs_person_goods_listMapper.insert(bs_person_goods_list);

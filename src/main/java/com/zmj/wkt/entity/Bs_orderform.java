@@ -13,7 +13,7 @@ import java.io.Serializable;
  * </p>
  *
  * @author zmj
- * @since 2018-02-14
+ * @since 2018-02-19
  */
 @TableName("bs_orderform")
 public class Bs_orderform extends Model<Bs_orderform> {
@@ -29,6 +29,10 @@ public class Bs_orderform extends Model<Bs_orderform> {
      */
 	private String ClientID;
     /**
+     * 客户用户名
+     */
+	private String ConsumerUserName;
+    /**
      * 提供者账号
      */
 	private String ProductUserName;
@@ -36,6 +40,14 @@ public class Bs_orderform extends Model<Bs_orderform> {
      * 微信群ID
      */
 	private String GoodsID;
+    /**
+     * 微信群名称
+     */
+	private String GName;
+    /**
+     * 微信群类别
+     */
+	private String GTypeID;
     /**
      * 地区
      */
@@ -98,9 +110,14 @@ public class Bs_orderform extends Model<Bs_orderform> {
 	private String ItemPic;
     /**
      * 订单状态
-(0有效 1无效 2待审核 3未通过)
+(0有效 1无效 2商家未确认)
      */
 	private Integer State;
+    /**
+     * 审核状态
+(0通过 1未通过 2待审核)
+     */
+	private Integer IsAble;
 
 
 	public String getSubID() {
@@ -119,6 +136,14 @@ public class Bs_orderform extends Model<Bs_orderform> {
 		this.ClientID = ClientID;
 	}
 
+	public String getConsumerUserName() {
+		return ConsumerUserName;
+	}
+
+	public void setConsumerUserName(String ConsumerUserName) {
+		this.ConsumerUserName = ConsumerUserName;
+	}
+
 	public String getProductUserName() {
 		return ProductUserName;
 	}
@@ -133,6 +158,22 @@ public class Bs_orderform extends Model<Bs_orderform> {
 
 	public void setGoodsID(String GoodsID) {
 		this.GoodsID = GoodsID;
+	}
+
+	public String getGName() {
+		return GName;
+	}
+
+	public void setGName(String GName) {
+		this.GName = GName;
+	}
+
+	public String getGTypeID() {
+		return GTypeID;
+	}
+
+	public void setGTypeID(String GTypeID) {
+		this.GTypeID = GTypeID;
 	}
 
 	public String getRAddress() {
@@ -263,6 +304,14 @@ public class Bs_orderform extends Model<Bs_orderform> {
 		this.State = State;
 	}
 
+	public Integer getIsAble() {
+		return IsAble;
+	}
+
+	public void setIsAble(Integer IsAble) {
+		this.IsAble = IsAble;
+	}
+
 	@Override
 	protected Serializable pkVal() {
 		return this.SubID;
@@ -273,8 +322,11 @@ public class Bs_orderform extends Model<Bs_orderform> {
 		return "Bs_orderform{" +
 			", SubID=" + SubID +
 			", ClientID=" + ClientID +
+			", ConsumerUserName=" + ConsumerUserName +
 			", ProductUserName=" + ProductUserName +
 			", GoodsID=" + GoodsID +
+			", GName=" + GName +
+			", GTypeID=" + GTypeID +
 			", RAddress=" + RAddress +
 			", SpDate=" + SpDate +
 			", SpCount=" + SpCount +
@@ -291,6 +343,7 @@ public class Bs_orderform extends Model<Bs_orderform> {
 			", ItemDescription=" + ItemDescription +
 			", ItemPic=" + ItemPic +
 			", State=" + State +
+			", IsAble=" + IsAble +
 			"}";
 	}
 }

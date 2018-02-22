@@ -14,6 +14,7 @@ import com.zmj.wkt.utils.sysenum.SysCode;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.UUID;
@@ -42,6 +43,7 @@ import java.util.UUID;
  * @description :
  * ---------------------------------
  */
+@RestController
 public class Bs_orderformController  extends CommonController{
 
     @Autowired
@@ -54,8 +56,14 @@ public class Bs_orderformController  extends CommonController{
             if (imgFile.isEmpty()) {
                 throw new CommonException(ErrorCode.NULL_ERROR,"上传图片文件为空！");
             }
+            bs_orderform.setClientID(bs_person.getClientID());
+            bs_orderform.setConsumerUserName(bs_person.getUserName());
             bs_orderform.setSubID("Sub_"+ UUID.randomUUID().toString().toUpperCase());
             bs_orderform.setState(SysCode.IS_ABLE_WAIT.getCode());
+            bs_orderform.setIsAble(SysCode.IS_ABLE_WAIT.getCode());
+            bs_orderform.setSpPrice(bs_orderform.getGPrice()*bs_orderform.getSpCount());
+            //申请时间
+            bs_orderform.setSpDate(DateUtil.getNowTimestamp());
             bs_orderformService.orderFormApply(bs_orderform,imgFile);
             return RestfulResultUtils.success("上传成功！等待审核...");
         }catch (Exception e){

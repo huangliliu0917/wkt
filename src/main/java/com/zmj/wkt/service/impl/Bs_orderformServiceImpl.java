@@ -31,7 +31,7 @@ public class Bs_orderformServiceImpl extends CommonManagerImpl<Bs_orderformMappe
 
     @Override
     public void orderFormApply(Bs_orderform bs_orderform, MultipartFile imgFile) {
-        String url = "goods-img/";
+        String url = "order-img/";
         try {
             String photoUrl = url+bs_orderform.getSubID()+"."+ ZmjUtil.getExtensionName(imgFile.getOriginalFilename());
             uploadfile(imgFile,photoUrl);

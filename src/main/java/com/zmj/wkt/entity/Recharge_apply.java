@@ -13,7 +13,7 @@ import java.io.Serializable;
  * </p>
  *
  * @author zmj
- * @since 2018-02-01
+ * @since 2018-02-14
  */
 @TableName("recharge_apply")
 public class Recharge_apply extends Model<Recharge_apply> {
@@ -25,9 +25,25 @@ public class Recharge_apply extends Model<Recharge_apply> {
      */
 	private String Action_no;
     /**
+     * 用户ID
+     */
+	private String ClientID;
+    /**
+     * 用户名
+     */
+	private String Username;
+    /**
      * 交易币数量
      */
 	private Integer Amt;
+    /**
+     * 支付前金额
+     */
+	private Integer BeforeBalance;
+    /**
+     * 支付后金额
+     */
+	private Integer AfterBalance;
     /**
      * 支付宝订单号
      */
@@ -58,12 +74,44 @@ public class Recharge_apply extends Model<Recharge_apply> {
 		this.Action_no = Action_no;
 	}
 
+	public String getClientID() {
+		return ClientID;
+	}
+
+	public void setClientID(String ClientID) {
+		this.ClientID = ClientID;
+	}
+
+	public String getUsername() {
+		return Username;
+	}
+
+	public void setUsername(String Username) {
+		this.Username = Username;
+	}
+
 	public Integer getAmt() {
 		return Amt;
 	}
 
 	public void setAmt(Integer Amt) {
 		this.Amt = Amt;
+	}
+
+	public Integer getBeforeBalance() {
+		return BeforeBalance;
+	}
+
+	public void setBeforeBalance(Integer BeforeBalance) {
+		this.BeforeBalance = BeforeBalance;
+	}
+
+	public Integer getAfterBalance() {
+		return AfterBalance;
+	}
+
+	public void setAfterBalance(Integer AfterBalance) {
+		this.AfterBalance = AfterBalance;
 	}
 
 	public String getAli_order_number() {
@@ -115,7 +163,11 @@ public class Recharge_apply extends Model<Recharge_apply> {
 	public String toString() {
 		return "Recharge_apply{" +
 			", Action_no=" + Action_no +
+			", ClientID=" + ClientID +
+			", Username=" + Username +
 			", Amt=" + Amt +
+			", BeforeBalance=" + BeforeBalance +
+			", AfterBalance=" + AfterBalance +
 			", Ali_order_number=" + Ali_order_number +
 			", State=" + State +
 			", IsAble=" + IsAble +

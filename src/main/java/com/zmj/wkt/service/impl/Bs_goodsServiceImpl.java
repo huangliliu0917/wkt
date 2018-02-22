@@ -9,6 +9,7 @@ import com.zmj.wkt.entity.Bs_goods;
 import com.zmj.wkt.mapper.Bs_goodsMapper;
 import com.zmj.wkt.service.Bs_goodsService;
 import com.zmj.wkt.service.Bs_personService;
+import com.zmj.wkt.utils.DateUtil;
 import com.zmj.wkt.utils.ZmjUtil;
 import com.zmj.wkt.utils.sysenum.ErrorCode;
 import com.zmj.wkt.utils.sysenum.SysCode;
@@ -95,5 +96,28 @@ public class Bs_goodsServiceImpl extends CommonManagerImpl<Bs_goodsMapper,Bs_goo
     @CacheEvict(key = "#root.caches[0].name + '.ClientID:'+ #ClientID")
     public List<Bs_goods> selectGoodsListByClientID(String ClientID) {
         return bs_goodsMapper.selectGoodsListByClientID(ClientID);
+    }
+
+    @Override
+    public void goodsUpdatePic(Bs_goods bs_goods, MultipartFile imgFile) {
+        String url = "goods-img/";
+        try {
+            String photoUrl = url+bs_goods.getGoodsID()+"."+ ZmjUtil.getExtensionName(imgFile.getOriginalFilename());
+            uploadfile(imgFile,photoUrl);
+            EntityWrapper entityWrapper = new EntityWrapper();
+            //更新时间
+            bs_goods.setGDateTime(DateUtil.getNowTimestamp());
+            bs_goods.setGImage(photoUrl);
+            bs_goods.setIsShow(SysCode.STATE_T.getCode());
+            entityWrapper.setEntity(new Bs_goods());
+            entityWrapper.where("GoodsID = {0}",bs_goods.getGoodsID());
+            bs_goodsMapper.update(bs_goods,entityWrapper);
+        } catch (IOException e) {
+            e.printStackTrace();
+            throw new CommonException(ErrorCode.FILE_UPLOAD_ERROR,"文件上传失败！IOException:"+e.getMessage());
+        } catch(Exception exc){
+            exc.printStackTrace();
+            throw new CommonException(ErrorCode.UNKNOWNS_ERROR,"Exception:"+exc.getMessage());
+        }
     }
 }

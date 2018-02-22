@@ -27,23 +27,24 @@
         <result column="State" property="State" />
         <result column="IsAble" property="IsAble" />
         <result column="IsShow" property="IsShow" />
+        <result column="GAddedTime" property="GAddedTime" />
     </resultMap>
 
     <!-- 通用查询结果列 -->
     <sql id="Base_Column_List">
-        GoodsID, GClientID, GWXPersonNumber, GWXUserNumber, GUserName, GName, GPrice, GActivePrice, GInfo, GTypeID1, GTypeID2, GTypeID3, GIntro, GImage, GCount, GSail, GWeight, GDateTime, GSize, GAddress, State, IsAble,IsShow
+        GoodsID, GClientID, GWXPersonNumber, GWXUserNumber, GUserName, GName, GPrice, GActivePrice, GInfo, GTypeID1, GTypeID2, GTypeID3, GIntro, GImage, GCount, GSail, GWeight, GDateTime, GSize, GAddress, State, IsAble,IsShow, GAddedTime
     </sql>
 
     <select id="getBs_person_goodsByClientID" resultType="com.zmj.wkt.entity.Bs_goods" parameterType="String">
         SELECT * FROM bs_goods WHERE bs_goods.GoodsID IN (
         SELECT GoodsID FROM bs_person_goods_list
         WHERE bs_person_goods_list.ClientID = #{ClientID}
-        )
+        ) and State = 0 and IsAble = 0 and IsShow = 0
     </select>
     <select id="selectGoodsList" resultType="com.zmj.wkt.entity.Bs_goods" parameterType="String">
         SELECT * FROM  bs_goods WHERE
         GAddress = #{addr} and (GTypeID1 =#{typeID} or GTypeID2 =#{typeID}or GTypeID3 =#{typeID})
-        and State = 0 and IsAble = 0
+        and State = 0 and IsAble = 0 and IsShow = 0
     </select>
     <select id="selectGoodsListByClientID" resultType="com.zmj.wkt.entity.Bs_goods" parameterType="String">
         SELECT * FROM  bs_goods WHERE

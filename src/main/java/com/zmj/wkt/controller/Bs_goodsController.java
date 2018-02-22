@@ -20,6 +20,7 @@ import com.zmj.wkt.utils.sysenum.ErrorCode;
 import com.zmj.wkt.utils.sysenum.SysCode;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CacheConfig;
+import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
@@ -127,6 +128,7 @@ public class Bs_goodsController extends CommonController{
             bs_goods.setState(SysCode.STATE_T.getCode());
             bs_goods.setIsAble(SysCode.IS_ABLE_WAIT.getCode());
             bs_goods.setGDateTime(DateUtil.getNowTimestamp());
+            bs_goods.setGAddedTime(DateUtil.getNowTimestamp());
             bs_goods.setGClientID(bs_person.getClientID());
             bs_goods.setGUserName(bs_person.getUserName());
             bs_goods.setGCount(0L);
@@ -137,6 +139,71 @@ public class Bs_goodsController extends CommonController{
         }
     }
 
+    /**
+     * 根据微信群ID获取微信群详细信息
+     * @param goodsID
+     * @return
+     */
+    @RequestMapping("/getGoodsByID")
+    @ResponseBody
+    public RestfulResult getGoodsByID(String goodsID){
+        if (ZmjUtil.isNullOrEmpty(goodsID)) {
+            throw new CommonException(ErrorCode.NULL_ERROR,"goodsID不能为空！");
+        }
+        EntityWrapper entityWrapper =  new EntityWrapper();
+        entityWrapper.setEntity(new Bs_goods());
+        entityWrapper.where("GoodsID = {0}",goodsID);
+        Bs_goods bs_goods = bs_goodsService.selectOne(entityWrapper);
+        return RestfulResultUtils.success(bs_goods);
+    }
 
+    /**
+     * 微信群更新信息
+     * @param bs_goods
+     * @return
+     */
+    @CacheEvict(value = "getGoods",allEntries = true)
+    @PostMapping("/goodsUpdateInfo")
+    public RestfulResult goodsUpdateInfo(Bs_goods bs_goods){
+        if (ZmjUtil.isNullOrEmpty(bs_goods)) {
+            throw new CommonException(ErrorCode.NULL_ERROR,"goods不能为空！");
+        }
+        if (ZmjUtil.isNullOrEmpty(bs_goods.getGoodsID())) {
+            throw new CommonException(ErrorCode.NULL_ERROR,"goodsID不能为空！");
+        }
+        EntityWrapper entityWrapper = new EntityWrapper();
+        entityWrapper.setEntity(new Bs_goods());
+        entityWrapper.where("GoodsID = {0}",bs_goods.getGoodsID());
+        bs_goodsService.update(bs_goods,entityWrapper);
+        return RestfulResultUtils.success("更新成功！");
+    }
 
+    /**
+     * 微信群更新二维码
+     * @param goodsID
+     * @param imgFile
+     * @return
+     */
+    @CacheEvict(value = "getGoods",allEntries = true)
+    @PostMapping("/goodsUpdatePic")
+    public RestfulResult goodsUpdatePic(String goodsID, @RequestParam("imgFile") MultipartFile imgFile){
+        if (imgFile.isEmpty()) {
+            throw new CommonException(ErrorCode.NULL_ERROR,"上传图片文件为空！");
+        }
+        if (ZmjUtil.isNullOrEmpty(goodsID)) {
+            throw new CommonException(ErrorCode.NULL_ERROR,"goodsID不能为空！");
+        }
+        EntityWrapper entityWrapper =  new EntityWrapper();
+        entityWrapper.setEntity(new Bs_goods());
+        entityWrapper.where("GoodsID = {0}",goodsID);
+        Bs_goods bs_goods = bs_goodsService.selectOne(entityWrapper);
+        bs_goodsService.goodsUpdatePic(bs_goods,imgFile);
+        return RestfulResultUtils.success("上传二维码成功！");
+    }
+
+    @CacheEvict(value = "getGoods",allEntries = true)
+    @GetMapping("/clearGoods")
+    public RestfulResult clearGoods(){
+        return RestfulResultUtils.success();
+    }
 }

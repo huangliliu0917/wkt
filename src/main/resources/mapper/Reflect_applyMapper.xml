@@ -5,7 +5,11 @@
     <!-- 通用查询映射结果 -->
     <resultMap id="BaseResultMap" type="com.zmj.wkt.entity.Reflect_apply">
         <id column="Action_no" property="Action_no" />
+        <result column="ClientID" property="ClientID" />
+        <result column="Username" property="Username" />
         <result column="Amt" property="Amt" />
+        <result column="BeforeBalance" property="BeforeBalance" />
+        <result column="AfterBalance" property="AfterBalance" />
         <result column="Ali_account" property="Ali_account" />
         <result column="Ali_name" property="Ali_name" />
         <result column="State" property="State" />
@@ -16,7 +20,7 @@
 
     <!-- 通用查询结果列 -->
     <sql id="Base_Column_List">
-        Action_no, Amt, Ali_account, Ali_name, State, IsAble, Apply_date, Able_date
+        Action_no, ClientID, Username, Amt, BeforeBalance, AfterBalance, Ali_account, Ali_name, State, IsAble, Apply_date, Able_date
     </sql>
 
 </mapper>

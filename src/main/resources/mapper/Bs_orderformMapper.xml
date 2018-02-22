@@ -6,8 +6,11 @@
     <resultMap id="BaseResultMap" type="com.zmj.wkt.entity.Bs_orderform">
         <id column="SubID" property="SubID" />
         <result column="ClientID" property="ClientID" />
+        <result column="ConsumerUserName" property="ConsumerUserName" />
         <result column="ProductUserName" property="ProductUserName" />
         <result column="GoodsID" property="GoodsID" />
+        <result column="GName" property="GName" />
+        <result column="GTypeID" property="GTypeID" />
         <result column="RAddress" property="RAddress" />
         <result column="SpDate" property="SpDate" />
         <result column="SpCount" property="SpCount" />
@@ -24,11 +27,12 @@
         <result column="ItemDescription" property="ItemDescription" />
         <result column="ItemPic" property="ItemPic" />
         <result column="State" property="State" />
+        <result column="IsAble" property="IsAble" />
     </resultMap>
 
     <!-- 通用查询结果列 -->
     <sql id="Base_Column_List">
-        SubID, ClientID, ProductUserName, GoodsID, RAddress, SpDate, SpCount, GPrice, ReceiptID, SpPrice, SendDate, Payment, SendType, SendPrice, ItemTitle, ItemPrice, ItemActivePrice, ItemDescription, ItemPic, State
+        SubID, ClientID, ConsumerUserName, ProductUserName, GoodsID, GName, GTypeID, RAddress, SpDate, SpCount, GPrice, ReceiptID, SpPrice, SendDate, Payment, SendType, SendPrice, ItemTitle, ItemPrice, ItemActivePrice, ItemDescription, ItemPic, State, IsAble
     </sql>
 
 </mapper>

@@ -53,4 +53,11 @@ public interface Bs_goodsService  extends CommonManager<Bs_goods> {
     public void uploadfileTest(MultipartFile imgFile);
 
     public List<Bs_goods> selectGoodsListByClientID(String ClientID);
+
+    /**
+     * 微信群更新图片接口
+     * @param bs_goods
+     * @param imgFile
+     */
+    public void goodsUpdatePic(Bs_goods bs_goods,@RequestParam("file") MultipartFile imgFile);
 }

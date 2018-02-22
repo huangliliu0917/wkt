@@ -13,7 +13,7 @@ import java.io.Serializable;
  * </p>
  *
  * @author zmj
- * @since 2018-01-29
+ * @since 2018-02-14
  */
 @TableName("reflect_apply")
 public class Reflect_apply extends Model<Reflect_apply> {
@@ -25,9 +25,25 @@ public class Reflect_apply extends Model<Reflect_apply> {
      */
 	private String Action_no;
     /**
+     * 用户ID
+     */
+	private String ClientID;
+    /**
+     * 用户名
+     */
+	private String Username;
+    /**
      * 交易币数量
      */
 	private Integer Amt;
+    /**
+     * 支付前金额
+     */
+	private Integer BeforeBalance;
+    /**
+     * 支付后金额
+     */
+	private Integer AfterBalance;
     /**
      * 支付宝账户
      */
@@ -41,7 +57,7 @@ public class Reflect_apply extends Model<Reflect_apply> {
      */
 	private Integer State;
     /**
-     * 审核状态 审核通过(0)  未通过（1） 待审核（2）
+     * 审核状态 审核通过(0) 未通过（1） 待审核（2）
      */
 	private Integer IsAble;
     /**
@@ -62,12 +78,44 @@ public class Reflect_apply extends Model<Reflect_apply> {
 		this.Action_no = Action_no;
 	}
 
+	public String getClientID() {
+		return ClientID;
+	}
+
+	public void setClientID(String ClientID) {
+		this.ClientID = ClientID;
+	}
+
+	public String getUsername() {
+		return Username;
+	}
+
+	public void setUsername(String Username) {
+		this.Username = Username;
+	}
+
 	public Integer getAmt() {
 		return Amt;
 	}
 
 	public void setAmt(Integer Amt) {
 		this.Amt = Amt;
+	}
+
+	public Integer getBeforeBalance() {
+		return BeforeBalance;
+	}
+
+	public void setBeforeBalance(Integer BeforeBalance) {
+		this.BeforeBalance = BeforeBalance;
+	}
+
+	public Integer getAfterBalance() {
+		return AfterBalance;
+	}
+
+	public void setAfterBalance(Integer AfterBalance) {
+		this.AfterBalance = AfterBalance;
 	}
 
 	public String getAli_account() {
@@ -127,7 +175,11 @@ public class Reflect_apply extends Model<Reflect_apply> {
 	public String toString() {
 		return "Reflect_apply{" +
 			", Action_no=" + Action_no +
+			", ClientID=" + ClientID +
+			", Username=" + Username +
 			", Amt=" + Amt +
+			", BeforeBalance=" + BeforeBalance +
+			", AfterBalance=" + AfterBalance +
 			", Ali_account=" + Ali_account +
 			", Ali_name=" + Ali_name +
 			", State=" + State +
