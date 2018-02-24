@@ -12,7 +12,7 @@ import java.io.Serializable;
  * </p>
  *
  * @author zmj
- * @since 2018-01-29
+ * @since 2018-02-24
  */
 @TableName("acc_person")
 public class Acc_person extends Model<Acc_person> {

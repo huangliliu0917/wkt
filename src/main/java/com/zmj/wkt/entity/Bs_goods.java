@@ -13,7 +13,7 @@ import java.io.Serializable;
  * </p>
  *
  * @author zmj
- * @since 2018-02-19
+ * @since 2018-02-23
  */
 @TableName("bs_goods")
 public class Bs_goods extends Model<Bs_goods> {
@@ -68,6 +68,10 @@ public class Bs_goods extends Model<Bs_goods> {
      * 商品类别
      */
 	private Long GTypeID3;
+    /**
+     * 商品类别名字（展示）
+     */
+	private String GTypeNames;
     /**
      * 邮箱
      */
@@ -214,6 +218,14 @@ public class Bs_goods extends Model<Bs_goods> {
 		this.GTypeID3 = GTypeID3;
 	}
 
+	public String getGTypeNames() {
+		return GTypeNames;
+	}
+
+	public void setGTypeNames(String GTypeNames) {
+		this.GTypeNames = GTypeNames;
+	}
+
 	public String getGIntro() {
 		return GIntro;
 	}
@@ -330,6 +342,7 @@ public class Bs_goods extends Model<Bs_goods> {
 			", GTypeID1=" + GTypeID1 +
 			", GTypeID2=" + GTypeID2 +
 			", GTypeID3=" + GTypeID3 +
+			", GTypeNames=" + GTypeNames +
 			", GIntro=" + GIntro +
 			", GImage=" + GImage +
 			", GCount=" + GCount +

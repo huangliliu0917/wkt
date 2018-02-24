@@ -17,6 +17,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CacheConfig;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
@@ -47,6 +48,7 @@ import java.util.List;
  * ---------------------------------
  */
 @Service
+@Transactional(rollbackFor = Exception.class)
 @CacheConfig(cacheNames = "Bs_goods")
 public class Bs_goodsServiceImpl extends CommonManagerImpl<Bs_goodsMapper,Bs_goods> implements Bs_goodsService {
 

@@ -13,7 +13,7 @@ import java.io.Serializable;
  * </p>
  *
  * @author zmj
- * @since 2018-01-29
+ * @since 2018-02-24
  */
 @TableName("acc_daybook")
 public class Acc_daybook extends Model<Acc_daybook> {
@@ -25,7 +25,11 @@ public class Acc_daybook extends Model<Acc_daybook> {
      */
 	private String Action_no;
     /**
-     * 交易代码(1001 充值 1002提现)
+     * 订单号
+     */
+	private String SubID;
+    /**
+     * 交易代码(10001 充值 10002提现 10003代扣 10004退款)
      */
 	private String tr_code;
     /**
@@ -36,6 +40,22 @@ public class Acc_daybook extends Model<Acc_daybook> {
      * 交易币数量
      */
 	private Integer Amt;
+    /**
+     * 支付前金额
+     */
+	private Integer BeforeBalance;
+    /**
+     * 支付后金额
+     */
+	private Integer AfterBalance;
+    /**
+     * 贷方ID
+     */
+	private String CreditClientID;
+    /**
+     * 借方ID
+     */
+	private String Debit;
     /**
      * 支付宝订单号
      */
@@ -74,6 +94,14 @@ public class Acc_daybook extends Model<Acc_daybook> {
 		this.Action_no = Action_no;
 	}
 
+	public String getSubID() {
+		return SubID;
+	}
+
+	public void setSubID(String SubID) {
+		this.SubID = SubID;
+	}
+
 	public String getTr_code() {
 		return tr_code;
 	}
@@ -96,6 +124,38 @@ public class Acc_daybook extends Model<Acc_daybook> {
 
 	public void setAmt(Integer Amt) {
 		this.Amt = Amt;
+	}
+
+	public Integer getBeforeBalance() {
+		return BeforeBalance;
+	}
+
+	public void setBeforeBalance(Integer BeforeBalance) {
+		this.BeforeBalance = BeforeBalance;
+	}
+
+	public Integer getAfterBalance() {
+		return AfterBalance;
+	}
+
+	public void setAfterBalance(Integer AfterBalance) {
+		this.AfterBalance = AfterBalance;
+	}
+
+	public String getCreditClientID() {
+		return CreditClientID;
+	}
+
+	public void setCreditClientID(String CreditClientID) {
+		this.CreditClientID = CreditClientID;
+	}
+
+	public String getDebit() {
+		return Debit;
+	}
+
+	public void setDebit(String Debit) {
+		this.Debit = Debit;
 	}
 
 	public String getAli_order_number() {
@@ -163,9 +223,14 @@ public class Acc_daybook extends Model<Acc_daybook> {
 	public String toString() {
 		return "Acc_daybook{" +
 			", Action_no=" + Action_no +
+			", SubID=" + SubID +
 			", tr_code=" + tr_code +
 			", Note=" + Note +
 			", Amt=" + Amt +
+			", BeforeBalance=" + BeforeBalance +
+			", AfterBalance=" + AfterBalance +
+			", CreditClientID=" + CreditClientID +
+			", Debit=" + Debit +
 			", Ali_order_number=" + Ali_order_number +
 			", Ali_account=" + Ali_account +
 			", Ali_name=" + Ali_name +

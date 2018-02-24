@@ -5,9 +5,14 @@
     <!-- 通用查询映射结果 -->
     <resultMap id="BaseResultMap" type="com.zmj.wkt.entity.Acc_daybook">
         <id column="Action_no" property="Action_no" />
+        <result column="SubID" property="SubID" />
         <result column="tr_code" property="tr_code" />
         <result column="Note" property="Note" />
         <result column="Amt" property="Amt" />
+        <result column="BeforeBalance" property="BeforeBalance" />
+        <result column="AfterBalance" property="AfterBalance" />
+        <result column="CreditClientID" property="CreditClientID" />
+        <result column="Debit" property="Debit" />
         <result column="Ali_order_number" property="Ali_order_number" />
         <result column="Ali_account" property="Ali_account" />
         <result column="Ali_name" property="Ali_name" />
@@ -19,7 +24,7 @@
 
     <!-- 通用查询结果列 -->
     <sql id="Base_Column_List">
-        Action_no, tr_code, Note, Amt, Ali_order_number, Ali_account, Ali_name, Apply_date, Able_date, Acc_date, State
+        Action_no, SubID, tr_code, Note, Amt, BeforeBalance, AfterBalance, CreditClientID, Debit, Ali_order_number, Ali_account, Ali_name, Apply_date, Able_date, Acc_date, State
     </sql>
 
 </mapper>

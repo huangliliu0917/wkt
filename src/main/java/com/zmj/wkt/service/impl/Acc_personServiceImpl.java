@@ -10,6 +10,7 @@ import com.zmj.wkt.service.Acc_personService;
 import com.zmj.wkt.common.CommonManagerImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  * <p>
@@ -20,6 +21,7 @@ import org.springframework.stereotype.Service;
  * @since 2018-01-29
  */
 @Service
+@Transactional(rollbackFor = Exception.class)
 public class Acc_personServiceImpl extends CommonManagerImpl<Acc_personMapper, Acc_person> implements Acc_personService {
 
     @Autowired

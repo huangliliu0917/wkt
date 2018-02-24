@@ -16,6 +16,7 @@
         <result column="GTypeID1" property="GTypeID1" />
         <result column="GTypeID2" property="GTypeID2" />
         <result column="GTypeID3" property="GTypeID3" />
+        <result column="GTypeNames" property="GTypeNames" />
         <result column="GIntro" property="GIntro" />
         <result column="GImage" property="GImage" />
         <result column="GCount" property="GCount" />
@@ -32,7 +33,7 @@
 
     <!-- 通用查询结果列 -->
     <sql id="Base_Column_List">
-        GoodsID, GClientID, GWXPersonNumber, GWXUserNumber, GUserName, GName, GPrice, GActivePrice, GInfo, GTypeID1, GTypeID2, GTypeID3, GIntro, GImage, GCount, GSail, GWeight, GDateTime, GSize, GAddress, State, IsAble,IsShow, GAddedTime
+        GoodsID, GClientID, GWXPersonNumber, GWXUserNumber, GUserName, GName, GPrice, GActivePrice, GInfo, GTypeID1, GTypeID2, GTypeID3, GTypeNames, GIntro, GImage, GCount, GSail, GWeight, GDateTime, GSize, GAddress, State, IsAble,IsShow, GAddedTime
     </sql>
 
     <select id="getBs_person_goodsByClientID" resultType="com.zmj.wkt.entity.Bs_goods" parameterType="String">

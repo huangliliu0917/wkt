@@ -13,7 +13,7 @@ import java.io.Serializable;
  * </p>
  *
  * @author zmj
- * @since 2018-02-19
+ * @since 2018-02-24
  */
 @TableName("bs_orderform")
 public class Bs_orderform extends Model<Bs_orderform> {
@@ -63,7 +63,7 @@ public class Bs_orderform extends Model<Bs_orderform> {
     /**
      * 单价
      */
-	private Double GPrice;
+	private Integer GPrice;
     /**
      * 发票号
      */
@@ -71,7 +71,7 @@ public class Bs_orderform extends Model<Bs_orderform> {
     /**
      * 订单金额
      */
-	private Double SpPrice;
+	private Integer SpPrice;
     /**
      * 发货时间
      */
@@ -200,11 +200,11 @@ public class Bs_orderform extends Model<Bs_orderform> {
 		this.SpCount = SpCount;
 	}
 
-	public Double getGPrice() {
+	public Integer getGPrice() {
 		return GPrice;
 	}
 
-	public void setGPrice(Double GPrice) {
+	public void setGPrice(Integer GPrice) {
 		this.GPrice = GPrice;
 	}
 
@@ -216,11 +216,11 @@ public class Bs_orderform extends Model<Bs_orderform> {
 		this.ReceiptID = ReceiptID;
 	}
 
-	public Double getSpPrice() {
+	public Integer getSpPrice() {
 		return SpPrice;
 	}
 
-	public void setSpPrice(Double SpPrice) {
+	public void setSpPrice(Integer SpPrice) {
 		this.SpPrice = SpPrice;
 	}
 

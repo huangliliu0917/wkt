@@ -140,7 +140,17 @@ public class Bs_personServiceImpl extends CommonManagerImpl<Bs_personMapper, Bs_
         return true;
     }
 
-
+    @Override
+    public Bs_person findByClientID(String ClientID) {
+        EntityWrapper entityWrapper = new EntityWrapper();
+        entityWrapper.setEntity(new Bs_person());
+        entityWrapper.where("ClientID = {0}",ClientID);
+        List<Bs_person> selectList = bs_personMapper.selectList(entityWrapper);
+        if(ZmjUtil.isNullOrEmpty(selectList)){
+            throw new CommonException(ErrorCode.NOT_FIND_USER_ERROR);
+        }
+        return selectList.get(0);
+    }
 
 
 }
