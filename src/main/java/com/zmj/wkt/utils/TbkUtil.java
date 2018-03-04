@@ -153,7 +153,7 @@ public class TbkUtil {
 
 
         //测试生成淘口令
-        tpwdCreate("131267237","长度大于5个字符","https://item.taobao.com/item.htm?id=560973826624","https://img.alicdn.com/tfscom/i1/71959883/TB1w0gQXGmWBuNjy1XaXXXCbXXa_!!2-item_pic.png","{\"xx\":\"xx\"}");
+        tpwdCreate("131267237","长度大于5个字符","https://item.taobao.com/item.htm?id=564527851725","https://uland.taobao.com/","{\"xx\":\"xx\"}");
 
         TaobaoClient client = new DefaultTaobaoClient(URL, APPKEY, SECRET);
         TbkItemGetRequest req = new TbkItemGetRequest();
@@ -168,9 +168,10 @@ public class TbkUtil {
         req.setEndPrice(1000L);
         req.setStartTkRate(1000L);
         req.setEndTkRate(10L);
-        req.setPlatform(1L);
         req.setPageNo(1L);
         req.setPageSize(20L);
+        //手机端
+        req.setPlatform(2L);
         TbkItemGetResponse rsp = client.execute(req);
         System.out.println(rsp.getBody());
 

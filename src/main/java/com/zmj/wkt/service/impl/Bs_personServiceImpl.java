@@ -12,6 +12,7 @@ import com.zmj.wkt.utils.sysenum.RoleCode;
 import com.zmj.wkt.utils.sysenum.SysCode;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CacheConfig;
+import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -91,6 +92,7 @@ public class Bs_personServiceImpl extends CommonManagerImpl<Bs_personMapper, Bs_
      * @return
      */
     @Override
+    @CacheEvict(key = "#root.caches[0].name + '.name:'+ #bs_person.userName")
     public Boolean updatePersonInfo(Bs_person bs_person) {
         try {
             EntityWrapper entityWrapper = new EntityWrapper();
@@ -151,6 +153,5 @@ public class Bs_personServiceImpl extends CommonManagerImpl<Bs_personMapper, Bs_
         }
         return selectList.get(0);
     }
-
 
 }

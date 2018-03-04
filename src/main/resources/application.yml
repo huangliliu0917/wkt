@@ -21,3 +21,13 @@ feign:
     hystrix:
         enabled: true
 
+#监控
+endpoints:
+  shutdown:
+    enabled: true
+    path: /ebe0cebaed984569a423c505984fd0e4
+    sensitive: false
+management:
+  security:
+    enabled: false
+  context-path: /monitor

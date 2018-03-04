@@ -100,9 +100,6 @@ public class Bs_orderformServiceImpl extends CommonManagerImpl<Bs_orderformMappe
         } catch (IOException e) {
             e.printStackTrace();
             throw new CommonException(ErrorCode.FILE_UPLOAD_ERROR,"文件上传失败！IOException:"+e.getMessage());
-        } catch(Exception exc){
-            exc.printStackTrace();
-            throw new CommonException(ErrorCode.UNKNOWNS_ERROR,"Exception:"+exc.getMessage());
         }
     }
 }

@@ -9,9 +9,12 @@ import com.zmj.wkt.service.Bs_personService;
 import com.zmj.wkt.service.Bs_role_personService;
 import com.zmj.wkt.utils.MD5Util;
 import com.zmj.wkt.utils.RestfulResultUtils;
+import com.zmj.wkt.utils.ZmjUtil;
 import com.zmj.wkt.utils.sysenum.ErrorCode;
+import com.zmj.wkt.utils.sysenum.SysConstant;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.Cacheable;
+import org.springframework.security.access.method.P;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
@@ -101,5 +104,17 @@ public class Bs_personController extends CommonController {
         return RestfulResultUtils.success("修改成功!");
     }
 
-
+    @PostMapping("/setTkbPID")
+    public RestfulResult setTkbPID(String PID) throws Exception {
+        if(ZmjUtil.isNullOrEmpty(PID)){
+            throw new CommonException(ErrorCode.NULL_ERROR,"PID不能为空！");
+        }
+        if(!PID.startsWith(SysConstant.PID_START)){
+            throw new CommonException(ErrorCode.VERIFY_ERROR,"请输入正确格式的PID！");
+        }
+        Bs_person bs_person =  getThisUser();
+        bs_person.setPID(PID);
+        bs_personService.updatePersonInfo(bs_person);
+        return RestfulResultUtils.success("新增/修改PID成功!");
+    }
 }

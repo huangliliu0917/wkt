@@ -38,4 +38,5 @@ public interface Bs_personService extends IService<Bs_person> {
     public boolean addAccPerson(String ClientID);
 
     Bs_person findByClientID(String ClientID);
+
 }

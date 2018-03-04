@@ -12,4 +12,7 @@ public class SysConstant {
 
     //微信小程序秘钥
     public static final String WX_SECRET ="10bbfde708088066bfe86e948303112a";
+
+    //PID前缀格式
+    public static final String PID_START = "mm";
 }

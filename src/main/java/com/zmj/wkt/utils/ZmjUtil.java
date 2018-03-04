@@ -214,6 +214,10 @@ public class ZmjUtil {
         return result;
     }
 
+    /**
+     * 生成流水号
+     * @return
+     */
     public static String getOrderIdByUUId() {
         //最大支持1-9个集群机器部署
         int machineId = 1;

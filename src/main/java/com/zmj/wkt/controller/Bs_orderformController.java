@@ -62,8 +62,7 @@ public class Bs_orderformController  extends CommonController{
 
 
     @PostMapping("/applyOrderForm")
-    public RestfulResult applyOrderForm(Bs_orderform bs_orderform, @RequestParam("imgFile") MultipartFile imgFile){
-        try {
+    public RestfulResult applyOrderForm(Bs_orderform bs_orderform, @RequestParam("imgFile") MultipartFile imgFile) throws Exception {
             Bs_person bs_person = this.getThisUser();
             if (imgFile.isEmpty()) {
                 throw new CommonException(ErrorCode.NULL_ERROR,"上传图片文件为空！");
@@ -78,9 +77,6 @@ public class Bs_orderformController  extends CommonController{
             bs_orderform.setSpDate(DateUtil.getNowTimestamp());
             bs_orderformService.orderFormApply(bs_orderform,imgFile);
             return RestfulResultUtils.success("上传成功！等待审核...");
-        }catch (Exception e){
-            throw new CommonException(e.getMessage());
-        }
     }
 
     /**

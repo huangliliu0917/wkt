@@ -22,11 +22,12 @@
         <result column="WXOpenID" property="WXOpenID" />
         <result column="isTry" property="isTry" />
         <result column="activationTime" property="activationTime" />
+        <result column="PID" property="PID" />
     </resultMap>
 
     <!-- 通用查询结果列 -->
     <sql id="Base_Column_List">
-        ClientID, NickName, UserName, RealName, Sex, PersonPassword, Email, Phone, CertID, PswQuestion, PswResult, RegTime, MemberPoints, GradeID, Address, Photo ,WXOpenID,isTry, activationTime
+        ClientID, NickName, UserName, RealName, Sex, PersonPassword, Email, Phone, CertID, PswQuestion, PswResult, RegTime, MemberPoints, GradeID, Address, Photo ,WXOpenID,isTry, activationTime, PID
     </sql>
     <update id="uploadPhoto" parameterType="String">
         UPDATE bs_person
