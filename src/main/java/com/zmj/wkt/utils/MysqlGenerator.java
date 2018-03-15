@@ -45,7 +45,7 @@ import com.baomidou.mybatisplus.generator.config.rules.NamingStrategy;
  *
  *   @Description : MybatisPlus代码生成器
  *   ---------------------------------
- *   @Author : Liang.Guangqing
+ *   @Author : Zmj
  *   @Date : Create in 2017/9/19 14:48　
  */
 class MysqlGenerator {
@@ -62,7 +62,7 @@ class MysqlGenerator {
      *  table名字
      */
     private static String[] table={
-            "bs_person"
+            "bs_tbkCollections"
     };
     /**
      *  table前缀

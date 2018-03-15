@@ -11,6 +11,7 @@
         <result column="GUserName" property="GUserName" />
         <result column="GName" property="GName" />
         <result column="GPrice" property="GPrice" />
+        <result column="GTbkPrice" property="GTbkPrice" />
         <result column="GActivePrice" property="GActivePrice" />
         <result column="GInfo" property="GInfo" />
         <result column="GTypeID1" property="GTypeID1" />
@@ -33,7 +34,7 @@
 
     <!-- 通用查询结果列 -->
     <sql id="Base_Column_List">
-        GoodsID, GClientID, GWXPersonNumber, GWXUserNumber, GUserName, GName, GPrice, GActivePrice, GInfo, GTypeID1, GTypeID2, GTypeID3, GTypeNames, GIntro, GImage, GCount, GSail, GWeight, GDateTime, GSize, GAddress, State, IsAble,IsShow, GAddedTime
+        GoodsID, GClientID, GWXPersonNumber, GWXUserNumber, GUserName, GName, GPrice, GTbkPrice, GActivePrice, GInfo, GTypeID1, GTypeID2, GTypeID3, GTypeNames, GIntro, GImage, GCount, GSail, GWeight, GDateTime, GSize, GAddress, State, IsAble,IsShow, GAddedTime
     </sql>
 
     <select id="getBs_person_goodsByClientID" resultType="com.zmj.wkt.entity.Bs_goods" parameterType="String">

@@ -3,14 +3,8 @@ package com.zmj.wkt.utils;
 import com.taobao.api.ApiException;
 import com.taobao.api.DefaultTaobaoClient;
 import com.taobao.api.TaobaoClient;
-import com.taobao.api.request.TbkDgItemCouponGetRequest;
-import com.taobao.api.request.TbkItemGetRequest;
-import com.taobao.api.request.TbkTpwdCreateRequest;
-import com.taobao.api.request.WirelessShareTpwdCreateRequest;
-import com.taobao.api.response.TbkDgItemCouponGetResponse;
-import com.taobao.api.response.TbkItemGetResponse;
-import com.taobao.api.response.TbkTpwdCreateResponse;
-import com.taobao.api.response.WirelessShareTpwdCreateResponse;
+import com.taobao.api.request.*;
+import com.taobao.api.response.*;
 
 /**
  * code is far away from bug with the animal protecting
@@ -115,7 +109,8 @@ public class TbkUtil {
         req.setItemloc(Itemloc);
         req.setIsTmall(false);
         req.setIsOverseas(false);
-        req.setPlatform(1L);
+        //手机端
+        req.setPlatform(2L);
         req.setPageNo(pageNo);
         req.setPageSize(pageSize);
         req.setEndTkRate(10L);
@@ -124,24 +119,39 @@ public class TbkUtil {
         return rsp.getBody();
     }
 
-    public static void test() throws ApiException {
+    public static String tpwdCreate2(Long userId,String text,String url,String logo,String ext) throws ApiException {
         TaobaoClient client = new DefaultTaobaoClient(URL, APPKEY, SECRET);
         WirelessShareTpwdCreateRequest req = new WirelessShareTpwdCreateRequest();
         WirelessShareTpwdCreateRequest.GenPwdIsvParamDto obj1 = new WirelessShareTpwdCreateRequest.GenPwdIsvParamDto();
-        obj1.setExt("{\"xx\":\"xx\"}");
-        obj1.setLogo("http://item.taobao.com/item.htm?id=560973826624");
-        obj1.setUrl("https://img.alicdn.com/tfscom/i1/71959883/TB1w0gQXGmWBuNjy1XaXXXCbXXa_!!2-item_pic.png");
-        obj1.setText("超值活动，惊喜活动多多");
-        obj1.setUserId(131267237L);
+        obj1.setExt(ext);
+        obj1.setLogo(logo);
+        obj1.setUrl(url);
+        obj1.setText(text);
+        obj1.setUserId(userId);
         req.setTpwdParam(obj1);
         WirelessShareTpwdCreateResponse rsp = client.execute(req);
         System.out.println(rsp.getBody());
-
+        return rsp.getBody();
     }
 
+    /**
+     * 获取商品信息
+     * @param numIids
+     * @return
+     * @throws ApiException
+     */
+    public static String getGoodInfo(String numIids) throws ApiException {
+        TaobaoClient client = new DefaultTaobaoClient(URL, APPKEY, SECRET);
+        TbkItemInfoGetRequest req = new TbkItemInfoGetRequest();
+        req.setFields("num_iid,title,pict_url,small_images,reserve_price,zk_final_price,user_type,provcity,item_url");
+        req.setPlatform(2L);
+        req.setNumIids(numIids);
+        TbkItemInfoGetResponse rsp = client.execute(req);
+        System.out.println(rsp.getBody());
+        return rsp.getBody();
+    }
 
     public static void main(String[] args) throws ApiException {
-
 
         //测试商品列表获取
         Long adzoneId = Long.valueOf(PID.split("_")[3]);
@@ -150,7 +160,6 @@ public class TbkUtil {
         getGoodsList2("杭州","女装",1L,10L);
 
         //url 转换
-
 
         //测试生成淘口令
         tpwdCreate("131267237","长度大于5个字符","https://item.taobao.com/item.htm?id=564527851725","https://uland.taobao.com/","{\"xx\":\"xx\"}");
@@ -175,6 +184,8 @@ public class TbkUtil {
         TbkItemGetResponse rsp = client.execute(req);
         System.out.println(rsp.getBody());
 
-        test();
+        getGoodInfo("548257088995,545753122034");
+
+        tpwdCreate2(131267237L,"长度大于5个字符","https://item.taobao.com/item.htm?id=564527851725","https://uland.taobao.com/","{\"xx\":\"xx\"}");
     }
 }

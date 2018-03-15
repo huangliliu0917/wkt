@@ -13,7 +13,7 @@ import java.io.Serializable;
  * </p>
  *
  * @author zmj
- * @since 2018-02-23
+ * @since 2018-03-15
  */
 @TableName("bs_goods")
 public class Bs_goods extends Model<Bs_goods> {
@@ -45,9 +45,13 @@ public class Bs_goods extends Model<Bs_goods> {
      */
 	private String GName;
     /**
-     * 群单价
+     * 群推广单价
      */
 	private Double GPrice;
+    /**
+     * 淘宝客推广单价
+     */
+	private Integer GTbkPrice;
     /**
      * 群活动价格
      */
@@ -176,6 +180,14 @@ public class Bs_goods extends Model<Bs_goods> {
 
 	public void setGPrice(Double GPrice) {
 		this.GPrice = GPrice;
+	}
+
+	public Integer getGTbkPrice() {
+		return GTbkPrice;
+	}
+
+	public void setGTbkPrice(Integer GTbkPrice) {
+		this.GTbkPrice = GTbkPrice;
 	}
 
 	public Double getGActivePrice() {
@@ -337,6 +349,7 @@ public class Bs_goods extends Model<Bs_goods> {
 			", GUserName=" + GUserName +
 			", GName=" + GName +
 			", GPrice=" + GPrice +
+			", GTbkPrice=" + GTbkPrice +
 			", GActivePrice=" + GActivePrice +
 			", GInfo=" + GInfo +
 			", GTypeID1=" + GTypeID1 +
