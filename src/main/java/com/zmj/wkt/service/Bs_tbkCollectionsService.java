@@ -13,4 +13,5 @@ import com.zmj.wkt.common.CommonManager;
  */
 public interface Bs_tbkCollectionsService extends CommonManager<Bs_tbkCollections> {
     public boolean addTbkCollection(Bs_tbkCollections bs_tbkCollections );
+    public boolean delTbkCollenctions(String [] num_iids,String ClientID);
 }

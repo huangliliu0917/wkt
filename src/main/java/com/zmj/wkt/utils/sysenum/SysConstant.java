@@ -15,4 +15,7 @@ public class SysConstant {
 
     //PID前缀格式
     public static final String PID_START = "mm";
+
+    //PID长度
+    public static final int PID_SIZE = 4;
 }

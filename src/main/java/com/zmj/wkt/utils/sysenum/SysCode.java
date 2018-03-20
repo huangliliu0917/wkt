@@ -20,7 +20,7 @@ public enum SysCode implements CodeInterface {
     //State
     STATE_T(0,"有效"),
     STATE_F(1,"无效"),
-
+    STATE_TO_BE_SENT(2,"待发送"),
     //Able
     IS_ABLE_YES(0,"已审核"),
     IS_ABLE_NO(1,"未通过"),

@@ -77,9 +77,9 @@ public class ControllerAspect extends CommonController{
         if(!ZmjUtil.isNullOrEmpty(object)&&object instanceof RestfulResult){
             logger.info("response={}", object.toString());
         }else if(!ZmjUtil.isNullOrEmpty(object)&&object instanceof String){
-            logger.info("response={}",object.toString());
+            logger.info("response={}", object.toString());
         }else {
-            logger.info("response={}",object);
+            logger.info("response={}", object);
         }
 
         sys_log.setRunTime(endTime-startTime);

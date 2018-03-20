@@ -1,5 +1,9 @@
 package com.zmj.wkt;
 
+import org.apache.commons.lang.ArrayUtils;
+
+import java.util.Arrays;
+
 /**
  * code is far away from bug with the animal protecting
  * ┏┓　　　┏┓
@@ -26,9 +30,7 @@ package com.zmj.wkt;
  */
 public class Test {
     public static void main(String[] args) {
-        double d = 1.05d;
-        double a = 1.06d;
-        double c = (a*100+d*100)/100;
-        System.out.println(c);
+        String [] ids = {"a","b","c"};
+        System.out.println(Arrays.toString(ids));
     }
 }

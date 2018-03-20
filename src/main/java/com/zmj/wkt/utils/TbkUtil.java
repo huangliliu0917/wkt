@@ -103,7 +103,7 @@ public class TbkUtil {
     public static String getGoodsList2(String Itemloc , String Q ,Long pageNo ,Long pageSize) throws ApiException {
         TaobaoClient client = new DefaultTaobaoClient(URL, APPKEY, SECRET);
         TbkItemGetRequest req = new TbkItemGetRequest();
-        req.setFields("num_iid,title,pict_url,small_images,reserve_price,zk_final_price,user_type,provcity,item_url,seller_id,volume,nick");
+        req.setFields("num_iid,title,pict_url,small_images,reserve_price,zk_final_price,user_type,provcity,item_url,seller_id,volume,nick,commission_rate");
         req.setQ(Q);
         //req.setCat("16,18");
         req.setItemloc(Itemloc);
@@ -113,7 +113,7 @@ public class TbkUtil {
         req.setPlatform(2L);
         req.setPageNo(pageNo);
         req.setPageSize(pageSize);
-        req.setEndTkRate(10L);
+        req.setEndTkRate(20L);
         TbkItemGetResponse rsp = client.execute(req);
         System.out.println(rsp.getBody());
         return rsp.getBody();
@@ -143,7 +143,7 @@ public class TbkUtil {
     public static String getGoodInfo(String numIids) throws ApiException {
         TaobaoClient client = new DefaultTaobaoClient(URL, APPKEY, SECRET);
         TbkItemInfoGetRequest req = new TbkItemInfoGetRequest();
-        req.setFields("num_iid,title,pict_url,small_images,reserve_price,zk_final_price,user_type,provcity,item_url");
+        req.setFields("num_iid,title,pict_url,small_images,reserve_price,zk_final_price,user_type,provcity,item_url,seller_id,volume,nick,tk_rate,commission_rate");
         req.setPlatform(2L);
         req.setNumIids(numIids);
         TbkItemInfoGetResponse rsp = client.execute(req);
@@ -166,7 +166,7 @@ public class TbkUtil {
 
         TaobaoClient client = new DefaultTaobaoClient(URL, APPKEY, SECRET);
         TbkItemGetRequest req = new TbkItemGetRequest();
-        req.setFields("num_iid,title,pict_url,small_images,reserve_price,zk_final_price,user_type,provcity,item_url,seller_id,volume,nick,tk_rate");
+        req.setFields("num_iid,title,pict_url,small_images,reserve_price,zk_final_price,user_type,provcity,item_url,seller_id,volume,nick,tk_rate,commission_rate");
         req.setQ("女装");
         req.setCat("16,18");
         req.setItemloc("杭州");
@@ -184,7 +184,7 @@ public class TbkUtil {
         TbkItemGetResponse rsp = client.execute(req);
         System.out.println(rsp.getBody());
 
-        getGoodInfo("548257088995,545753122034");
+        getGoodInfo("1");
 
         tpwdCreate2(131267237L,"长度大于5个字符","https://item.taobao.com/item.htm?id=564527851725","https://uland.taobao.com/","{\"xx\":\"xx\"}");
     }

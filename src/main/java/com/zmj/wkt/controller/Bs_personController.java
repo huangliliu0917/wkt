@@ -104,12 +104,22 @@ public class Bs_personController extends CommonController {
         return RestfulResultUtils.success("修改成功!");
     }
 
+    /**
+     * 设置PID
+     * @param PID
+     * @return
+     * @throws Exception
+     */
     @PostMapping("/setTkbPID")
     public RestfulResult setTkbPID(String PID) throws Exception {
         if(ZmjUtil.isNullOrEmpty(PID)){
             throw new CommonException(ErrorCode.NULL_ERROR,"PID不能为空！");
         }
         if(!PID.startsWith(SysConstant.PID_START)){
+            throw new CommonException(ErrorCode.VERIFY_ERROR,"请输入正确格式的PID！");
+        }
+        String [] pis = PID.split("_");
+        if(ZmjUtil.isNullOrEmpty(pis)||pis.length!=SysConstant.PID_SIZE){
             throw new CommonException(ErrorCode.VERIFY_ERROR,"请输入正确格式的PID！");
         }
         Bs_person bs_person =  getThisUser();

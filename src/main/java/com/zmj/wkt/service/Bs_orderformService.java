@@ -14,4 +14,5 @@ import org.springframework.web.multipart.MultipartFile;
  */
 public interface Bs_orderformService extends CommonManager<Bs_orderform> {
     public void orderFormApply(Bs_orderform bs_orderform, MultipartFile imgFile);
+    public void orderFormApply(Bs_orderform bs_orderform);
 }
