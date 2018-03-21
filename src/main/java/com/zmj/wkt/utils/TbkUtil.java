@@ -3,8 +3,11 @@ package com.zmj.wkt.utils;
 import com.taobao.api.ApiException;
 import com.taobao.api.DefaultTaobaoClient;
 import com.taobao.api.TaobaoClient;
+import com.taobao.api.domain.NTbkItem;
 import com.taobao.api.request.*;
 import com.taobao.api.response.*;
+
+import java.util.List;
 
 /**
  * code is far away from bug with the animal protecting
@@ -38,21 +41,20 @@ public class TbkUtil {
     //private static final String URL = "https://gw.api.tbsandbox.com/router/rest";
     private static final String APPKEY = "24576611";
     private static final String SECRET = "20171995c8a67b8fecc47058c616704b";
-    private static final String PID = "mm_46667186_33352377_118692248";
+    private static final String PID = "mm_46667186_35066962_277674842";
 
     /**
      * 生成淘口令
-     * @param userId
      * @param text
      * @param url
      * @param logo
      * @param ext
      * @return
      */
-    public static String tpwdCreate(String userId,String text,String url,String logo,String ext){
+    public static String tpwdCreate(String PID,String text,String url,String logo,String ext){
         TaobaoClient client = new DefaultTaobaoClient(URL, APPKEY, SECRET);
         TbkTpwdCreateRequest req = new TbkTpwdCreateRequest();
-        req.setUserId(userId);
+        req.setUserId(String.valueOf(getAdzoneID(PID)));
         req.setText(text);
         req.setUrl(url);
         req.setLogo(logo);
@@ -69,20 +71,20 @@ public class TbkUtil {
 
     /**
      * 获取商品列表
-     * @param adzoneId
-     * @param platform
-     * @param pageSize
+     * @param PID
+     * @param Q
      * @param pageNo
+     * @param pageSize
      * @return
      */
-    public static String getGoodsList(Long adzoneId,Long platform,Long pageNo ,Long pageSize){
+    public static List<TbkDgItemCouponGetResponse.TbkCoupon> getGoodsList(String PID, String Q, Long pageNo , Long pageSize){
         TaobaoClient client = new DefaultTaobaoClient(URL, APPKEY, SECRET);
         TbkDgItemCouponGetRequest req = new TbkDgItemCouponGetRequest();
-        req.setAdzoneId(adzoneId);
-        req.setPlatform(platform);
-        //req.setCat("16,18");
+        req.setAdzoneId(getAdzoneID(PID));
+        //手机端
+        req.setPlatform(2L);
         req.setPageSize(pageSize);
-        //req.setQ("女装");
+        req.setQ(Q);
         req.setPageNo(pageNo);
         TbkDgItemCouponGetResponse rsp = null;
         try {
@@ -91,7 +93,7 @@ public class TbkUtil {
             e.printStackTrace();
         }
         System.out.println(rsp.getBody());
-        return rsp.getBody();
+        return rsp.getResults();
     }
 
     /**
@@ -140,29 +142,35 @@ public class TbkUtil {
      * @return
      * @throws ApiException
      */
-    public static String getGoodInfo(String numIids) throws ApiException {
+    public static List<NTbkItem> getGoodInfo(String numIids) throws ApiException {
         TaobaoClient client = new DefaultTaobaoClient(URL, APPKEY, SECRET);
         TbkItemInfoGetRequest req = new TbkItemInfoGetRequest();
-        req.setFields("num_iid,title,pict_url,small_images,reserve_price,zk_final_price,user_type,provcity,item_url,seller_id,volume,nick,tk_rate,commission_rate");
+        req.setFields("num_iid,title,pict_url,small_images,reserve_price,zk_final_price,user_type,provcity,item_url,seller_id,volume,nick,commission_rate");
         req.setPlatform(2L);
         req.setNumIids(numIids);
         TbkItemInfoGetResponse rsp = client.execute(req);
         System.out.println(rsp.getBody());
-        return rsp.getBody();
+        return rsp.getResults();
+    }
+
+
+    public static Long getAdzoneID(String PID){
+        Long adzoneId = Long.valueOf(PID.split("_")[3]);
+        return adzoneId;
     }
 
     public static void main(String[] args) throws ApiException {
 
         //测试商品列表获取
-        Long adzoneId = Long.valueOf(PID.split("_")[3]);
+        Long adzoneId = getAdzoneID(PID);
         System.out.println(adzoneId);
-        //getGoodsList(adzoneId,1L,1L,10L);
-        getGoodsList2("杭州","女装",1L,10L);
+        getGoodsList(PID,"女装",1L,10L);
+        //getGoodsList2("杭州","女装",1L,10L);
 
         //url 转换
 
         //测试生成淘口令
-        tpwdCreate("131267237","长度大于5个字符","https://item.taobao.com/item.htm?id=564527851725","https://uland.taobao.com/","{\"xx\":\"xx\"}");
+        tpwdCreate(PID,"长度大于5个字符","https://detail.tmall.com/item.htm?id=537168972219","http://img.alicdn.com/tfscom/i1/2260407110/TB12KHwckfb_uJjSsD4XXaqiFXa_!!0-item_pic.jpg","{\"xx\":\"xx\"}");
 
         TaobaoClient client = new DefaultTaobaoClient(URL, APPKEY, SECRET);
         TbkItemGetRequest req = new TbkItemGetRequest();
@@ -184,7 +192,7 @@ public class TbkUtil {
         TbkItemGetResponse rsp = client.execute(req);
         System.out.println(rsp.getBody());
 
-        getGoodInfo("1");
+        getGoodInfo("536520714427");
 
         tpwdCreate2(131267237L,"长度大于5个字符","https://item.taobao.com/item.htm?id=564527851725","https://uland.taobao.com/","{\"xx\":\"xx\"}");
     }

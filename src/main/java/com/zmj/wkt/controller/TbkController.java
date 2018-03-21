@@ -18,6 +18,7 @@ import com.zmj.wkt.utils.ZmjUtil;
 import com.zmj.wkt.utils.sysenum.ErrorCode;
 import com.zmj.wkt.utils.sysenum.SysCode;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -71,31 +72,32 @@ public class TbkController extends CommonController {
     Bs_goodsService bs_goodsService;
     /**
      * 获取淘宝客商品列表
-     * @param Itemloc   商品归属地
      * @param Q         搜索关键字
      * @param pageNo    页码
      * @param pageSize  单页数量
      * @return
      */
     @PostMapping("/getTbkGoodsList")
-    public RestfulResult getTbkGoodsList(String Itemloc , String Q ,Long pageNo ,Long pageSize) throws ApiException {
-        return RestfulResultUtils.success(TbkUtil.getGoodsList2(Itemloc,Q,pageNo,pageSize));
+    public RestfulResult getTbkGoodsList(String Q ,Long pageNo ,Long pageSize) throws Exception {
+        Bs_person bs_person = getThisUser();
+        if(org.apache.commons.lang.StringUtils.isBlank(bs_person.getPID())){
+            throw new CommonException(ErrorCode.NULL_ERROR,"PID不能为空!");
+        }
+        return RestfulResultUtils.success(TbkUtil.getGoodsList(bs_person.getPID(),Q,pageNo,pageSize));
     }
 
     /**
      * 生成淘口令
      * @param url
-     * @param PID
      * @param text
      * @param logo
      * @return
      * @throws ApiException
      */
     @PostMapping("/tpwdCreate")
-    public RestfulResult tpwdCreate(String url,String PID ,String text,String logo) throws ApiException {
-        Long adzoneId = Long.valueOf(PID.split("_")[3]);
-        System.out.println(adzoneId);
-        return  RestfulResultUtils.success(TbkUtil.tpwdCreate2(adzoneId,text,url,logo,null));
+    public RestfulResult tpwdCreate(String url,String text,String logo) throws Exception {
+        Bs_person thisUser = getThisUser();
+        return  RestfulResultUtils.success(TbkUtil.tpwdCreate(thisUser.getPID(),text,url,logo,null));
     }
 
 
