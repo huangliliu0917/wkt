@@ -41,6 +41,7 @@ public class TbkUtil {
     //private static final String URL = "https://gw.api.tbsandbox.com/router/rest";
     private static final String APPKEY = "24576611";
     private static final String SECRET = "20171995c8a67b8fecc47058c616704b";
+    private static final String SESSION_KEY = "6102028455a615ca6077c4f1245bfec1c0e113df1737d011091412511";
     private static final String PID = "mm_46667186_35066962_277674842";
 
     /**
@@ -154,8 +155,40 @@ public class TbkUtil {
     }
 
 
+    /**
+     * 超级搜索
+     * @param PID
+     * @param Q
+     * @param pageNo
+     * @param pageSize
+     * @return
+     * @throws ApiException
+     */
+    public static List<TbkScMaterialOptionalResponse.MapData> superSearchGoods(String PID , String Q , Long pageNo , Long pageSize) throws ApiException {
+        TaobaoClient client = new DefaultTaobaoClient(URL, APPKEY, SECRET);
+        TbkScMaterialOptionalRequest req = new TbkScMaterialOptionalRequest();
+        req.setStartDsr(10L);
+        req.setPageSize(pageSize);
+        req.setPageNo(pageNo);
+        //手机端
+        req.setPlatform(2L);
+        req.setStartTkRate(10L);
+        //req.setSort("tk_rate_des");
+        req.setQ(Q);
+        req.setAdzoneId(getAdzoneID(PID));
+        req.setSiteId(getSiteID(PID));
+        TbkScMaterialOptionalResponse rsp = client.execute(req,SESSION_KEY);
+        System.out.println(rsp.getBody());
+        return rsp.getResultList();
+    }
+
     public static Long getAdzoneID(String PID){
         Long adzoneId = Long.valueOf(PID.split("_")[3]);
+        return adzoneId;
+    }
+
+    public static Long getSiteID(String PID){
+        Long adzoneId = Long.valueOf(PID.split("_")[2]);
         return adzoneId;
     }
 
@@ -195,5 +228,7 @@ public class TbkUtil {
         getGoodInfo("536520714427");
 
         tpwdCreate2(131267237L,"长度大于5个字符","https://item.taobao.com/item.htm?id=564527851725","https://uland.taobao.com/","{\"xx\":\"xx\"}");
+
+        superSearchGoods(PID,"女装",1L,10L);
     }
 }
