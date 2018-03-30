@@ -4,10 +4,17 @@ import com.taobao.api.ApiException;
 import com.taobao.api.DefaultTaobaoClient;
 import com.taobao.api.TaobaoClient;
 import com.taobao.api.domain.NTbkItem;
+import com.taobao.api.internal.util.WebUtils;
 import com.taobao.api.request.*;
 import com.taobao.api.response.*;
+import net.sf.json.JSONObject;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
+import java.io.IOException;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * code is far away from bug with the animal protecting
@@ -35,15 +42,21 @@ import java.util.List;
  */
 public class TbkUtil {
 
+    private static final Logger logger  = LoggerFactory.getLogger(TbkUtil.class);
+
     //正式环境
     private static final String URL = "https://eco.taobao.com/router/rest";
     //测试环境
     //private static final String URL = "https://gw.api.tbsandbox.com/router/rest";
     private static final String APPKEY = "24576611";
     private static final String SECRET = "20171995c8a67b8fecc47058c616704b";
-    private static final String SESSION_KEY = "6102028455a615ca6077c4f1245bfec1c0e113df1737d011091412511";
+    private static String SESSION_KEY = "6201810b80e662d44bdfd7c9453a340125cd41aedfbef901091412511";
     private static final String PID = "mm_46667186_35066962_277674842";
-
+    private static final String REFRESHTOKEN = "6100d25a988e33cc1e5146c0d2341f78b1feb172ecf96e81091412511";
+    /**
+     * SessionKey非法错误代码
+     */
+    private static final String SESSIONKEY_ERROR_CODE = "27";
     /**
      * 生成淘口令
      * @param text
@@ -179,6 +192,12 @@ public class TbkUtil {
         req.setSiteId(getSiteID(PID));
         TbkScMaterialOptionalResponse rsp = client.execute(req,SESSION_KEY);
         System.out.println(rsp.getBody());
+        if(SESSIONKEY_ERROR_CODE.equals(rsp.getErrorCode())){
+            logger.info("superSearchGoods = {} ","ErrorCode:"+rsp.getErrorCode()+"\tSubCode:"+rsp.getSubCode());
+            //SessionKey非法
+            flashToken();
+            return superSearchGoods(PID,Q,pageNo,pageSize);
+        }
         return rsp.getResultList();
     }
 
@@ -190,6 +209,28 @@ public class TbkUtil {
     public static Long getSiteID(String PID){
         Long adzoneId = Long.valueOf(PID.split("_")[2]);
         return adzoneId;
+    }
+
+    public static String flashToken(){
+        String url="https://oauth.taobao.com/token";
+        Map<String,String> props=new HashMap<String,String>();
+        props.put("grant_type","refresh_token");
+        props.put("client_id",APPKEY);
+        props.put("client_secret",SECRET);
+        props.put("refresh_token", REFRESHTOKEN);
+        props.put("view","web");
+        String s="";
+        try{s= WebUtils.doPost(url, props, 30000, 30000);
+            System.out.println(s);
+            JSONObject jsonObject = JSONObject.fromObject(s);
+            String  access_token = jsonObject.get("access_token").toString();
+            SESSION_KEY = access_token;
+            System.out.println("access_token:"+access_token);
+            return access_token;
+        }catch(IOException e){
+            e.printStackTrace();
+            return null;
+        }
     }
 
     public static void main(String[] args) throws ApiException {
