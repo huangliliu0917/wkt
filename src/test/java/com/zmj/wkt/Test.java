@@ -44,7 +44,7 @@ public class Test {
     }
 
     @org.junit.Test
-    public void testTpwdCreate(){
+    public void tpwdCreateTest(){
         tpwdCreate(PID,"测试不少于5个字","https://item.taobao.com/item.htm?id=565256993523","https://img.alicdn.com/bao/uploaded/i2/2231111757/TB1JGGaX0cnBKNjSZR0XXcFqFXa_!!0-item_pic.jpg",null);
     }
 
