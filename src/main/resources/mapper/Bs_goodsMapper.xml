@@ -6,6 +6,7 @@
     <resultMap id="BaseResultMap" type="com.zmj.wkt.entity.Bs_goods">
         <id column="GoodsID" property="GoodsID" />
         <result column="GClientID" property="GClientID" />
+        <result column="GQQGoodsNumber" property="GQQGoodsNumber" />
         <result column="GWXPersonNumber" property="GWXPersonNumber" />
         <result column="GWXUserNumber" property="GWXUserNumber" />
         <result column="GUserName" property="GUserName" />
@@ -30,11 +31,12 @@
         <result column="IsAble" property="IsAble" />
         <result column="IsShow" property="IsShow" />
         <result column="GAddedTime" property="GAddedTime" />
+        <result column="IsQQ" property="IsQQ" />
     </resultMap>
 
     <!-- 通用查询结果列 -->
     <sql id="Base_Column_List">
-        GoodsID, GClientID, GWXPersonNumber, GWXUserNumber, GUserName, GName, GPrice, GTbkPrice, GActivePrice, GInfo, GTypeID1, GTypeID2, GTypeID3, GTypeNames, GIntro, GImage, GCount, GSail, GWeight, GDateTime, GSize, GAddress, State, IsAble,IsShow, GAddedTime
+        GoodsID, GClientID, GQQGoodsNumber , GWXPersonNumber, GWXUserNumber, GUserName, GName, GPrice, GTbkPrice, GActivePrice, GInfo, GTypeID1, GTypeID2, GTypeID3, GTypeNames, GIntro, GImage, GCount, GSail, GWeight, GDateTime, GSize, GAddress, State, IsAble,IsShow, GAddedTime ,IsQQ
     </sql>
 
     <select id="getBs_person_goodsByClientID" resultType="com.zmj.wkt.entity.Bs_goods" parameterType="String">

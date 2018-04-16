@@ -17,11 +17,12 @@
         <result column="volume" property="volume" />
         <result column="zk_final_price" property="zk_final_price" />
         <result column="ClientID" property="ClientID" />
+        <result column="coupon_click_url" property="coupon_click_url" />
     </resultMap>
 
     <!-- 通用查询结果列 -->
     <sql id="Base_Column_List">
-        tbkID, item_url, nick, num_iid, pict_url, provcity, reserve_price, seller_id, title, user_type, volume, zk_final_price, ClientID
+        tbkID, item_url, nick, num_iid, pict_url, provcity, reserve_price, seller_id, title, user_type, volume, zk_final_price, ClientID .coupon_click_url
     </sql>
     <select id="getNum_iidByClientID" resultType="java.lang.String" parameterType="java.lang.String">
         SELECT num_iid FROM Bs_tbkCollections WHERE ClientID = #{ClientID}

@@ -13,7 +13,7 @@ import java.io.Serializable;
  * </p>
  *
  * @author zmj
- * @since 2018-03-15
+ * @since 2018-04-11
  */
 @TableName("bs_goods")
 public class Bs_goods extends Model<Bs_goods> {
@@ -28,6 +28,10 @@ public class Bs_goods extends Model<Bs_goods> {
      * 提供者ID
      */
 	private String GClientID;
+    /**
+     * qq群号
+     */
+	private String GQQGoodsNumber;
     /**
      * 群人数
      */
@@ -124,6 +128,10 @@ public class Bs_goods extends Model<Bs_goods> {
      * 申请时间
      */
 	private Date GAddedTime;
+    /**
+     * 0不是qq 1 是qq
+     */
+	private Integer IsQQ;
 
 
 	public String getGoodsID() {
@@ -140,6 +148,14 @@ public class Bs_goods extends Model<Bs_goods> {
 
 	public void setGClientID(String GClientID) {
 		this.GClientID = GClientID;
+	}
+
+	public String getGQQGoodsNumber() {
+		return GQQGoodsNumber;
+	}
+
+	public void setGQQGoodsNumber(String GQQGoodsNumber) {
+		this.GQQGoodsNumber = GQQGoodsNumber;
 	}
 
 	public Integer getGWXPersonNumber() {
@@ -334,6 +350,14 @@ public class Bs_goods extends Model<Bs_goods> {
 		this.GAddedTime = GAddedTime;
 	}
 
+	public Integer getIsQQ() {
+		return IsQQ;
+	}
+
+	public void setIsQQ(Integer IsQQ) {
+		this.IsQQ = IsQQ;
+	}
+
 	@Override
 	protected Serializable pkVal() {
 		return this.GoodsID;
@@ -344,6 +368,7 @@ public class Bs_goods extends Model<Bs_goods> {
 		return "Bs_goods{" +
 			", GoodsID=" + GoodsID +
 			", GClientID=" + GClientID +
+			", GQQGoodsNumber=" + GQQGoodsNumber +
 			", GWXPersonNumber=" + GWXPersonNumber +
 			", GWXUserNumber=" + GWXUserNumber +
 			", GUserName=" + GUserName +
@@ -368,6 +393,7 @@ public class Bs_goods extends Model<Bs_goods> {
 			", IsAble=" + IsAble +
 			", IsShow=" + IsShow +
 			", GAddedTime=" + GAddedTime +
+			", IsQQ=" + IsQQ +
 			"}";
 	}
 }

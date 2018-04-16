@@ -12,7 +12,7 @@ import java.io.Serializable;
  * </p>
  *
  * @author zmj
- * @since 2018-03-15
+ * @since 2018-04-16
  */
 @TableName("Bs_tbkCollections")
 public class Bs_tbkCollections extends Model<Bs_tbkCollections> {
@@ -38,6 +38,10 @@ public class Bs_tbkCollections extends Model<Bs_tbkCollections> {
      * 用户ID
      */
 	private String ClientID;
+    /**
+     * 推广链接
+     */
+	private String coupon_click_url;
 
 
 	public String getTbkID() {
@@ -144,6 +148,14 @@ public class Bs_tbkCollections extends Model<Bs_tbkCollections> {
 		this.ClientID = ClientID;
 	}
 
+	public String getCoupon_click_url() {
+		return coupon_click_url;
+	}
+
+	public void setCoupon_click_url(String coupon_click_url) {
+		this.coupon_click_url = coupon_click_url;
+	}
+
 	@Override
 	protected Serializable pkVal() {
 		return this.tbkID;
@@ -165,6 +177,7 @@ public class Bs_tbkCollections extends Model<Bs_tbkCollections> {
 			", volume=" + volume +
 			", zk_final_price=" + zk_final_price +
 			", ClientID=" + ClientID +
+			", coupon_click_url=" + coupon_click_url +
 			"}";
 	}
 }
