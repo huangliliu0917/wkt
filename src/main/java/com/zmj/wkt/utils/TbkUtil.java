@@ -80,7 +80,10 @@ public class TbkUtil {
             e.printStackTrace();
         }
         System.out.println(rsp.getBody());
-        return  rsp.getBody();
+        JSONObject jsonObject = JSONObject.fromObject(rsp.getBody());
+        jsonObject=JSONObject.fromObject(jsonObject.get("tbk_tpwd_create_response").toString());
+        jsonObject=JSONObject.fromObject(jsonObject.get("data").toString());
+        return  jsonObject.get("model").toString();
     }
 
     /**

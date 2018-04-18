@@ -1,22 +1,21 @@
 package com.zmj.wkt.controller;
 
 import com.baomidou.mybatisplus.mapper.EntityWrapper;
+import com.google.gson.JsonArray;
 import com.taobao.api.ApiException;
 import com.zmj.wkt.common.CommonController;
 import com.zmj.wkt.common.RestfulResult;
 import com.zmj.wkt.common.exception.CommonException;
 import com.zmj.wkt.entity.*;
 import com.zmj.wkt.mapper.Bs_tbkCollectionsMapper;
-import com.zmj.wkt.service.Bs_goodsService;
-import com.zmj.wkt.service.Bs_hotQService;
-import com.zmj.wkt.service.Bs_orderformService;
-import com.zmj.wkt.service.Bs_tbkCollectionsService;
+import com.zmj.wkt.service.*;
 import com.zmj.wkt.utils.DateUtil;
 import com.zmj.wkt.utils.RestfulResultUtils;
 import com.zmj.wkt.utils.TbkUtil;
 import com.zmj.wkt.utils.ZmjUtil;
 import com.zmj.wkt.utils.sysenum.ErrorCode;
 import com.zmj.wkt.utils.sysenum.SysCode;
+import net.sf.json.JSONArray;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -70,6 +69,10 @@ public class TbkController extends CommonController {
 
     @Autowired
     Bs_goodsService bs_goodsService;
+
+    @Autowired
+    Bs_personService bs_personService;
+
     /**
      * 获取淘宝客商品列表
      * @param Q         搜索关键字
@@ -88,16 +91,57 @@ public class TbkController extends CommonController {
 
     /**
      * 生成淘口令
-     * @param url
-     * @param text
-     * @param logo
+     * @param num_iids
      * @return
      * @throws ApiException
      */
     @PostMapping("/tpwdCreate")
-    public RestfulResult tpwdCreate(String url,String text,String logo) throws Exception {
-        Bs_person thisUser = getThisUser();
-        return  RestfulResultUtils.success(TbkUtil.tpwdCreate(thisUser.getPID(),text,url,logo,null));
+    public RestfulResult tpwdCreate(String[] num_iids,String ClientID) throws Exception {
+        if(ZmjUtil.isNullOrEmpty(num_iids)){
+            throw new CommonException(ErrorCode.NULL_ERROR,"num_iid不能为空!");
+        }
+        if(ClientID.isEmpty()){
+            throw new CommonException(ErrorCode.NULL_ERROR,"ClientID不能为空!");
+        }
+        logger.info("num_iids = {}",JSONArray.fromObject(num_iids).toString());
+        StringBuilder strNum_iid = new StringBuilder();
+        for (String id : num_iids){
+            strNum_iid.append(id);
+            strNum_iid.append(",");
+        }
+        strNum_iid.deleteCharAt(strNum_iid.length()-1);
+        logger.info(strNum_iid.toString());
+        EntityWrapper entityWrapper = new EntityWrapper();
+        entityWrapper.setEntity(new Bs_tbkCollections());
+        entityWrapper.where("ClientID = {0} ",ClientID);
+        entityWrapper.and().in("num_iid",num_iids);
+        List<Bs_tbkCollections> list = bs_tbkCollectionsService.selectList(entityWrapper);
+        Bs_person client = bs_personService.findByClientID(ClientID);
+        StringBuilder tpwd = new StringBuilder();
+        int i=0;
+        for (Bs_tbkCollections tbkCollections: list){
+            i++;
+            tpwd.append(i);
+            tpwd.append(".");
+            tpwd.append("\r\n");
+            tpwd.append("商品:").append(tbkCollections.getTitle());
+            tpwd.append("\r\n");
+            tpwd.append("【一口价】:").append(tbkCollections.getZk_final_price()).append("元");
+            tpwd.append("\r\n");
+            tpwd.append("【优惠券】:").append(tbkCollections.getCouponInfo());
+            tpwd.append("\r\n");
+            tpwd.append("【劵后价】:一口价 — 优惠劵");
+            tpwd.append("\r\n");
+            tpwd.append("复制这条淘口令，[打开手机淘宝]即可领券下单，淘口令:");
+            tpwd.append("\r\n");
+            tpwd.append(TbkUtil.tpwdCreate(client.getPID(), tbkCollections.getTitle(), tbkCollections.getCoupon_click_url(), tbkCollections.getPict_url(), null));
+            tpwd.append("\r\n");
+            tpwd.append("★提示:本内容发送给朋友，同样可享受内部优惠");
+            tpwd.append("\r\n");
+            tpwd.append("======================");
+            tpwd.append("\r\n");
+        }
+        return  RestfulResultUtils.success(tpwd.toString());
     }
 
 
@@ -150,7 +194,7 @@ public class TbkController extends CommonController {
         if(ZmjUtil.isNullOrEmpty(numList)){
             return RestfulResultUtils.success();
         }
-        StringBuffer num_iids = new StringBuffer();
+        StringBuilder num_iids = new StringBuilder();
         for (String s:numList ) {
             num_iids.append(s);
             num_iids.append(",");
@@ -199,7 +243,7 @@ public class TbkController extends CommonController {
         bs_orderform.setGName(bs_goods.getGName());
         bs_orderform.setClientID(bs_person.getClientID());
         bs_orderform.setConsumerUserName(bs_person.getUserName());
-        bs_orderform.setProductUserName(bs_goods.getGClientID());
+        bs_orderform.setProductUserName(bs_goods.getGUserName());
         bs_orderform.setSubID("Tbk_"+ UUID.randomUUID().toString().toUpperCase());
         bs_orderform.setState(SysCode.STATE_TO_BE_SENT.getCode());
         bs_orderform.setIsAble(SysCode.IS_ABLE_YES.getCode());
@@ -226,5 +270,24 @@ public class TbkController extends CommonController {
         }
         bs_tbkCollectionsService.delTbkCollenctions(num_iids,getThisUser().getClientID());
         return RestfulResultUtils.success();
+    }
+
+    /**
+     * 查询淘客宝商品
+     * @param num_iids
+     * @return
+     */
+    @PostMapping("/getTkbGoodsInfo")
+    public RestfulResult getTkbGoodsInfo(String [] num_iids) throws Exception {
+        if(ZmjUtil.isNullOrEmpty(num_iids)){
+            throw new CommonException(ErrorCode.NULL_ERROR,"num_iids不能为空");
+        }
+        StringBuilder strNum_iid = new StringBuilder();
+        for (String id : num_iids){
+            strNum_iid.append(id);
+            strNum_iid.append(",");
+        }
+        strNum_iid.deleteCharAt(strNum_iid.length()-1);
+        return RestfulResultUtils.success(TbkUtil.getGoodInfo(strNum_iid.toString()));
     }
 }

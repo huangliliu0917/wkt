@@ -124,8 +124,8 @@ public class Bs_goodsController extends CommonController{
             if (imgFile.isEmpty()) {
                 throw new CommonException(ErrorCode.NULL_ERROR,"上传图片文件为空！");
             }
-            if(!bs_goods.getGQQGoodsNumber().isEmpty()){
-                bs_goods.setIsQQ(0);
+            if(ZmjUtil.isNullOrEmpty(bs_goods.getIsQQ())){
+                throw new CommonException(ErrorCode.NULL_ERROR,"是否为qq判断为空！");
             }
             bs_goods.setGoodsID("G_"+UUID.randomUUID().toString().toUpperCase());
             bs_goods.setState(SysCode.STATE_T.getCode());

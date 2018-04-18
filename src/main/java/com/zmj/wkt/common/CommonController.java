@@ -11,6 +11,8 @@ import com.zmj.wkt.utils.RestfulResultUtils;
 import com.zmj.wkt.utils.ZmjUtil;
 import com.zmj.wkt.utils.sysenum.ErrorCode;
 import io.jsonwebtoken.Jwts;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CacheConfig;
 import org.springframework.cache.annotation.Cacheable;
@@ -52,6 +54,8 @@ code is far away from bug with the animal protecting
  */
 @Controller
 public class CommonController {
+    public Logger logger = LoggerFactory.getLogger(this.getClass());
+
     @Autowired
     Bs_personService bs_personService;
 

@@ -15,6 +15,7 @@ import com.zmj.wkt.utils.DateUtil;
 import com.zmj.wkt.utils.RestfulResultUtils;
 import com.zmj.wkt.utils.sysenum.ErrorCode;
 import com.zmj.wkt.utils.sysenum.SysCode;
+import com.zmj.wkt.utils.sysenum.TrCode;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -90,6 +91,21 @@ public class Bs_orderformController  extends CommonController{
         EntityWrapper entityWrapper = new EntityWrapper();
         entityWrapper.setEntity(new Bs_orderform());
         entityWrapper.where("ClientID = {0}",bs_person.getClientID());
+        return  RestfulResultUtils.success(bs_orderformService.selectList(entityWrapper));
+    }
+
+
+    /**
+     * 获取当前接单用户待发送的订单
+     * @return
+     * @throws Exception
+     */
+    @GetMapping("/jd/getWaitOrderForm")
+    public  RestfulResult getJdWaitOrderForm() throws Exception {
+        Bs_person bs_person = getThisUser();
+        EntityWrapper entityWrapper = new EntityWrapper();
+        entityWrapper.setEntity(new Bs_orderform());
+        entityWrapper.where("ProductUserName = {0} and State = {1} and IsAble = {2}",bs_person.getUserName(), SysCode.STATE_TO_BE_SENT.getCode(),SysCode.STATE_T.getCode());
         return  RestfulResultUtils.success(bs_orderformService.selectList(entityWrapper));
     }
 }
