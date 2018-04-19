@@ -3,6 +3,7 @@ package com.zmj.wkt.utils;
 import com.taobao.api.ApiException;
 import org.junit.Before;
 import org.junit.Test;
+import org.springframework.security.access.method.P;
 
 import static com.zmj.wkt.utils.TbkUtil.superSearchGoods;
 import static org.junit.Assert.*;
@@ -29,7 +30,22 @@ public class TbkUtilTest {
 
     @Test
     public void createTbk(){
-        TbkUtil.tpwdCreate(PID,"超过五个字","https://uland.taobao.com/coupon/edetail?e=jTmjlJu0yGEGQASttHIRqULsFNb3E5eTOXSOpj6L0gwYXB958FVfbJeiiGHnFiq0k%2FmVDemyVJhJEGIFvOvz0dxjhytSuPkU819cieM8MLYzX9XvQ%2B%2BZNtp2CXHQSjfhpQhdzDp3kuyjIKjt4WBlwn%2Ftp4YtWGnIgzek6E5ygAdIH07HK3v5wL5nHBJPjqnHHenmCXB7bXo%3D&traceId=0ab23b7615226498718506162","","");
+        TbkUtil.tpwdCreate(PID,"测试佣金测试佣金","https://uland.taobao.com/coupon/edetail?e=2VozdOtTjW0GQASttHIRqTzDB0Z%2BuefLFLL9jvAjpwxYkDPSXp14z%2BP4ZQYn3vRC9ZuGR23f67MP4f3DzektvpQ5wfGz%2Fu%2BNjWdexgJqXaR%2B%2BRpHXGj9HQ%3D%3D","https://img.alicdn.com/tfscom/i4/3016738851/TB1N1AGgBfH8KJjy1XbXXbLdXXa_!!0-item_pic.jpg","");
     }
 
+    @Test
+    public void favoritesGet() throws ApiException {
+        TbkUtil.favoritesGet();
+    }
+
+    @Test
+    public void favoritesItemGet() throws ApiException {
+        TbkUtil.favoritesItemGet(PID,17006808L,1L,10L);
+    }
+
+    @Test
+    public void getGoodInfo() throws ApiException {
+        String numIids = "544695836279";
+        TbkUtil.getGoodInfo(numIids);
+    }
 }

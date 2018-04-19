@@ -144,7 +144,6 @@ public class TbkController extends CommonController {
         return  RestfulResultUtils.success(tpwd.toString());
     }
 
-
     /**
      * 获取热词
      * @return
@@ -154,6 +153,25 @@ public class TbkController extends CommonController {
         EntityWrapper entityWrapper = new EntityWrapper();
         entityWrapper.setEntity(new Bs_hotQ());
         return RestfulResultUtils.success(bs_hotQService.selectList(entityWrapper));
+    }
+
+    /**
+     * 获取热门分类商品
+     * @return
+     */
+    @PostMapping("/favoritesItemGet")
+    public RestfulResult favoritesItemGet(Long favoritesId , Long pageNo , Long pageSize) throws Exception {
+        Bs_person thisUser = getThisUser();
+        return RestfulResultUtils.success(TbkUtil.favoritesItemGet(thisUser.getPID(),favoritesId,pageNo,pageSize));
+    }
+
+    /**
+     * 获取分类
+     * @return
+     */
+    @GetMapping("/favoritesGet")
+    public RestfulResult favoritesGet() throws ApiException {
+        return RestfulResultUtils.success(TbkUtil.favoritesGet());
     }
 
     /**

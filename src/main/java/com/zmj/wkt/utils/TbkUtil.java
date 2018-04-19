@@ -4,6 +4,8 @@ import com.taobao.api.ApiException;
 import com.taobao.api.DefaultTaobaoClient;
 import com.taobao.api.TaobaoClient;
 import com.taobao.api.domain.NTbkItem;
+import com.taobao.api.domain.TbkFavorites;
+import com.taobao.api.domain.UatmTbkItem;
 import com.taobao.api.internal.util.WebUtils;
 import com.taobao.api.request.*;
 import com.taobao.api.response.*;
@@ -203,6 +205,42 @@ public class TbkUtil {
         }
         return rsp.getResultList();
     }
+
+    /**
+     * 获取类别
+     * @return
+     * @throws ApiException
+     */
+    public static List<TbkFavorites> favoritesGet() throws ApiException {
+        TaobaoClient client = new DefaultTaobaoClient(URL, APPKEY, SECRET);
+        TbkUatmFavoritesGetRequest req = new TbkUatmFavoritesGetRequest();
+        req.setPageNo(1L);
+        req.setPageSize(200L);
+        req.setFields("favorites_title,favorites_id,type");
+        req.setType(-1L);
+        TbkUatmFavoritesGetResponse rsp = client.execute(req);
+        System.out.println(rsp.getBody());
+        return rsp.getResults();
+    }
+
+    /**
+     * 获取商品列表
+     * @return
+     */
+    public static List<UatmTbkItem> favoritesItemGet(String PID , Long favoritesId , Long pageNo , Long pageSize) throws ApiException {
+        TaobaoClient client = new DefaultTaobaoClient(URL, APPKEY, SECRET);
+        TbkUatmFavoritesItemGetRequest req = new TbkUatmFavoritesItemGetRequest();
+        req.setPlatform(1L);
+        req.setPageSize(pageSize);
+        req.setAdzoneId(getAdzoneID(PID));
+        req.setFavoritesId(favoritesId);
+        req.setPageNo(pageNo);
+        req.setFields("num_iid,title,coupon_click_url,coupon_info,commission_rate,coupon_end_time,click_url,category,coupon_total_count,seller_id,pict_url,small_images,reserve_price,zk_final_price,user_type,provcity,item_url,,volume,nick,shop_title,zk_final_price_wap,event_start_time,event_end_time,tk_rate,status,type");
+        TbkUatmFavoritesItemGetResponse rsp = client.execute(req);
+        System.out.println(rsp.getBody());
+        return rsp.getResults();
+    }
+
 
     public static Long getAdzoneID(String PID){
         Long adzoneId = Long.valueOf(PID.split("_")[3]);
