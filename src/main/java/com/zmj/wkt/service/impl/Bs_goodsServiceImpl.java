@@ -122,4 +122,12 @@ public class Bs_goodsServiceImpl extends CommonManagerImpl<Bs_goodsMapper,Bs_goo
             throw new CommonException(ErrorCode.UNKNOWNS_ERROR,"Exception:"+exc.getMessage());
         }
     }
+
+    @Override
+    public void updateGoodsByID(Bs_goods bs_goods) {
+        EntityWrapper entityWrapper = new EntityWrapper();
+        entityWrapper.setEntity(new Bs_goods());
+        entityWrapper.where("GoodsID = {0}",bs_goods.getGoodsID());
+        bs_goodsMapper.update(bs_goods,entityWrapper);
+    }
 }

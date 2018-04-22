@@ -4,15 +4,18 @@ import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.zmj.wkt.common.CommonController;
 import com.zmj.wkt.common.RestfulResult;
 import com.zmj.wkt.common.exception.CommonException;
+import com.zmj.wkt.entity.Acc_daybook;
 import com.zmj.wkt.entity.Bs_goods;
 import com.zmj.wkt.entity.Bs_orderform;
 import com.zmj.wkt.entity.Bs_person;
 import com.zmj.wkt.mapper.Acc_daybookMapper;
 import com.zmj.wkt.mapper.Acc_personMapper;
+import com.zmj.wkt.service.Acc_daybookService;
 import com.zmj.wkt.service.Acc_personService;
 import com.zmj.wkt.service.Bs_orderformService;
 import com.zmj.wkt.utils.DateUtil;
 import com.zmj.wkt.utils.RestfulResultUtils;
+import com.zmj.wkt.utils.ZmjUtil;
 import com.zmj.wkt.utils.sysenum.ErrorCode;
 import com.zmj.wkt.utils.sysenum.SysCode;
 import com.zmj.wkt.utils.sysenum.TrCode;
@@ -23,6 +26,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.List;
 import java.util.UUID;
 
 /**
@@ -60,6 +64,9 @@ public class Bs_orderformController  extends CommonController{
 
     @Autowired
     Acc_daybookMapper acc_daybookMapper;
+
+    @Autowired
+    Acc_daybookService acc_daybookService;
 
 
     @PostMapping("/applyOrderForm")
@@ -107,5 +114,33 @@ public class Bs_orderformController  extends CommonController{
         entityWrapper.setEntity(new Bs_orderform());
         entityWrapper.where("ProductUserName = {0} and State = {1} and IsAble = {2}",bs_person.getUserName(), SysCode.STATE_TO_BE_SENT.getCode(),SysCode.STATE_T.getCode());
         return  RestfulResultUtils.success(bs_orderformService.selectList(entityWrapper));
+    }
+
+    /**
+     * 订单确认发送成功
+     * @param SubID
+     * @return
+     * @throws Exception
+     */
+    @PostMapping("/sendSuccess")
+    public RestfulResult sendSuccess(String SubID) throws Exception {
+        Bs_person bs_person = getThisUser();
+        EntityWrapper bs_orderformWrapper = new EntityWrapper();
+        bs_orderformWrapper.setEntity(new Bs_orderform());
+        bs_orderformWrapper.where("ProductUserName = {0} and State = {1} and SubID = {2}",
+                bs_person.getUserName(), SysCode.STATE_TO_BE_SENT.getCode(),SubID);
+        Bs_orderform bs_orderform = bs_orderformService.selectOne(bs_orderformWrapper);
+        if(ZmjUtil.isNullOrEmpty(bs_orderform)){
+            throw new CommonException(ErrorCode.NOT_FIND_ERROR,"找不到该订单！");
+        }
+        EntityWrapper acc_daybookWrapper = new EntityWrapper();
+        acc_daybookWrapper.setEntity(new Acc_daybook());
+        acc_daybookWrapper.where("tr_code = {0} and State = {1} and SubID = {2}",TrCode.WITHHOLDING.getCode(),SysCode.STATE_T.getCode(),bs_orderform.getSubID());
+        Acc_daybook acc_daybook = acc_daybookService.selectOne(acc_daybookWrapper);
+        if(ZmjUtil.isNullOrEmpty(acc_daybook)){
+            throw new CommonException(ErrorCode.NOT_FIND_ERROR,"找不到该订单的代扣记录！");
+        }
+        bs_orderformService.orderSuccess(bs_orderform,bs_person,acc_daybook);
+        return  RestfulResultUtils.success("确认成功！");
     }
 }

@@ -2,10 +2,7 @@ package com.zmj.wkt.service.impl;
 
 import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.zmj.wkt.common.exception.CommonException;
-import com.zmj.wkt.entity.Acc_daybook;
-import com.zmj.wkt.entity.Acc_person;
-import com.zmj.wkt.entity.Bs_goods;
-import com.zmj.wkt.entity.Bs_orderform;
+import com.zmj.wkt.entity.*;
 import com.zmj.wkt.mapper.Acc_daybookMapper;
 import com.zmj.wkt.mapper.Acc_personMapper;
 import com.zmj.wkt.mapper.Bs_goodsMapper;
@@ -107,5 +104,55 @@ public class Bs_orderformServiceImpl extends CommonManagerImpl<Bs_orderformMappe
         //记录交易后金额
         acc_daybook.setAfterBalance(userBalance.getBalance());
         acc_daybookMapper.insert(acc_daybook);
+    }
+
+    @Override
+    public void orderSuccess(Bs_orderform bs_orderform, Bs_person bs_person,Acc_daybook oldAcc_daybook) {
+        //记录交易前金额
+        Acc_daybook newAcc_daybook = new Acc_daybook();
+        Acc_person userBalance = acc_personService.getUserBalance(bs_orderform.getClientID());
+        newAcc_daybook.setBeforeBalance(userBalance.getBalance());
+
+        //转账
+        userBalance.setBalance(userBalance.getBalance()+oldAcc_daybook.getAmt());
+        EntityWrapper entityWrapper1 = new EntityWrapper();
+        entityWrapper1.setEntity(new Acc_person());
+        entityWrapper1.where("ClientID = {0}",bs_orderform.getClientID());
+        acc_personMapper.update(userBalance,entityWrapper1);
+
+        //记流水日志
+        newAcc_daybook.setAble_date(DateUtil.getNowTimestamp());
+        newAcc_daybook.setAcc_date(DateUtil.getNowTimestamp());
+        //记录订单编号
+        newAcc_daybook.setSubID(bs_orderform.getSubID());
+        //生成流水号
+        newAcc_daybook.setAction_no(ZmjUtil.getOrderIdByUUId());
+        newAcc_daybook.setAmt(oldAcc_daybook.getAmt());
+        newAcc_daybook.setState(SysCode.STATE_T.getCode());
+        newAcc_daybook.setTr_code(TrCode.TRANSFER.getCode());
+
+        //借方ID
+        Bs_person debit_person = bs_personService.findByName(bs_orderform.getProductUserName());
+        newAcc_daybook.setDebit(debit_person.getClientID());
+        newAcc_daybook.setNote("代扣转账，用户名："+debit_person.getUserName()+"，转账金额："+oldAcc_daybook.getAmt());
+
+        //记录交易后金额
+        newAcc_daybook.setAfterBalance(userBalance.getBalance());
+        acc_daybookMapper.insert(newAcc_daybook);
+
+        //代扣记录无效化
+        oldAcc_daybook.setState(SysCode.STATE_F.getCode());
+        EntityWrapper entityWrapper = new EntityWrapper();
+        entityWrapper.setEntity(new Acc_daybook());
+        entityWrapper.where("Action_no = {0}",oldAcc_daybook.getAction_no());
+        acc_daybookMapper.update(oldAcc_daybook,entityWrapper);
+
+        //订单设置成功状态
+        Bs_orderform newOrderform = new Bs_orderform();
+        newOrderform.setState(SysCode.STATE_TO_SUCCESS.getCode());
+        EntityWrapper bs_orderformWrapper = new EntityWrapper();
+        bs_orderformWrapper.setEntity(new Bs_orderform());
+        bs_orderformWrapper.where("SubID = {0}",bs_orderform.getSubID());
+        bs_orderformMapper.update(newOrderform,bs_orderformWrapper);
     }
 }

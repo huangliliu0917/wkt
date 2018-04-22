@@ -32,6 +32,7 @@ public enum TrCode implements CodeInterface {
     REFLECT("10002","提现"),
     WITHHOLDING("10003","代扣"),
     REFUND("10004","退款"),
+    TRANSFER("10005","代扣转账"),
     ;
 
     /**

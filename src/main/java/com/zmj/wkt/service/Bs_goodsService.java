@@ -60,4 +60,6 @@ public interface Bs_goodsService  extends CommonManager<Bs_goods> {
      * @param imgFile
      */
     public void goodsUpdatePic(Bs_goods bs_goods,@RequestParam("file") MultipartFile imgFile);
+
+    public void updateGoodsByID(Bs_goods bs_goods);
 }
