@@ -1,11 +1,9 @@
 package com.zmj.wkt;
 
 import com.taobao.api.ApiException;
-import com.taobao.api.response.TbkScMaterialOptionalResponse;
+import com.zmj.wkt.utils.HttpsClientUtil;
+import com.zmj.wkt.utils.sysenum.SysConstant;
 
-import java.util.List;
-
-import static com.zmj.wkt.utils.TbkUtil.flashToken;
 import static com.zmj.wkt.utils.TbkUtil.superSearchGoods;
 import static com.zmj.wkt.utils.TbkUtil.tpwdCreate;
 
@@ -53,4 +51,15 @@ public class Test {
         b=2;
     }
 
+
+    @org.junit.Test
+    public void testHttps(){
+        String out = null;
+        String code = "011TGzj613mcUS1FrWj614ckj61TGzjn";
+        String httpsResponse = HttpsClientUtil.httpsRequest("https://api.weixin.qq.com/sns/jscode2session?appid="
+                + SysConstant.WX_APPID+"&secret="+SysConstant.WX_SECRET+"&js_code="+code+"&grant_type=authorization_code"
+                , "GET", out);
+        System.out.println(out);
+        System.out.println(httpsResponse);
+    }
 }

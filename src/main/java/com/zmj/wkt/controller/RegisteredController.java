@@ -13,6 +13,7 @@ import com.zmj.wkt.service.Bs_role_personService;
 import com.zmj.wkt.utils.*;
 import com.zmj.wkt.utils.sysenum.ErrorCode;
 import com.zmj.wkt.utils.sysenum.RoleCode;
+import com.zmj.wkt.utils.sysenum.SysCode;
 import net.sf.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -95,21 +96,23 @@ public class RegisteredController extends CommonController {
     @RequestMapping(value = "/WXRegister" ,produces="application/json;charset=UTF-8")
     @ResponseBody
     @RestfulAnnotation
-    public RestfulResult WXRegister(Bs_person bs_person,String code,String bizId)throws CommonException {
+    public RestfulResult WXRegister(Bs_person bs_person,String code,String bizId,String WXcode)throws CommonException {
         try {
             if(ZmjUtil.isNullOrEmpty(bs_person.getPhone())){
                 throw new CommonException(ErrorCode.VERIFY_ERROR,"手机号不能为空！");
             }
             RestfulResult restfulResult = verifyCode(bs_person.getPhone(),code, bizId);
-            if(restfulResult.getStatus()!=200){
+            if(restfulResult.getStatus()!= SysCode.SYS_CODE_STATUS_SUCCESS.getCode()){
                 return restfulResult;
             }
             if(ZmjUtil.isNullOrEmpty(bs_person.getUserName())){
                 throw new CommonException(ErrorCode.VERIFY_ERROR,"用户名不能为空！");
             }
-            if(ZmjUtil.isNullOrEmpty(bs_person.getWXOpenID())){
-                throw new CommonException(ErrorCode.VERIFY_ERROR,"微信OPENID不能为空！");
+            if(ZmjUtil.isNullOrEmpty(WXcode)){
+                throw new CommonException(ErrorCode.VERIFY_ERROR,"WXcode不能为空！");
             }
+            String openID = WXUtil.getWXcode(WXcode);
+            bs_person.setWXOpenID(openID);
             if(ZmjUtil.isNullOrEmpty(bs_person.getPersonPassword())){
                 throw new CommonException(ErrorCode.VERIFY_ERROR,"密码不能为空！");
             }else {
@@ -174,6 +177,9 @@ public class RegisteredController extends CommonController {
     @ResponseBody
     @RestfulAnnotation
     public RestfulResult sendSmsCode(String mobile)throws CommonException{
+        if(ZmjUtil.isNullOrEmpty(mobile)){
+            throw new CommonException("手机号不能为空！");
+        }
         SendSmsResponse sendSmsResponse = AliSmsUtil.sendSms(mobile);
         //返回代码
         String reqCode = sendSmsResponse.getCode();

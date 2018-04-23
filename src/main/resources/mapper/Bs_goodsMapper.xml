@@ -48,7 +48,7 @@
     <select id="selectGoodsList" resultType="com.zmj.wkt.entity.Bs_goods" parameterType="String">
         SELECT * FROM  bs_goods WHERE
         GAddress = #{addr} and (GTypeID1 =#{typeID} or GTypeID2 =#{typeID}or GTypeID3 =#{typeID})
-        and State = 0 and IsAble = 0 and IsShow = 0 and IsQQ =#{IsQQ}
+        and State = 0 and IsAble = 0 and IsShow = 0 and IsQQ = ${IsQQ}
     </select>
     <select id="selectGoodsListByClientID" resultType="com.zmj.wkt.entity.Bs_goods" parameterType="String">
         SELECT * FROM  bs_goods WHERE

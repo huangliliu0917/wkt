@@ -76,7 +76,7 @@ public class Bs_personServiceImpl extends CommonManagerImpl<Bs_personMapper, Bs_
         entityWrapper.where("UserName ={0}",bs_person.getUserName());
         List selectList = bs_personMapper.selectList(entityWrapper);
         if(selectList!=null&&selectList.size()>0){
-            throw new CommonException(ErrorCode.VERIFY_ERROR,"用户名已存在！");
+            throw new CommonException("用户名已存在！");
         }
         bs_personMapper.insert(bs_person);
         //默认权限
