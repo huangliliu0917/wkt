@@ -48,7 +48,7 @@ public interface Bs_goodsService  extends CommonManager<Bs_goods> {
      * @param addr
      * @return
      */
-    public Page<Bs_goods> showGoodsList(Page<Bs_goods> page,String typeID,String addr);
+    public Page<Bs_goods> showGoodsList(Page<Bs_goods> page,String typeID,String addr,int IsQQ);
 
     public void uploadfileTest(MultipartFile imgFile);
 

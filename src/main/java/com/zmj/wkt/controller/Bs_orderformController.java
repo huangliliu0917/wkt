@@ -88,19 +88,37 @@ public class Bs_orderformController  extends CommonController{
     }
 
     /**
-     * 获取当前用户的订单
+     * 获取当前用户的待发送订单
      * @return
      * @throws Exception
      */
     @GetMapping("/findMyOrderForm")
     public  RestfulResult findMyOrderForm() throws Exception {
         Bs_person bs_person = getThisUser();
-        EntityWrapper entityWrapper = new EntityWrapper();
-        entityWrapper.setEntity(new Bs_orderform());
-        entityWrapper.where("ClientID = {0}",bs_person.getClientID());
-        return  RestfulResultUtils.success(bs_orderformService.selectList(entityWrapper));
+        return  RestfulResultUtils.success(bs_orderformService.findUserOrderFormList(bs_person.getClientID(),SysCode.STATE_TO_BE_SENT));
     }
 
+    /**
+     * 获取当前用户的发送成功订单
+     * @return
+     * @throws Exception
+     */
+    @GetMapping("/findMySuccessOrderForm")
+    public  RestfulResult findMySuccessOrderForm() throws Exception {
+        Bs_person bs_person = getThisUser();
+        return  RestfulResultUtils.success(bs_orderformService.findUserOrderFormList(bs_person.getClientID(),SysCode.STATE_TO_SUCCESS));
+    }
+
+    /**
+     * 获取当前用户的发送失败订单
+     * @return
+     * @throws Exception
+     */
+    @GetMapping("/findMyFailureOrderForm")
+    public  RestfulResult findMyFailureOrderForm() throws Exception {
+        Bs_person bs_person = getThisUser();
+        return  RestfulResultUtils.success(bs_orderformService.findUserOrderFormList(bs_person.getClientID(),SysCode.STATE_TO_FAILURE));
+    }
 
     /**
      * 获取当前接单用户待发送的订单
@@ -110,10 +128,29 @@ public class Bs_orderformController  extends CommonController{
     @GetMapping("/jd/getWaitOrderForm")
     public  RestfulResult getJdWaitOrderForm() throws Exception {
         Bs_person bs_person = getThisUser();
-        EntityWrapper entityWrapper = new EntityWrapper();
-        entityWrapper.setEntity(new Bs_orderform());
-        entityWrapper.where("ProductUserName = {0} and State = {1} and IsAble = {2}",bs_person.getUserName(), SysCode.STATE_TO_BE_SENT.getCode(),SysCode.STATE_T.getCode());
-        return  RestfulResultUtils.success(bs_orderformService.selectList(entityWrapper));
+        return  RestfulResultUtils.success(bs_orderformService.findJdOrderFormList(bs_person.getUserName(),SysCode.STATE_TO_BE_SENT));
+    }
+
+    /**
+     * 获取当前接单用户发送成功的订单
+     * @return
+     * @throws Exception
+     */
+    @GetMapping("/jd/getJdSuccessOrderForm")
+    public  RestfulResult getJdSuccessOrderForm() throws Exception {
+        Bs_person bs_person = getThisUser();
+        return  RestfulResultUtils.success(bs_orderformService.findJdOrderFormList(bs_person.getUserName(),SysCode.STATE_TO_SUCCESS));
+    }
+
+    /**
+     * 获取当前接单用户发送失败的订单
+     * @return
+     * @throws Exception
+     */
+    @GetMapping("/jd/getJdFailureOrderForm")
+    public  RestfulResult getJdFailureOrderForm() throws Exception {
+        Bs_person bs_person = getThisUser();
+        return  RestfulResultUtils.success(bs_orderformService.findJdOrderFormList(bs_person.getUserName(),SysCode.STATE_TO_FAILURE));
     }
 
     /**

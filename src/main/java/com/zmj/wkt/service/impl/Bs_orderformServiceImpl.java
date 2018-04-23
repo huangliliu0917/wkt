@@ -22,6 +22,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.util.List;
 
 /**
  * <p>
@@ -154,5 +155,33 @@ public class Bs_orderformServiceImpl extends CommonManagerImpl<Bs_orderformMappe
         bs_orderformWrapper.setEntity(new Bs_orderform());
         bs_orderformWrapper.where("SubID = {0}",bs_orderform.getSubID());
         bs_orderformMapper.update(newOrderform,bs_orderformWrapper);
+    }
+
+    /**
+     * 获取用户订单列表
+     *
+     * @param ClientID
+     * @param state
+     */
+    @Override
+    public List findUserOrderFormList(String ClientID, SysCode state) {
+        EntityWrapper entityWrapper = new EntityWrapper();
+        entityWrapper.setEntity(new Bs_orderform());
+        entityWrapper.where("ClientID = {0} and State = {1} and IsAble = {2}",ClientID,state.getCode(),SysCode.STATE_T.getCode());
+        return selectList(entityWrapper);
+    }
+
+    /**
+     * 获取接单用户订单列表
+     *
+     * @param username
+     * @param state
+     */
+    @Override
+    public List findJdOrderFormList(String username, SysCode state) {
+        EntityWrapper entityWrapper = new EntityWrapper();
+        entityWrapper.setEntity(new Bs_orderform());
+        entityWrapper.where("ProductUserName = {0} and State = {1} and IsAble = {2}",username,state.getCode(),SysCode.STATE_T.getCode());
+        return selectList(entityWrapper);
     }
 }

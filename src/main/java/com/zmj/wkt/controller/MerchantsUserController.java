@@ -88,7 +88,7 @@ public class MerchantsUserController extends CommonController{
      * @param goodsId
      * @return
      */
-    @CacheEvict(cacheNames = "Bs_goodsController",allEntries = true)
+    @CacheEvict(value = "getGoods",allEntries = true)
     @PostMapping("/delMerchantsGoods")
     public RestfulResult delMerchantsGoods(String goodsId){
         EntityWrapper entityWrapper = new EntityWrapper();

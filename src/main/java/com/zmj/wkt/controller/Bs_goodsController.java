@@ -90,7 +90,7 @@ public class Bs_goodsController extends CommonController{
      * @param addr
      * @return
      */
-    @Cacheable(value = "getGoods",key = "#root.caches[0].name + ':' + #typeID +','+ #addr+ ','+#pages +','+ #amount")
+    @Cacheable(value = "getGoods",key = "#root.caches[0].name +'WX'+ ':' + #typeID +','+ #addr+ ','+#pages +','+ #amount")
     @RequestMapping("/getGoods")
     @ResponseBody
     public RestfulResult getGoods(String typeID,String addr,int pages,int amount){
@@ -107,7 +107,34 @@ public class Bs_goodsController extends CommonController{
             throw new CommonException(ErrorCode.NULL_ERROR,"单页数量不能为空！");
         }
         Page page = new Page(pages,amount);
-        Page page1 = bs_goodsService.showGoodsList(page, typeID, addr);
+        Page page1 = bs_goodsService.showGoodsList(page, typeID, addr,SysCode.IS_NOT_QQ.getCode());
+        return RestfulResultUtils.success(page1);
+    }
+
+    /**
+     * 根据类别获取QQ群列表
+     * @param typeID
+     * @param addr
+     * @return
+     */
+    @Cacheable(value = "getQQGoods",key = "#root.caches[0].name +'QQ'+ ':' + #typeID +','+ #addr+ ','+#pages +','+ #amount")
+    @RequestMapping("/getQQGoods")
+    @ResponseBody
+    public RestfulResult getQQGoods(String typeID,String addr,int pages,int amount){
+        if(Strings.isNullOrEmpty(typeID)){
+            throw new CommonException(ErrorCode.NULL_ERROR,"类型ID不能为空！");
+        }
+        if(Strings.isNullOrEmpty(typeID)){
+            throw new CommonException(ErrorCode.NULL_ERROR,"地区类型不能为空！");
+        }
+        if(ZmjUtil.isNullOrEmpty(pages)){
+            throw new CommonException(ErrorCode.NULL_ERROR,"页码不能为空！");
+        }
+        if(ZmjUtil.isNullOrEmpty(amount)){
+            throw new CommonException(ErrorCode.NULL_ERROR,"单页数量不能为空！");
+        }
+        Page page = new Page(pages,amount);
+        Page page1 = bs_goodsService.showGoodsList(page, typeID, addr,SysCode.IS_QQ.getCode());
         return RestfulResultUtils.success(page1);
     }
 
@@ -177,6 +204,7 @@ public class Bs_goodsController extends CommonController{
         EntityWrapper entityWrapper = new EntityWrapper();
         entityWrapper.setEntity(new Bs_goods());
         entityWrapper.where("GoodsID = {0}",bs_goods.getGoodsID());
+        bs_goods.setIsAble(SysCode.IS_ABLE_WAIT.getCode());
         bs_goodsService.update(bs_goods,entityWrapper);
         return RestfulResultUtils.success("更新成功！");
     }

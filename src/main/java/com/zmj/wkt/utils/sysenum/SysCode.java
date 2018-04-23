@@ -22,11 +22,15 @@ public enum SysCode implements CodeInterface {
     STATE_F(1,"无效"),
     STATE_TO_BE_SENT(2,"待发送"),
     STATE_TO_SUCCESS(3,"发送成功"),
-    STATE_TO_ERROR(4,"发送失败"),
+    STATE_TO_FAILURE(4,"发送失败"),
     //Able
     IS_ABLE_YES(0,"已审核"),
     IS_ABLE_NO(1,"未通过"),
     IS_ABLE_WAIT(2,"待审核"),
+
+    //是否为QQ群 0不是qq 1 是qq
+    IS_QQ(1,"是QQ群"),
+    IS_NOT_QQ(0,"不是QQ群"),
     ;
 
     /**

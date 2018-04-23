@@ -80,8 +80,8 @@ public class Bs_goodsServiceImpl extends CommonManagerImpl<Bs_goodsMapper,Bs_goo
      * @return
      */
     @Override
-    public Page<Bs_goods> showGoodsList(Page<Bs_goods> page, String typeID, String addr) {
-        page.setRecords(bs_goodsMapper.selectGoodsList(page,typeID,addr));
+    public Page<Bs_goods> showGoodsList(Page<Bs_goods> page, String typeID, String addr,int IsQQ) {
+        page.setRecords(bs_goodsMapper.selectGoodsList(page,typeID,addr,IsQQ));
         return page;
     }
 
