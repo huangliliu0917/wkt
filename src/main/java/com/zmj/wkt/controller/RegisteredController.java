@@ -83,7 +83,7 @@ public class RegisteredController extends CommonController {
             return RestfulResultUtils.success("注册成功！");
         }catch (Exception e){
             e.printStackTrace();
-            throw new CommonException("注册失败,"+e.getMessage());
+            throw new CommonException(e.getMessage());
         }
     }
 

@@ -8,6 +8,7 @@ import com.zmj.wkt.mapper.Acc_personMapper;
 import com.zmj.wkt.mapper.Bs_goodsMapper;
 import com.zmj.wkt.mapper.Bs_orderformMapper;
 import com.zmj.wkt.service.Acc_personService;
+import com.zmj.wkt.service.Bs_goodsService;
 import com.zmj.wkt.service.Bs_orderformService;
 import com.zmj.wkt.common.CommonManagerImpl;
 import com.zmj.wkt.service.Bs_personService;
@@ -50,6 +51,9 @@ public class Bs_orderformServiceImpl extends CommonManagerImpl<Bs_orderformMappe
 
     @Autowired
     Bs_personService bs_personService;
+
+    @Autowired
+    Bs_goodsService bs_goodsService;
 
     @Override
     public void orderFormApply(Bs_orderform bs_orderform, MultipartFile imgFile) {
@@ -155,6 +159,15 @@ public class Bs_orderformServiceImpl extends CommonManagerImpl<Bs_orderformMappe
         bs_orderformWrapper.setEntity(new Bs_orderform());
         bs_orderformWrapper.where("SubID = {0}",bs_orderform.getSubID());
         bs_orderformMapper.update(newOrderform,bs_orderformWrapper);
+
+        //群状态更改
+        EntityWrapper bs_goodsWrapper = new EntityWrapper();
+        bs_goodsWrapper.setEntity(new Bs_goods());
+        bs_goodsWrapper.where("GoodsID = {0} " ,bs_orderform.getGoodsID());
+        Bs_goods bs_goods = bs_goodsService.selectOne(bs_goodsWrapper);
+        bs_goods.setGCount(bs_goods.getGCount()+1);
+        bs_goods.setGSail(bs_goods.getGSail()+1);
+        bs_goodsService.updateGoodsByID(bs_goods);
     }
 
     /**

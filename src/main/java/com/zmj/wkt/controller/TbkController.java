@@ -208,17 +208,10 @@ public class TbkController extends CommonController {
     @GetMapping("/getTbkCollenctions")
     public RestfulResult getTbkCollenctions() throws Exception {
         Bs_person bs_person = getThisUser();
-        List<String> numList = bs_tbkCollectionsMapper.getNum_iidByClientID(bs_person.getClientID());
-        if(ZmjUtil.isNullOrEmpty(numList)){
-            return RestfulResultUtils.success();
-        }
-        StringBuilder num_iids = new StringBuilder();
-        for (String s:numList ) {
-            num_iids.append(s);
-            num_iids.append(",");
-        }
-        num_iids.delete(num_iids.length()-1,num_iids.length()-1);
-        return RestfulResultUtils.success(TbkUtil.getGoodInfo(num_iids.toString()));
+        EntityWrapper entityWrapper = new EntityWrapper();
+        entityWrapper.setEntity(new Bs_tbkCollections());
+        entityWrapper.where("ClientID = {0}",bs_person.getClientID());
+        return RestfulResultUtils.success(bs_tbkCollectionsMapper.selectList(entityWrapper));
     }
 
     /**
@@ -296,17 +289,16 @@ public class TbkController extends CommonController {
      * @return
      */
     @PostMapping("/getTkbGoodsInfo")
-    public RestfulResult getTkbGoodsInfo(String [] num_iids) throws Exception {
+    public RestfulResult getTkbGoodsInfo(String [] num_iids,String consumerUserName) throws Exception {
         if(ZmjUtil.isNullOrEmpty(num_iids)){
             throw new CommonException(ErrorCode.NULL_ERROR,"num_iids不能为空");
         }
-        StringBuilder strNum_iid = new StringBuilder();
-        for (String id : num_iids){
-            strNum_iid.append(id);
-            strNum_iid.append(",");
-        }
-        strNum_iid.deleteCharAt(strNum_iid.length()-1);
-        return RestfulResultUtils.success(TbkUtil.getGoodInfo(strNum_iid.toString()));
+        Bs_person consumerUser = bs_personService.findByName(consumerUserName);
+        EntityWrapper entityWrapper = new EntityWrapper();
+        entityWrapper.setEntity(new Bs_tbkCollections());
+        entityWrapper.where("ClientID = {0}",consumerUser.getClientID());
+        entityWrapper.in("num_iid",num_iids);
+        return RestfulResultUtils.success(bs_tbkCollectionsMapper.selectList(entityWrapper));
     }
 
 
