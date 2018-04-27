@@ -10,10 +10,12 @@ public enum ErrorCode {
     NOT_FIND_ERROR(601,"数据未找到"),
     ISHAVEN_ERROR(602,"数据已经存在"),
     NOT_FIND_USER_ERROR(603,"未找到该用户"),
+    NOT_FIND_USER_ERROR2(604,"未找到该用户"),
     KNOWS_ERROR(500, "已知异常"),
     UNKNOWNS_ERROR(501, "未知异常"),
     HTTPREQUESTMETHODNOTSUPPORTED(405,"请求方法不被允许"),
     INSUFFICIENT_BALANCE(701,"余额不足"),
+
     ;
     /**
      * 说明

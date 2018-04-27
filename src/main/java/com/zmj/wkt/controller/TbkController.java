@@ -214,19 +214,7 @@ public class TbkController extends CommonController {
         return RestfulResultUtils.success(bs_tbkCollectionsMapper.selectList(entityWrapper));
     }
 
-    /**
-     * 获取淘客选品收藏条数
-     * @return
-     * @throws Exception
-     */
-    @GetMapping("/getTbkCollenctionsCount")
-    public RestfulResult getTbkCollenctionsCount() throws Exception {
-        EntityWrapper entityWrapper = new EntityWrapper();
-        entityWrapper.setEntity(new Bs_tbkCollections());
-        entityWrapper.where("ClientID = {0}",getThisUser().getClientID());
-        Integer selectCount = bs_tbkCollectionsMapper.selectCount(entityWrapper);
-        return  RestfulResultUtils.success(selectCount);
-    }
+
 
     /**
      * 生成订单
