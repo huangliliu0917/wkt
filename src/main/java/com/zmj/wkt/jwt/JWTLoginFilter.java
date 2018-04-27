@@ -33,15 +33,15 @@ import com.zmj.wkt.entity.Bs_person;
 import com.zmj.wkt.mapper.Bs_personMapper;
 import com.zmj.wkt.service.Bs_permissionService;
 import com.zmj.wkt.service.Bs_personService;
-import com.zmj.wkt.utils.DateUtil;
-import com.zmj.wkt.utils.RestfulResultUtils;
-import com.zmj.wkt.utils.SpringApplicationContextHolder;
-import com.zmj.wkt.utils.ZmjUtil;
+import com.zmj.wkt.utils.*;
 import com.zmj.wkt.utils.sysenum.ErrorCode;
 import com.zmj.wkt.utils.sysenum.SysConstant;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import net.sf.json.JSONObject;
+import org.springframework.beans.BeanWrapper;
+import org.springframework.beans.BeansException;
+import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -65,8 +65,9 @@ import java.util.*;
  * 该类继承自UsernamePasswordAuthenticationFilter，重写了其中的2个方法
  * attemptAuthentication ：接收并解析用户凭证。
  * successfulAuthentication ：用户成功登录后，这个方法会被调用，我们在这个方法里生成token。
+ * @author zmj
  */
-public class JWTLoginFilter extends UsernamePasswordAuthenticationFilter {
+public class JWTLoginFilter extends UsernamePasswordAuthenticationFilter implements InitializingBean {
 
     @Autowired
     Bs_personService bs_personService;
@@ -77,40 +78,32 @@ public class JWTLoginFilter extends UsernamePasswordAuthenticationFilter {
         this.authenticationManager = authenticationManager;
     }
 
+    @Override
+    public void afterPropertiesSet() {
+        init();
+    }
+
     // 接收并解析用户凭证
     @Override
     public Authentication attemptAuthentication(HttpServletRequest req,
                                                 HttpServletResponse res) throws CommonException {
         try {
+            init();
             res.setHeader("Content-type", "text/html;charset=UTF-8");
             res.setHeader("Access-Control-Allow-Origin",req.getHeader("Origin"));
             res.setHeader("Access-Control-Allow-Credentials", "true");
             String code = req.getParameter("code");
-            if(ZmjUtil.isNullOrEmpty(code)) {
+            String username = req.getParameter("username");
+            String password = req.getParameter("password");
+            if(!ZmjUtil.isNullOrEmpty(code)) {
+                return WXAuthentication(req,res,code);
+            }else if(!ZmjUtil.isNullOrEmpty(username)&&!ZmjUtil.isNullOrEmpty(password)){
+                return normalAuthentication(req,res,username,password);
+            }else {
                 req.setAttribute("myStatus",ErrorCode.NULL_ERROR.getCode());
-                throw new CommonException(ErrorCode.NULL_ERROR,"code为空！");
+                throw new CommonException(ErrorCode.NULL_ERROR,"code为空！或账户密码为空！");
             }
-            JSONObject sessionKeyOropenid = getSessionKeyOropenid(code);
-            String openid = (String) sessionKeyOropenid.get("openid");
-            if (ZmjUtil.isNullOrEmpty(openid)){
-                req.setAttribute("myStatus",ErrorCode.NULL_ERROR.getCode());
-                throw new CommonException(ErrorCode.NULL_ERROR, "根据code找不到对应的openid！");
-            }
-            System.out.println("openid:"+openid);
-            if(bs_personService==null){
-                bs_personService = (Bs_personService) SpringApplicationContextHolder.getSpringBean("bs_personServiceImpl");
-            }
-            Bs_person bs_person = bs_personService.findByWXOpenID(openid.toString());
-            if (bs_person==null){
-                req.setAttribute("myStatus",ErrorCode.NOT_FIND_USER_ERROR.getCode());
-                throw new CommonException(ErrorCode.NOT_FIND_USER_ERROR,"未找到该用户！");
-            }
-            return authenticationManager.authenticate(
-                    new UsernamePasswordAuthenticationToken(
-                            bs_person.getUserName(),
-                            bs_person.getPersonPassword(),
-                            new ArrayList<>())
-            );
+
         } catch (CommonException ce){
             throw ce;
         }catch (Exception e) {
@@ -160,5 +153,68 @@ public class JWTLoginFilter extends UsernamePasswordAuthenticationFilter {
         //发送post请求读取调用微信 https://api.weixin.qq.com/sns/jscode2session 接口获取openid用户唯一标识
         JSONObject jsonObject = JSONObject.fromObject(ZmjUtil.sendPost(requestUrl, requestUrlParam));
         return jsonObject;
+    }
+
+    /**
+     * 微信登录
+     * @param req
+     * @param res
+     * @return
+     * @throws CommonException
+     */
+    public Authentication WXAuthentication(HttpServletRequest req,
+                                                HttpServletResponse res,String code) throws CommonException {
+        JSONObject sessionKeyOropenid = getSessionKeyOropenid(code);
+        String openid = (String) sessionKeyOropenid.get("openid");
+        if (ZmjUtil.isNullOrEmpty(openid)){
+            req.setAttribute("myStatus",ErrorCode.NULL_ERROR.getCode());
+            throw new CommonException(ErrorCode.NULL_ERROR, "根据code找不到对应的openid！");
+        }
+        System.out.println("openid:"+openid);
+
+        Bs_person bs_person = bs_personService.findByWXOpenID(openid.toString());
+        if (ZmjUtil.isNullOrEmpty(bs_person)){
+            req.setAttribute("myStatus",ErrorCode.NOT_FIND_USER_ERROR2.getCode());
+            throw new CommonException(ErrorCode.NOT_FIND_USER_ERROR2,"未找到该用户！");
+        }
+        return authenticationManager.authenticate(
+                new UsernamePasswordAuthenticationToken(
+                        bs_person.getUserName(),
+                        bs_person.getPersonPassword(),
+                        new ArrayList<>())
+        );
+    }
+
+    /**
+     * 普通登录
+     * @param req
+     * @param res
+     * @return
+     * @throws CommonException
+     */
+    public Authentication normalAuthentication(HttpServletRequest req,
+                                           HttpServletResponse res,String username , String password) throws CommonException {
+        Bs_person bs_person = bs_personService.findByName(username);
+        if (ZmjUtil.isNullOrEmpty(bs_person)){
+            req.setAttribute("myStatus",ErrorCode.NOT_FIND_USER_ERROR2.getCode());
+            throw new CommonException(ErrorCode.NOT_FIND_USER_ERROR2,"未找到该用户！");
+        }
+        if(!bs_person.getPersonPassword().equals(MD5Util.encode(password))){
+            req.setAttribute("myStatus",ErrorCode.VERIFY_ERROR.getCode());
+            throw new CommonException(ErrorCode.VERIFY_ERROR,"密码错误！");
+        }
+        return authenticationManager.authenticate(
+                new UsernamePasswordAuthenticationToken(
+                        bs_person.getUserName(),
+                        bs_person.getPersonPassword(),
+                        new ArrayList<>())
+        );
+    }
+
+
+    private void init(){
+        if(bs_personService==null){
+            bs_personService = (Bs_personService) SpringApplicationContextHolder.getSpringBean("bs_personServiceImpl");
+        }
     }
 }
