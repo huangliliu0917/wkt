@@ -80,4 +80,18 @@ public class ExceptionTranslator {
         sys_error_logMapper.insert(sys_error_log);
         return RestfulResultUtils.error(ErrorCode.HTTPREQUESTMETHODNOTSUPPORTED.getCode(),ErrorCode.HTTPREQUESTMETHODNOTSUPPORTED.getDescription()+":"+e.getMessage().trim());
     }
+
+    @ExceptionHandler(value = io.jsonwebtoken.ExpiredJwtException.class)
+    @ResponseBody
+    public RestfulResult handle(io.jsonwebtoken.ExpiredJwtException e){
+        logger.info(RestfulResultUtils.error(ErrorCode.TOKEN_ERROR.getCode(), ErrorCode.TOKEN_ERROR.getDescription() + ":" + e.getMessage().trim()).toString());
+        //插入数据库
+        Sys_error_log sys_error_log = new Sys_error_log();
+        sys_error_log.setErrorCode(String.valueOf(ErrorCode.TOKEN_ERROR.getCode()));
+        sys_error_log.setMessage(e.getMessage());
+        sys_error_log.setDatetime(DateUtil.getNowTimestamp());
+        sys_error_logMapper.insert(sys_error_log);
+        return RestfulResultUtils.error(ErrorCode.TOKEN_ERROR.getCode(),ErrorCode.TOKEN_ERROR.getDescription()+":"+e.getMessage().trim());
+    }
+
 }

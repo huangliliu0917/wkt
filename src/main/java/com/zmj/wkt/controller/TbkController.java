@@ -1,7 +1,6 @@
 package com.zmj.wkt.controller;
 
 import com.baomidou.mybatisplus.mapper.EntityWrapper;
-import com.google.gson.JsonArray;
 import com.taobao.api.ApiException;
 import com.zmj.wkt.common.CommonController;
 import com.zmj.wkt.common.RestfulResult;
@@ -16,14 +15,12 @@ import com.zmj.wkt.utils.ZmjUtil;
 import com.zmj.wkt.utils.sysenum.ErrorCode;
 import com.zmj.wkt.utils.sysenum.SysCode;
 import net.sf.json.JSONArray;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import javax.ws.rs.POST;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.UUID;
@@ -83,7 +80,7 @@ public class TbkController extends CommonController {
     @PostMapping("/getTbkGoodsList")
     public RestfulResult getTbkGoodsList(String Q ,Long pageNo ,Long pageSize) throws Exception {
         Bs_person bs_person = getThisUser();
-        if(org.apache.commons.lang.StringUtils.isBlank(bs_person.getPID())){
+        if(StringUtils.isBlank(bs_person.getPID())){
             throw new CommonException(ErrorCode.NULL_ERROR,"PID不能为空!");
         }
         return RestfulResultUtils.success(TbkUtil.getGoodsList(bs_person.getPID(),Q,pageNo,pageSize));

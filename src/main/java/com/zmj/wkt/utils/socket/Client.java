@@ -1,6 +1,6 @@
 package com.zmj.wkt.utils.socket;
 
-import org.apache.commons.lang.ArrayUtils;
+import org.apache.commons.lang3.ArrayUtils;
 
 import java.io.*;
 import java.net.Socket;

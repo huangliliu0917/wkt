@@ -3,6 +3,7 @@ package com.zmj.wkt.common.exception;
 import com.google.common.base.Strings;
 import com.zmj.wkt.utils.sysenum.ErrorCode;
 import com.zmj.wkt.utils.sysenum.SysCode;
+import io.jsonwebtoken.ExpiredJwtException;
 import org.springframework.boot.autoconfigure.web.BasicErrorController;
 import org.springframework.boot.autoconfigure.web.DefaultErrorAttributes;
 import org.springframework.boot.autoconfigure.web.ErrorProperties;
@@ -58,6 +59,10 @@ public class TokenErrorController  extends BasicErrorController {
             status = (int) request.getAttribute("myStatus");
         }else {
             status = getStatus(request).value();
+        }
+        //token异常
+        if("io.jsonwebtoken.ExpiredJwtException".equals(body.get("exception"))){
+            throw new  CommonException(ErrorCode.TOKEN_ERROR,body.get("error")+":"+body.get("message").toString());
         }
         throw new  CommonException(status,body.get("error")+":"+body.get("message").toString());
         //return new ResponseEntity<Map<String, Object>>(body, status);
