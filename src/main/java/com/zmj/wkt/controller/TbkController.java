@@ -233,6 +233,9 @@ public class TbkController extends CommonController {
         entityWrapper.setEntity(new Bs_goods());
         entityWrapper.where("GoodsID={0}",goodsID);
         Bs_goods bs_goods = bs_goodsService.selectOne(entityWrapper);
+        if(num_iids.length>bs_goods.getGCount()){
+
+        }
         //构造订单对象
         Bs_orderform bs_orderform = new Bs_orderform();
         bs_orderform.setGoodsID(bs_goods.getGoodsID());
@@ -250,6 +253,7 @@ public class TbkController extends CommonController {
         bs_orderform.setItemDescription(Arrays.toString(num_iids));
         //申请时间
         bs_orderform.setSpDate(DateUtil.getNowTimestamp());
+
         bs_orderformService.orderFormApply(bs_orderform);
         return RestfulResultUtils.success("上传成功!等待是商户确认!");
     }

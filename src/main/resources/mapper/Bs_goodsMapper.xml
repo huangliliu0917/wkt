@@ -27,6 +27,7 @@
         <result column="GDateTime" property="GDateTime" />
         <result column="GSize" property="GSize" />
         <result column="GAddress" property="GAddress" />
+        <result column="GArea" property="GArea" />
         <result column="State" property="State" />
         <result column="IsAble" property="IsAble" />
         <result column="IsShow" property="IsShow" />
@@ -36,7 +37,7 @@
 
     <!-- 通用查询结果列 -->
     <sql id="Base_Column_List">
-        GoodsID, GClientID, GQQGoodsNumber , GWXPersonNumber, GWXUserNumber, GUserName, GName, GPrice, GTbkPrice, GActivePrice, GInfo, GTypeID1, GTypeID2, GTypeID3, GTypeNames, GIntro, GImage, GCount, GSail, GWeight, GDateTime, GSize, GAddress, State, IsAble,IsShow, GAddedTime ,IsQQ
+        GoodsID, GClientID, GQQGoodsNumber , GWXPersonNumber, GWXUserNumber, GUserName, GName, GPrice, GTbkPrice, GActivePrice, GInfo, GTypeID1, GTypeID2, GTypeID3, GTypeNames, GIntro, GImage, GCount, GSail, GWeight, GDateTime, GSize, GAddress, GArea, State, IsAble,IsShow, GAddedTime ,IsQQ
     </sql>
 
     <select id="getBs_person_goodsByClientID" resultType="com.zmj.wkt.entity.Bs_goods" parameterType="String">

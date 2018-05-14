@@ -165,8 +165,8 @@ public class Bs_orderformServiceImpl extends CommonManagerImpl<Bs_orderformMappe
         bs_goodsWrapper.setEntity(new Bs_goods());
         bs_goodsWrapper.where("GoodsID = {0} " ,bs_orderform.getGoodsID());
         Bs_goods bs_goods = bs_goodsService.selectOne(bs_goodsWrapper);
-        bs_goods.setGCount(bs_goods.getGCount()+1);
-        bs_goods.setGSail(bs_goods.getGSail()+1);
+        bs_goods.setGCount(bs_goods.getGCount()+bs_orderform.getSpPrice());
+        bs_goods.setGSail(bs_goods.getGSail()+bs_orderform.getSpPrice());
         bs_goodsService.updateGoodsByID(bs_goods);
     }
 
@@ -180,7 +180,7 @@ public class Bs_orderformServiceImpl extends CommonManagerImpl<Bs_orderformMappe
     public List findUserOrderFormList(String ClientID, SysCode state) {
         EntityWrapper entityWrapper = new EntityWrapper();
         entityWrapper.setEntity(new Bs_orderform());
-        entityWrapper.where("ClientID = {0} and State = {1} and IsAble = {2}",ClientID,state.getCode(),SysCode.STATE_T.getCode());
+        entityWrapper.where("ClientID = {0} and State = {1} and IsAble = {2}",ClientID,state.getCode(),SysCode.STATE_T.getCode()).orderBy("SpDate",false);
         return selectList(entityWrapper);
     }
 
@@ -194,7 +194,7 @@ public class Bs_orderformServiceImpl extends CommonManagerImpl<Bs_orderformMappe
     public List findJdOrderFormList(String username, SysCode state) {
         EntityWrapper entityWrapper = new EntityWrapper();
         entityWrapper.setEntity(new Bs_orderform());
-        entityWrapper.where("ProductUserName = {0} and State = {1} and IsAble = {2}",username,state.getCode(),SysCode.STATE_T.getCode());
+        entityWrapper.where("ProductUserName = {0} and State = {1} and IsAble = {2}",username,state.getCode(),SysCode.STATE_T.getCode()).orderBy("SpDate",false);
         return selectList(entityWrapper);
     }
 }

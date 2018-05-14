@@ -13,7 +13,7 @@ import java.io.Serializable;
  * </p>
  *
  * @author zmj
- * @since 2018-04-11
+ * @since 2018-05-14
  */
 @TableName("bs_goods")
 public class Bs_goods extends Model<Bs_goods> {
@@ -109,7 +109,11 @@ public class Bs_goods extends Model<Bs_goods> {
      */
 	private String GSize;
     /**
-     * 位置
+     * 区
+     */
+	private String GArea;
+    /**
+     * 市
      */
 	private String GAddress;
     /**
@@ -310,6 +314,14 @@ public class Bs_goods extends Model<Bs_goods> {
 		this.GSize = GSize;
 	}
 
+	public String getGArea() {
+		return GArea;
+	}
+
+	public void setGArea(String GArea) {
+		this.GArea = GArea;
+	}
+
 	public String getGAddress() {
 		return GAddress;
 	}
@@ -388,6 +400,7 @@ public class Bs_goods extends Model<Bs_goods> {
 			", GWeight=" + GWeight +
 			", GDateTime=" + GDateTime +
 			", GSize=" + GSize +
+			", GArea=" + GArea +
 			", GAddress=" + GAddress +
 			", State=" + State +
 			", IsAble=" + IsAble +

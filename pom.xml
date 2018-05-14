@@ -132,6 +132,12 @@
 			<groupId>org.springframework.session</groupId>
 			<artifactId>spring-session-data-redis</artifactId>
 		</dependency>
+		<!--lombok-->
+		<dependency>
+			<groupId>org.projectlombok</groupId>
+			<artifactId>lombok</artifactId>
+			<version>1.16.8</version>
+		</dependency>
 		<!--整合jjwt-->
 		<dependency>
 			<groupId>io.jsonwebtoken</groupId>
@@ -292,6 +298,11 @@
 						</include>
 					</includes>
 				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.projectlombok</groupId>
+				<artifactId>lombok-maven-plugin</artifactId>
+				<version>1.16.6.1</version>
 			</plugin>
 		</plugins>
 	</build>
