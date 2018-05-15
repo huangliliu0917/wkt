@@ -13,7 +13,7 @@ import java.io.Serializable;
  * </p>
  *
  * @author zmj
- * @since 2018-05-14
+ * @since 2018-05-15
  */
 @TableName("bs_goods")
 public class Bs_goods extends Model<Bs_goods> {
@@ -92,6 +92,10 @@ public class Bs_goods extends Model<Bs_goods> {
      * 计数
      */
 	private Long GCount;
+    /**
+     * 每日最大接单数
+     */
+	private Integer GMaxCount;
     /**
      * 商品销量
      */
@@ -282,6 +286,14 @@ public class Bs_goods extends Model<Bs_goods> {
 		this.GCount = GCount;
 	}
 
+	public Integer getGMaxCount() {
+		return GMaxCount;
+	}
+
+	public void setGMaxCount(Integer GMaxCount) {
+		this.GMaxCount = GMaxCount;
+	}
+
 	public Long getGSail() {
 		return GSail;
 	}
@@ -396,6 +408,7 @@ public class Bs_goods extends Model<Bs_goods> {
 			", GIntro=" + GIntro +
 			", GImage=" + GImage +
 			", GCount=" + GCount +
+			", GMaxCount=" + GMaxCount +
 			", GSail=" + GSail +
 			", GWeight=" + GWeight +
 			", GDateTime=" + GDateTime +

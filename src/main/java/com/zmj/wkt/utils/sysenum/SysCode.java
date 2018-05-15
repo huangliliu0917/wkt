@@ -23,6 +23,7 @@ public enum SysCode implements CodeInterface {
     STATE_TO_BE_SENT(2,"待发送"),
     STATE_TO_SUCCESS(3,"发送成功"),
     STATE_TO_FAILURE(4,"发送失败"),
+    STATE_TO_PAY(5,"确认支付"),
     //Able
     IS_ABLE_YES(0,"已审核"),
     IS_ABLE_NO(1,"未通过"),

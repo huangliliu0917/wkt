@@ -20,8 +20,9 @@ import java.util.List;
 public interface Bs_orderformService extends CommonManager<Bs_orderform> {
     public void orderFormApply(Bs_orderform bs_orderform, MultipartFile imgFile);
     public void orderFormApply(Bs_orderform bs_orderform);
-    public void orderSuccess(Bs_orderform bs_orderform, Bs_person bs_person, Acc_daybook oldAcc_daybook);
+    public void orderPaySuccess(Bs_orderform bs_orderform, Bs_person bs_person, Acc_daybook oldAcc_daybook);
 
+    public void orderSuccess(Bs_orderform bs_orderform, Bs_person bs_person, Acc_daybook oldAcc_daybook);
     /**
      * 获取用户订单列表
      * @param ClientID

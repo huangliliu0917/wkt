@@ -112,7 +112,7 @@ public class Bs_orderformServiceImpl extends CommonManagerImpl<Bs_orderformMappe
     }
 
     @Override
-    public void orderSuccess(Bs_orderform bs_orderform, Bs_person bs_person,Acc_daybook oldAcc_daybook) {
+    public void orderPaySuccess(Bs_orderform bs_orderform, Bs_person bs_person,Acc_daybook oldAcc_daybook) {
         //记录交易前金额
         Acc_daybook newAcc_daybook = new Acc_daybook();
         Acc_person userBalance = acc_personService.getUserBalance(bs_orderform.getClientID());
@@ -152,9 +152,9 @@ public class Bs_orderformServiceImpl extends CommonManagerImpl<Bs_orderformMappe
         entityWrapper.where("Action_no = {0}",oldAcc_daybook.getAction_no());
         acc_daybookMapper.update(oldAcc_daybook,entityWrapper);
 
-        //订单设置成功状态
+        //订单设置支付成功状态
         Bs_orderform newOrderform = new Bs_orderform();
-        newOrderform.setState(SysCode.STATE_TO_SUCCESS.getCode());
+        newOrderform.setState(SysCode.STATE_TO_PAY.getCode());
         EntityWrapper bs_orderformWrapper = new EntityWrapper();
         bs_orderformWrapper.setEntity(new Bs_orderform());
         bs_orderformWrapper.where("SubID = {0}",bs_orderform.getSubID());
@@ -168,6 +168,17 @@ public class Bs_orderformServiceImpl extends CommonManagerImpl<Bs_orderformMappe
         bs_goods.setGCount(bs_goods.getGCount()+bs_orderform.getSpPrice());
         bs_goods.setGSail(bs_goods.getGSail()+bs_orderform.getSpPrice());
         bs_goodsService.updateGoodsByID(bs_goods);
+    }
+
+    @Override
+    public void orderSuccess(Bs_orderform bs_orderform, Bs_person bs_person, Acc_daybook oldAcc_daybook) {
+        //订单设置成功状态
+        Bs_orderform newOrderform = new Bs_orderform();
+        newOrderform.setState(SysCode.STATE_TO_PAY.getCode());
+        EntityWrapper bs_orderformWrapper = new EntityWrapper();
+        bs_orderformWrapper.setEntity(new Bs_orderform());
+        bs_orderformWrapper.where("SubID = {0}",bs_orderform.getSubID());
+        bs_orderformMapper.update(newOrderform,bs_orderformWrapper);
     }
 
     /**

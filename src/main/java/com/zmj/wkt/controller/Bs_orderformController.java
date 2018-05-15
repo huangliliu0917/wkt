@@ -12,6 +12,7 @@ import com.zmj.wkt.mapper.Acc_daybookMapper;
 import com.zmj.wkt.mapper.Acc_personMapper;
 import com.zmj.wkt.service.Acc_daybookService;
 import com.zmj.wkt.service.Acc_personService;
+import com.zmj.wkt.service.Bs_goodsService;
 import com.zmj.wkt.service.Bs_orderformService;
 import com.zmj.wkt.utils.DateUtil;
 import com.zmj.wkt.utils.RestfulResultUtils;
@@ -19,6 +20,7 @@ import com.zmj.wkt.utils.ZmjUtil;
 import com.zmj.wkt.utils.sysenum.ErrorCode;
 import com.zmj.wkt.utils.sysenum.SysCode;
 import com.zmj.wkt.utils.sysenum.TrCode;
+import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -68,6 +70,8 @@ public class Bs_orderformController  extends CommonController{
     @Autowired
     Acc_daybookService acc_daybookService;
 
+    @Autowired
+    Bs_goodsService bs_goodsService;
 
     @PostMapping("/applyOrderForm")
     public RestfulResult applyOrderForm(Bs_orderform bs_orderform, @RequestParam("imgFile") MultipartFile imgFile) throws Exception {
@@ -83,7 +87,11 @@ public class Bs_orderformController  extends CommonController{
             bs_orderform.setSpPrice(bs_orderform.getGPrice()*bs_orderform.getSpCount());
             //申请时间
             bs_orderform.setSpDate(DateUtil.getNowTimestamp());
-            bs_orderformService.orderFormApply(bs_orderform,imgFile);
+        Bs_goods bs_goods = bs_goodsService.selectOne(new EntityWrapper<Bs_goods>().where("GoodsID = {0}", bs_orderform.getGoodsID()));
+        if(bs_goods.getGCount()+bs_orderform.getSpCount()>bs_goods.getGMaxCount()){
+            throw new CommonException("超出最大接单数！");
+        }
+        bs_orderformService.orderFormApply(bs_orderform,imgFile);
             return RestfulResultUtils.success("上传成功！等待审核...");
     }
 
@@ -166,6 +174,34 @@ public class Bs_orderformController  extends CommonController{
         bs_orderformWrapper.setEntity(new Bs_orderform());
         bs_orderformWrapper.where("ProductUserName = {0} and State = {1} and SubID = {2}",
                 bs_person.getUserName(), SysCode.STATE_TO_BE_SENT.getCode(),SubID);
+        Bs_orderform bs_orderform = bs_orderformService.selectOne(bs_orderformWrapper);
+        if(ZmjUtil.isNullOrEmpty(bs_orderform)){
+            throw new CommonException(ErrorCode.NOT_FIND_ERROR,"找不到该订单！");
+        }
+        EntityWrapper acc_daybookWrapper = new EntityWrapper();
+        acc_daybookWrapper.setEntity(new Acc_daybook());
+        acc_daybookWrapper.where("tr_code = {0} and State = {1} and SubID = {2}",TrCode.WITHHOLDING.getCode(),SysCode.STATE_T.getCode(),bs_orderform.getSubID());
+        Acc_daybook acc_daybook = acc_daybookService.selectOne(acc_daybookWrapper);
+        if(ZmjUtil.isNullOrEmpty(acc_daybook)){
+            throw new CommonException(ErrorCode.NOT_FIND_ERROR,"找不到该订单的代扣记录！");
+        }
+        bs_orderformService.orderSuccess(bs_orderform,bs_person,acc_daybook);
+        return  RestfulResultUtils.success("确认成功！");
+    }
+
+    /**
+     * 订单确认支付发送成功
+     * @param SubID
+     * @return
+     * @throws Exception
+     */
+    @PostMapping("/orderPaySuccess")
+    public RestfulResult orderPaySuccess(String SubID) throws Exception {
+        Bs_person bs_person = getThisUser();
+        EntityWrapper bs_orderformWrapper = new EntityWrapper();
+        bs_orderformWrapper.setEntity(new Bs_orderform());
+        bs_orderformWrapper.where("ClientID = {0} and State = {1} and SubID = {2}",
+                bs_person.getClientID(), SysCode.STATE_TO_SUCCESS.getCode(),SubID);
         Bs_orderform bs_orderform = bs_orderformService.selectOne(bs_orderformWrapper);
         if(ZmjUtil.isNullOrEmpty(bs_orderform)){
             throw new CommonException(ErrorCode.NOT_FIND_ERROR,"找不到该订单！");

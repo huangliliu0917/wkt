@@ -22,6 +22,7 @@
         <result column="GIntro" property="GIntro" />
         <result column="GImage" property="GImage" />
         <result column="GCount" property="GCount" />
+        <result column="GMaxCount" property="GMaxCount" />
         <result column="GSail" property="GSail" />
         <result column="GWeight" property="GWeight" />
         <result column="GDateTime" property="GDateTime" />
@@ -37,7 +38,7 @@
 
     <!-- 通用查询结果列 -->
     <sql id="Base_Column_List">
-        GoodsID, GClientID, GQQGoodsNumber , GWXPersonNumber, GWXUserNumber, GUserName, GName, GPrice, GTbkPrice, GActivePrice, GInfo, GTypeID1, GTypeID2, GTypeID3, GTypeNames, GIntro, GImage, GCount, GSail, GWeight, GDateTime, GSize, GAddress, GArea, State, IsAble,IsShow, GAddedTime ,IsQQ
+        GoodsID, GClientID, GQQGoodsNumber , GWXPersonNumber, GWXUserNumber, GUserName, GName, GPrice, GTbkPrice, GActivePrice, GInfo, GTypeID1, GTypeID2, GTypeID3, GTypeNames, GIntro, GImage, GCount, GMaxCount, GSail, GWeight, GDateTime, GSize, GAddress, GArea, State, IsAble,IsShow, GAddedTime ,IsQQ
     </sql>
 
     <select id="getBs_person_goodsByClientID" resultType="com.zmj.wkt.entity.Bs_goods" parameterType="String">
