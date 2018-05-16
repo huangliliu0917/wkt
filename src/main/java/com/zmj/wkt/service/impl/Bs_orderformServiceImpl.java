@@ -154,7 +154,7 @@ public class Bs_orderformServiceImpl extends CommonManagerImpl<Bs_orderformMappe
 
         //订单设置支付成功状态
         Bs_orderform newOrderform = new Bs_orderform();
-        newOrderform.setState(SysCode.STATE_TO_PAY.getCode());
+        newOrderform.setState(SysCode.STATE_TO_SUCCESS.getCode());
         EntityWrapper bs_orderformWrapper = new EntityWrapper();
         bs_orderformWrapper.setEntity(new Bs_orderform());
         bs_orderformWrapper.where("SubID = {0}",bs_orderform.getSubID());
@@ -174,7 +174,7 @@ public class Bs_orderformServiceImpl extends CommonManagerImpl<Bs_orderformMappe
     public void orderSuccess(Bs_orderform bs_orderform, Bs_person bs_person, Acc_daybook oldAcc_daybook) {
         //订单设置成功状态
         Bs_orderform newOrderform = new Bs_orderform();
-        newOrderform.setState(SysCode.STATE_TO_PAY.getCode());
+        newOrderform.setState(SysCode.STATE_TO_BE_SENT.getCode());
         EntityWrapper bs_orderformWrapper = new EntityWrapper();
         bs_orderformWrapper.setEntity(new Bs_orderform());
         bs_orderformWrapper.where("SubID = {0}",bs_orderform.getSubID());

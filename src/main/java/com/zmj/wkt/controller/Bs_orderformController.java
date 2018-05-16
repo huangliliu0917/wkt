@@ -201,7 +201,7 @@ public class Bs_orderformController  extends CommonController{
         EntityWrapper bs_orderformWrapper = new EntityWrapper();
         bs_orderformWrapper.setEntity(new Bs_orderform());
         bs_orderformWrapper.where("ClientID = {0} and State = {1} and SubID = {2}",
-                bs_person.getClientID(), SysCode.STATE_TO_SUCCESS.getCode(),SubID);
+                bs_person.getClientID(), SysCode.STATE_TO_BE_SENT.getCode(),SubID);
         Bs_orderform bs_orderform = bs_orderformService.selectOne(bs_orderformWrapper);
         if(ZmjUtil.isNullOrEmpty(bs_orderform)){
             throw new CommonException(ErrorCode.NOT_FIND_ERROR,"找不到该订单！");
@@ -213,7 +213,7 @@ public class Bs_orderformController  extends CommonController{
         if(ZmjUtil.isNullOrEmpty(acc_daybook)){
             throw new CommonException(ErrorCode.NOT_FIND_ERROR,"找不到该订单的代扣记录！");
         }
-        bs_orderformService.orderSuccess(bs_orderform,bs_person,acc_daybook);
+        bs_orderformService.orderPaySuccess(bs_orderform,bs_person,acc_daybook);
         return  RestfulResultUtils.success("确认成功！");
     }
 }

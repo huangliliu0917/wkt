@@ -196,18 +196,22 @@ public class Bs_goodsController extends CommonController{
      */
     @CacheEvict(value = "getGoods",allEntries = true)
     @PostMapping("/goodsUpdateInfo")
-    public RestfulResult goodsUpdateInfo(Bs_goods bs_goods){
+    public RestfulResult goodsUpdateInfo(Bs_goods bs_goods, @RequestParam("imgFile") MultipartFile imgFile){
         if (ZmjUtil.isNullOrEmpty(bs_goods)) {
             throw new CommonException(ErrorCode.NULL_ERROR,"goods不能为空！");
         }
         if (ZmjUtil.isNullOrEmpty(bs_goods.getGoodsID())) {
             throw new CommonException(ErrorCode.NULL_ERROR,"goodsID不能为空！");
         }
+        if (imgFile.isEmpty()) {
+            throw new CommonException(ErrorCode.NULL_ERROR,"上传图片文件为空！");
+        }
         EntityWrapper entityWrapper = new EntityWrapper();
         entityWrapper.setEntity(new Bs_goods());
         entityWrapper.where("GoodsID = {0}",bs_goods.getGoodsID());
         bs_goods.setIsAble(SysCode.IS_ABLE_WAIT.getCode());
         bs_goodsService.update(bs_goods,entityWrapper);
+        bs_goodsService.goodsUpdatePic(bs_goods,imgFile);
         return RestfulResultUtils.success("更新成功！");
     }
 
