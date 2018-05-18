@@ -32,6 +32,9 @@ public enum SysCode implements CodeInterface {
     //是否为QQ群 0不是qq 1 是qq
     IS_QQ(1,"是QQ群"),
     IS_NOT_QQ(0,"不是QQ群"),
+
+    //省市区
+    PROVINCE(1,"省"),
     ;
 
     /**
