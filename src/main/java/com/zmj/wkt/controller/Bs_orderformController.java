@@ -28,6 +28,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
@@ -215,5 +217,36 @@ public class Bs_orderformController  extends CommonController{
         }
         bs_orderformService.orderPaySuccess(bs_orderform,bs_person,acc_daybook);
         return  RestfulResultUtils.success("确认成功！");
+    }
+
+    /**
+     * 获取一周订单
+     * @return
+     */
+    @GetMapping("/getAWeekOrder")
+    public RestfulResult getAWeekOrder() throws Exception {
+
+
+        Calendar calendar = Calendar.getInstance();
+        Date date = new Date(System.currentTimeMillis());
+        calendar.setTime(date);
+        calendar.add(Calendar.WEEK_OF_YEAR, -1);
+        date = calendar.getTime();
+        List<Bs_orderform> bs_orderforms = bs_orderformService.selectList(
+                new EntityWrapper<Bs_orderform>()
+                        .where("ClientID = {0} and SpDate>={1} ", getThisUser().getClientID(), date)
+                        .and().where("State = {0} and IsAble = {1}", SysCode.STATE_T.getCode(), SysCode.IS_ABLE_YES.getCode())
+        );
+        return RestfulResultUtils.success(bs_orderforms);
+    }
+
+    /**
+     * @return
+     * @throws Exception
+     */
+    @PostMapping("/addPersonalCenter")
+    public RestfulResult addPersonalCenter() throws Exception {
+
+        return RestfulResultUtils.success();
     }
 }

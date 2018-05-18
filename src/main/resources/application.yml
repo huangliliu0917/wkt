@@ -2,9 +2,6 @@ eureka:
     client:
         serviceUrl:
             defaultZone: http://www.58wxy.com:8761/eureka/
-server:
-    port: 8766
-    context-path: /wkt
 
 spring:
     application:
@@ -13,7 +10,7 @@ spring:
       prefix: classpath:/templates/
     #包含
     profiles:
-      active: dev,all
+      active: dev,all,wx
 #日志
 logging:
     config: classpath:logback-spring.xml

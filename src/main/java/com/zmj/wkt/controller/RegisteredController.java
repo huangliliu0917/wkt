@@ -152,7 +152,7 @@ public class RegisteredController extends CommonController {
             }else {
                 bs_person.setPersonPassword(MD5Util.encode(password));
             }
-            bs_person.setUserName("mobile_"+mobile);
+            bs_person.setUserName(mobile);
             bs_person.setNickName("mobile_"+mobile);
             bs_person.setPhone(mobile);
             //获取系统时间
