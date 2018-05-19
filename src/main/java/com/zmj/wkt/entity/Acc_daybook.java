@@ -2,13 +2,10 @@ package com.zmj.wkt.entity;
 
 import java.io.Serializable;
 
+import java.math.BigDecimal;
 import java.util.Date;
 import com.baomidou.mybatisplus.activerecord.Model;
 import com.baomidou.mybatisplus.annotations.TableName;
-import jdk.nashorn.internal.objects.annotations.Constructor;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-
 import java.io.Serializable;
 
 /**
@@ -17,7 +14,7 @@ import java.io.Serializable;
  * </p>
  *
  * @author zmj
- * @since 2018-02-24
+ * @since 2018-05-19
  */
 @TableName("acc_daybook")
 public class Acc_daybook extends Model<Acc_daybook> {
@@ -43,15 +40,15 @@ public class Acc_daybook extends Model<Acc_daybook> {
     /**
      * 交易币数量
      */
-	private Integer Amt;
+	private BigDecimal Amt;
     /**
      * 支付前金额
      */
-	private Integer BeforeBalance;
+	private BigDecimal BeforeBalance;
     /**
      * 支付后金额
      */
-	private Integer AfterBalance;
+	private BigDecimal AfterBalance;
     /**
      * 贷方ID
      */
@@ -122,27 +119,27 @@ public class Acc_daybook extends Model<Acc_daybook> {
 		this.Note = Note;
 	}
 
-	public Integer getAmt() {
+	public BigDecimal getAmt() {
 		return Amt;
 	}
 
-	public void setAmt(Integer Amt) {
+	public void setAmt(BigDecimal Amt) {
 		this.Amt = Amt;
 	}
 
-	public Integer getBeforeBalance() {
+	public BigDecimal getBeforeBalance() {
 		return BeforeBalance;
 	}
 
-	public void setBeforeBalance(Integer BeforeBalance) {
+	public void setBeforeBalance(BigDecimal BeforeBalance) {
 		this.BeforeBalance = BeforeBalance;
 	}
 
-	public Integer getAfterBalance() {
+	public BigDecimal getAfterBalance() {
 		return AfterBalance;
 	}
 
-	public void setAfterBalance(Integer AfterBalance) {
+	public void setAfterBalance(BigDecimal AfterBalance) {
 		this.AfterBalance = AfterBalance;
 	}
 

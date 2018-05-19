@@ -13,7 +13,7 @@ import java.io.Serializable;
  * </p>
  *
  * @author zmj
- * @since 2018-02-24
+ * @since 2018-05-19
  */
 @TableName("bs_orderform")
 public class Bs_orderform extends Model<Bs_orderform> {
@@ -63,7 +63,7 @@ public class Bs_orderform extends Model<Bs_orderform> {
     /**
      * 单价
      */
-	private Integer GPrice;
+	private Double GPrice;
     /**
      * 发票号
      */
@@ -71,7 +71,7 @@ public class Bs_orderform extends Model<Bs_orderform> {
     /**
      * 订单金额
      */
-	private Integer SpPrice;
+	private Double SpPrice;
     /**
      * 发货时间
      */
@@ -110,7 +110,7 @@ public class Bs_orderform extends Model<Bs_orderform> {
 	private String ItemPic;
     /**
      * 订单状态
-(0有效 1无效 2商家未确认)
+(0有效 1无效 2待发送 3发送成功 4发送失败 5确实支付)
      */
 	private Integer State;
     /**
@@ -200,11 +200,11 @@ public class Bs_orderform extends Model<Bs_orderform> {
 		this.SpCount = SpCount;
 	}
 
-	public Integer getGPrice() {
+	public Double getGPrice() {
 		return GPrice;
 	}
 
-	public void setGPrice(Integer GPrice) {
+	public void setGPrice(Double GPrice) {
 		this.GPrice = GPrice;
 	}
 
@@ -216,11 +216,11 @@ public class Bs_orderform extends Model<Bs_orderform> {
 		this.ReceiptID = ReceiptID;
 	}
 
-	public Integer getSpPrice() {
+	public Double getSpPrice() {
 		return SpPrice;
 	}
 
-	public void setSpPrice(Integer SpPrice) {
+	public void setSpPrice(Double SpPrice) {
 		this.SpPrice = SpPrice;
 	}
 

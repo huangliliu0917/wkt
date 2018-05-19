@@ -14,7 +14,7 @@ import java.io.Serializable;
  * </p>
  *
  * @author zmj
- * @since 2018-01-29
+ * @since 2018-05-19
  */
 @TableName("sys_permission")
 public class Sys_permission extends Model<Sys_permission> {

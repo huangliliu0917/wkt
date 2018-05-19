@@ -15,7 +15,7 @@ import java.io.Serializable;
  * </p>
  *
  * @author zmj
- * @since 2018-01-30
+ * @since 2018-05-19
  */
 @TableName("sys_error_log")
 public class Sys_error_log extends Model<Sys_error_log> {

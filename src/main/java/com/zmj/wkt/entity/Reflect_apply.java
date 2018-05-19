@@ -2,6 +2,7 @@ package com.zmj.wkt.entity;
 
 import java.io.Serializable;
 
+import java.math.BigDecimal;
 import java.util.Date;
 import com.baomidou.mybatisplus.activerecord.Model;
 import com.baomidou.mybatisplus.annotations.TableName;
@@ -13,7 +14,7 @@ import java.io.Serializable;
  * </p>
  *
  * @author zmj
- * @since 2018-02-14
+ * @since 2018-05-19
  */
 @TableName("reflect_apply")
 public class Reflect_apply extends Model<Reflect_apply> {
@@ -35,15 +36,15 @@ public class Reflect_apply extends Model<Reflect_apply> {
     /**
      * 交易币数量
      */
-	private Integer Amt;
+	private BigDecimal Amt;
     /**
      * 支付前金额
      */
-	private Integer BeforeBalance;
+	private BigDecimal BeforeBalance;
     /**
      * 支付后金额
      */
-	private Integer AfterBalance;
+	private BigDecimal AfterBalance;
     /**
      * 支付宝账户
      */
@@ -94,27 +95,27 @@ public class Reflect_apply extends Model<Reflect_apply> {
 		this.Username = Username;
 	}
 
-	public Integer getAmt() {
+	public BigDecimal getAmt() {
 		return Amt;
 	}
 
-	public void setAmt(Integer Amt) {
+	public void setAmt(BigDecimal Amt) {
 		this.Amt = Amt;
 	}
 
-	public Integer getBeforeBalance() {
+	public BigDecimal getBeforeBalance() {
 		return BeforeBalance;
 	}
 
-	public void setBeforeBalance(Integer BeforeBalance) {
+	public void setBeforeBalance(BigDecimal BeforeBalance) {
 		this.BeforeBalance = BeforeBalance;
 	}
 
-	public Integer getAfterBalance() {
+	public BigDecimal getAfterBalance() {
 		return AfterBalance;
 	}
 
-	public void setAfterBalance(Integer AfterBalance) {
+	public void setAfterBalance(BigDecimal AfterBalance) {
 		this.AfterBalance = AfterBalance;
 	}
 

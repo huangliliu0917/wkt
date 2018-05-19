@@ -14,7 +14,7 @@ import java.io.Serializable;
  * </p>
  *
  * @author zmj
- * @since 2018-01-29
+ * @since 2018-05-19
  */
 @TableName("sys_user")
 public class Sys_user extends Model<Sys_user> {
@@ -26,6 +26,18 @@ public class Sys_user extends Model<Sys_user> {
 	private String username;
 	private String password;
 	private Long sys_role_user_id;
+    /**
+     * 电话号码
+     */
+	private String phoneNumber;
+    /**
+     * 位置
+     */
+	private String Address;
+    /**
+     * 真实姓名
+     */
+	private String realName;
 
 
 	public Integer getId() {
@@ -60,6 +72,30 @@ public class Sys_user extends Model<Sys_user> {
 		this.sys_role_user_id = sys_role_user_id;
 	}
 
+	public String getPhoneNumber() {
+		return phoneNumber;
+	}
+
+	public void setPhoneNumber(String phoneNumber) {
+		this.phoneNumber = phoneNumber;
+	}
+
+	public String getAddress() {
+		return Address;
+	}
+
+	public void setAddress(String Address) {
+		this.Address = Address;
+	}
+
+	public String getRealName() {
+		return realName;
+	}
+
+	public void setRealName(String realName) {
+		this.realName = realName;
+	}
+
 	@Override
 	protected Serializable pkVal() {
 		return this.id;
@@ -72,6 +108,9 @@ public class Sys_user extends Model<Sys_user> {
 			", username=" + username +
 			", password=" + password +
 			", sys_role_user_id=" + sys_role_user_id +
+			", phoneNumber=" + phoneNumber +
+			", Address=" + Address +
+			", realName=" + realName +
 			"}";
 	}
 }

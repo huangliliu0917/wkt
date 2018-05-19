@@ -16,15 +16,24 @@ import java.io.Serializable;
  * @author zmj
  * @since 2018-05-19
  */
-@TableName("bs_role_person")
-public class Bs_role_person extends Model<Bs_role_person> {
+@TableName("person_center")
+public class Person_center extends Model<Person_center> {
 
     private static final long serialVersionUID = 1L;
 
+    /**
+     * 主键
+     */
 	@TableId(value="id", type= IdType.AUTO)
 	private Integer id;
-	private String Person_id;
-	private Integer Role_id;
+    /**
+     * 用户ID
+     */
+	private String ClientID;
+    /**
+     * 订单号
+     */
+	private String SubID;
 
 
 	public Integer getId() {
@@ -35,20 +44,20 @@ public class Bs_role_person extends Model<Bs_role_person> {
 		this.id = id;
 	}
 
-	public String getPerson_id() {
-		return Person_id;
+	public String getClientID() {
+		return ClientID;
 	}
 
-	public void setPerson_id(String Person_id) {
-		this.Person_id = Person_id;
+	public void setClientID(String ClientID) {
+		this.ClientID = ClientID;
 	}
 
-	public Integer getRole_id() {
-		return Role_id;
+	public String getSubID() {
+		return SubID;
 	}
 
-	public void setRole_id(Integer Role_id) {
-		this.Role_id = Role_id;
+	public void setSubID(String SubID) {
+		this.SubID = SubID;
 	}
 
 	@Override
@@ -58,10 +67,10 @@ public class Bs_role_person extends Model<Bs_role_person> {
 
 	@Override
 	public String toString() {
-		return "Bs_role_person{" +
+		return "Person_center{" +
 			", id=" + id +
-			", Person_id=" + Person_id +
-			", Role_id=" + Role_id +
+			", ClientID=" + ClientID +
+			", SubID=" + SubID +
 			"}";
 	}
 }

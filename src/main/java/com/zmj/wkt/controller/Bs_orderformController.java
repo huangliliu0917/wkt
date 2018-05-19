@@ -10,6 +10,7 @@ import com.zmj.wkt.entity.Bs_orderform;
 import com.zmj.wkt.entity.Bs_person;
 import com.zmj.wkt.mapper.Acc_daybookMapper;
 import com.zmj.wkt.mapper.Acc_personMapper;
+import com.zmj.wkt.mapper.Bs_orderformMapper;
 import com.zmj.wkt.service.Acc_daybookService;
 import com.zmj.wkt.service.Acc_personService;
 import com.zmj.wkt.service.Bs_goodsService;
@@ -28,6 +29,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.validation.constraints.NotNull;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -74,6 +76,8 @@ public class Bs_orderformController  extends CommonController{
 
     @Autowired
     Bs_goodsService bs_goodsService;
+
+
 
     @PostMapping("/applyOrderForm")
     public RestfulResult applyOrderForm(Bs_orderform bs_orderform, @RequestParam("imgFile") MultipartFile imgFile) throws Exception {
@@ -219,34 +223,5 @@ public class Bs_orderformController  extends CommonController{
         return  RestfulResultUtils.success("确认成功！");
     }
 
-    /**
-     * 获取一周订单
-     * @return
-     */
-    @GetMapping("/getAWeekOrder")
-    public RestfulResult getAWeekOrder() throws Exception {
 
-
-        Calendar calendar = Calendar.getInstance();
-        Date date = new Date(System.currentTimeMillis());
-        calendar.setTime(date);
-        calendar.add(Calendar.WEEK_OF_YEAR, -1);
-        date = calendar.getTime();
-        List<Bs_orderform> bs_orderforms = bs_orderformService.selectList(
-                new EntityWrapper<Bs_orderform>()
-                        .where("ClientID = {0} and SpDate>={1} ", getThisUser().getClientID(), date)
-                        .and().where("State = {0} and IsAble = {1}", SysCode.STATE_T.getCode(), SysCode.IS_ABLE_YES.getCode())
-        );
-        return RestfulResultUtils.success(bs_orderforms);
-    }
-
-    /**
-     * @return
-     * @throws Exception
-     */
-    @PostMapping("/addPersonalCenter")
-    public RestfulResult addPersonalCenter() throws Exception {
-
-        return RestfulResultUtils.success();
-    }
 }

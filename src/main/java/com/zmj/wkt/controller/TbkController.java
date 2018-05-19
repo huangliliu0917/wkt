@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.math.BigDecimal;
 import java.util.Arrays;
 import java.util.List;
 import java.util.UUID;
@@ -246,9 +247,9 @@ public class TbkController extends CommonController {
         bs_orderform.setSubID("Tbk_"+ UUID.randomUUID().toString().toUpperCase());
         bs_orderform.setState(SysCode.STATE_TO_BE_SENT.getCode());
         bs_orderform.setIsAble(SysCode.IS_ABLE_YES.getCode());
-        bs_orderform.setGPrice(bs_goods.getGTbkPrice());
+        bs_orderform.setGPrice(bs_goods.getGTbkPrice().doubleValue());
         bs_orderform.setSpCount(num_iids.length);
-        bs_orderform.setSpPrice(bs_goods.getGTbkPrice()*num_iids.length);
+        bs_orderform.setSpPrice(bs_goods.getGTbkPrice().multiply(BigDecimal.valueOf(num_iids.length)).doubleValue());
         bs_orderform.setItemTitle("淘客商品订单");
         bs_orderform.setItemDescription(Arrays.toString(num_iids));
         //申请时间

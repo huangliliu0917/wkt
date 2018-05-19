@@ -23,6 +23,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.math.BigDecimal;
 import java.util.List;
 
 /**
@@ -81,8 +82,8 @@ public class Bs_orderformServiceImpl extends CommonManagerImpl<Bs_orderformMappe
         acc_daybook.setBeforeBalance(userBalance.getBalance());
 
         //扣款
-        userBalance.setBalance(userBalance.getBalance()-bs_orderform.getSpPrice());
-        if (userBalance.getBalance()<0){
+        userBalance.setBalance(userBalance.getBalance().subtract(BigDecimal.valueOf(bs_orderform.getSpPrice())));
+        if (userBalance.getBalance().doubleValue()<0){
             throw new CommonException(ErrorCode.INSUFFICIENT_BALANCE);
         }
         EntityWrapper entityWrapper1 = new EntityWrapper();
@@ -97,7 +98,7 @@ public class Bs_orderformServiceImpl extends CommonManagerImpl<Bs_orderformMappe
         acc_daybook.setSubID(bs_orderform.getSubID());
         //生成流水号
         acc_daybook.setAction_no(ZmjUtil.getOrderIdByUUId());
-        acc_daybook.setAmt((bs_orderform.getSpPrice()));
+        acc_daybook.setAmt(BigDecimal.valueOf(bs_orderform.getSpPrice()));
         acc_daybook.setState(SysCode.STATE_T.getCode());
         acc_daybook.setTr_code(TrCode.WITHHOLDING.getCode());
 
@@ -119,7 +120,7 @@ public class Bs_orderformServiceImpl extends CommonManagerImpl<Bs_orderformMappe
         newAcc_daybook.setBeforeBalance(userBalance.getBalance());
 
         //转账
-        userBalance.setBalance(userBalance.getBalance()+oldAcc_daybook.getAmt());
+        userBalance.setBalance(userBalance.getBalance().add(oldAcc_daybook.getAmt()));
         EntityWrapper entityWrapper1 = new EntityWrapper();
         entityWrapper1.setEntity(new Acc_person());
         entityWrapper1.where("ClientID = {0}",bs_orderform.getClientID());
@@ -165,8 +166,8 @@ public class Bs_orderformServiceImpl extends CommonManagerImpl<Bs_orderformMappe
         bs_goodsWrapper.setEntity(new Bs_goods());
         bs_goodsWrapper.where("GoodsID = {0} " ,bs_orderform.getGoodsID());
         Bs_goods bs_goods = bs_goodsService.selectOne(bs_goodsWrapper);
-        bs_goods.setGCount(bs_goods.getGCount()+bs_orderform.getSpPrice());
-        bs_goods.setGSail(bs_goods.getGSail()+bs_orderform.getSpPrice());
+        bs_goods.setGCount(bs_goods.getGCount()+bs_orderform.getSpCount());
+        bs_goods.setGSail(bs_goods.getGSail()+bs_orderform.getSpCount());
         bs_goodsService.updateGoodsByID(bs_goods);
     }
 

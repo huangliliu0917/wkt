@@ -2,6 +2,7 @@ package com.zmj.wkt.entity;
 
 import java.io.Serializable;
 
+import java.math.BigDecimal;
 import com.baomidou.mybatisplus.activerecord.Model;
 import com.baomidou.mybatisplus.annotations.TableName;
 import java.io.Serializable;
@@ -12,7 +13,7 @@ import java.io.Serializable;
  * </p>
  *
  * @author zmj
- * @since 2018-02-24
+ * @since 2018-05-19
  */
 @TableName("acc_person")
 public class Acc_person extends Model<Acc_person> {
@@ -26,7 +27,7 @@ public class Acc_person extends Model<Acc_person> {
     /**
      * 余额
      */
-	private Integer Balance;
+	private BigDecimal Balance;
 
 
 	public String getClientID() {
@@ -37,11 +38,11 @@ public class Acc_person extends Model<Acc_person> {
 		this.ClientID = ClientID;
 	}
 
-	public Integer getBalance() {
+	public BigDecimal getBalance() {
 		return Balance;
 	}
 
-	public void setBalance(Integer Balance) {
+	public void setBalance(BigDecimal Balance) {
 		this.Balance = Balance;
 	}
 

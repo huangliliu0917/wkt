@@ -57,6 +57,7 @@ public class TokenErrorController  extends BasicErrorController {
         int status;
         if(request.getAttribute("myStatus")!=null){
             status = (int) request.getAttribute("myStatus");
+            throw new  CommonException(status,body.get("error")+":"+body.get("message").toString());
         }else {
             status = getStatus(request).value();
         }

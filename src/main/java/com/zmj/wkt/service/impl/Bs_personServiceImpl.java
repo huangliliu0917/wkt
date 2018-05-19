@@ -19,6 +19,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.UUID;
 
@@ -136,7 +137,7 @@ public class Bs_personServiceImpl extends CommonManagerImpl<Bs_personMapper, Bs_
     @Override
     public boolean addAccPerson(String ClientID){
         Acc_person acc_person = new Acc_person();
-        acc_person.setBalance(0);
+        acc_person.setBalance(new BigDecimal("0"));
         acc_person.setClientID(ClientID);
         acc_personMapper.insert(acc_person);
         return true;

@@ -25,11 +25,14 @@ package com.zmj.wkt.jwt;
  * ---------------------------------
  */
 
+import com.zmj.wkt.common.exception.CommonException;
 import com.zmj.wkt.entity.Bs_permission;
 import com.zmj.wkt.entity.Bs_person;
 import com.zmj.wkt.service.Bs_permissionService;
 import com.zmj.wkt.service.Bs_personService;
 import com.zmj.wkt.utils.SpringApplicationContextHolder;
+import com.zmj.wkt.utils.sysenum.ErrorCode;
+import com.zmj.wkt.utils.sysenum.SysCode;
 import io.jsonwebtoken.Jwts;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -82,39 +85,45 @@ public class JWTAuthenticationFilter extends BasicAuthenticationFilter {
     }
 
     public static UsernamePasswordAuthenticationToken getAuthentication(HttpServletRequest request) {
-        String token = request.getHeader("Authorization");
-        if (token != null) {
-            // parse the token.
-            String user = Jwts.parser()
-                    .setSigningKey("MyJwtSecret")
-                    .parseClaimsJws(token.replace("Bearer ", ""))
-                    .getBody()
-                    .getSubject();
-            if (bs_permissionService==null){
-                bs_permissionService = (Bs_permissionService) SpringApplicationContextHolder.getSpringBean("bs_permissionServiceImpl");
-            }
-            if(bs_personService==null){
-                bs_personService = (Bs_personService) SpringApplicationContextHolder.getSpringBean("bs_personServiceImpl");
-            }
-            //获取用户对象
-            Bs_person bs_person = bs_personService.findByName(user);
-            //获取该用户权限列表
-            List<Bs_permission> permissions =bs_permissionService.findAllByPersonId(bs_person.getClientID());
-            List<GrantedAuthority> grantedAuthorities = new ArrayList<>();
-            //遍历权限列表
-            for (Bs_permission permission : permissions) {
-                if (permission != null && permission.getName()!=null) {
-                    GrantedAuthority grantedAuthority = new SimpleGrantedAuthority(permission.getId().toString());
-                    //1：此处将权限信息添加到 GrantedAuthority 对象中，在后面进行全权限验证时会使用GrantedAuthority对象。
-                    grantedAuthorities.add(grantedAuthority);
+        try {
+            String token = request.getHeader("Authorization");
+            if (token != null) {
+                // parse the token.
+                String user = Jwts.parser()
+                        .setSigningKey("MyJwtSecret")
+                        .parseClaimsJws(token.replace("Bearer ", ""))
+                        .getBody()
+                        .getSubject();
+                if (bs_permissionService==null){
+                    bs_permissionService = (Bs_permissionService) SpringApplicationContextHolder.getSpringBean("bs_permissionServiceImpl");
                 }
-            }
-            if (user != null) {
-                return new UsernamePasswordAuthenticationToken(user, null, grantedAuthorities);
+                if(bs_personService==null){
+                    bs_personService = (Bs_personService) SpringApplicationContextHolder.getSpringBean("bs_personServiceImpl");
+                }
+                //获取用户对象
+                Bs_person bs_person = bs_personService.findByName(user);
+                //获取该用户权限列表
+                List<Bs_permission> permissions =bs_permissionService.findAllByPersonId(bs_person.getClientID());
+                List<GrantedAuthority> grantedAuthorities = new ArrayList<>();
+                //遍历权限列表
+                for (Bs_permission permission : permissions) {
+                    if (permission != null && permission.getName()!=null) {
+                        GrantedAuthority grantedAuthority = new SimpleGrantedAuthority(permission.getId().toString());
+                        //1：此处将权限信息添加到 GrantedAuthority 对象中，在后面进行全权限验证时会使用GrantedAuthority对象。
+                        grantedAuthorities.add(grantedAuthority);
+                    }
+                }
+                if (user != null) {
+                    return new UsernamePasswordAuthenticationToken(user, null, grantedAuthorities);
+                }
+                return null;
             }
             return null;
+        }catch (Exception e){
+            e.printStackTrace();
+            request.setAttribute("myStatus",ErrorCode.TOKEN_ERROR.getCode());
+            throw new CommonException(ErrorCode.TOKEN_ERROR,e.getMessage());
         }
-        return null;
     }
 
 }

@@ -57,8 +57,7 @@ public class Bs_personController extends CommonController {
      * @return
      */
     @GetMapping("/getUserInfo")
-    @ResponseBody
-    public RestfulResult getUserInfo(){
+    public RestfulResult getUserInfo()throws CommonException{
         try {
             Bs_person bs_person = this.getThisUser();
             bs_person.setPersonPassword(null);

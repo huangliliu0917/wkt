@@ -13,7 +13,7 @@ import java.io.Serializable;
  * </p>
  *
  * @author zmj
- * @since 2018-03-01
+ * @since 2018-05-19
  */
 @TableName("bs_person")
 public class Bs_person extends Model<Bs_person> {
@@ -94,7 +94,7 @@ public class Bs_person extends Model<Bs_person> {
      */
 	private Date activationTime;
     /**
-     * 淘客宝用PID
+     * 淘客宝用PID(默认PID)
      */
 	private String PID;
 

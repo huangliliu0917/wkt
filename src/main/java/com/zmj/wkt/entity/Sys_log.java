@@ -15,7 +15,7 @@ import java.io.Serializable;
  * </p>
  *
  * @author zmj
- * @since 2018-01-30
+ * @since 2018-05-19
  */
 @TableName("sys_log")
 public class Sys_log extends Model<Sys_log> {
@@ -37,7 +37,7 @@ public class Sys_log extends Model<Sys_log> {
 	private String class_method;
 	private String args;
     /**
-     * 处理时间
+     * 处理时间(ms)
      */
 	private Long runTime;
     /**

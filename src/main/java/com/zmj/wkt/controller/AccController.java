@@ -19,6 +19,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import java.math.BigDecimal;
 import java.util.Date;
 
 /**
@@ -87,9 +88,9 @@ public class AccController extends CommonController{
             recharge_apply.setIsAble(SysCode.IS_ABLE_WAIT.getCode());
             //获取用户当前账户金额
             Acc_person userBalance = acc_personService.getUserBalance(getThisUser().getClientID());
-            Integer beforeBalance = userBalance.getBalance();
+            BigDecimal beforeBalance = userBalance.getBalance();
             recharge_apply.setBeforeBalance(beforeBalance);
-            recharge_apply.setAfterBalance(beforeBalance+recharge_apply.getAmt());
+            recharge_apply.setAfterBalance(beforeBalance.add(recharge_apply.getAmt()));
             recharge_apply.setClientID(thisUser.getClientID());
             recharge_apply.setUsername(thisUser.getUserName());
             return RestfulResultUtils.success( acc_personService.rechargeApply(recharge_apply));
@@ -121,10 +122,10 @@ public class AccController extends CommonController{
             reflect_apply.setState(SysCode.STATE_T.getCode());
             //获取用户当前账户金额
             Acc_person userBalance = acc_personService.getUserBalance(thisUser.getClientID());
-            Integer beforeBalance = userBalance.getBalance();
+            BigDecimal beforeBalance = userBalance.getBalance();
             reflect_apply.setBeforeBalance(beforeBalance);
-            reflect_apply.setAfterBalance(beforeBalance-reflect_apply.getAmt());
-            if(reflect_apply.getAfterBalance()<0){
+            reflect_apply.setAfterBalance(beforeBalance.subtract(reflect_apply.getAmt()));
+            if(reflect_apply.getAfterBalance().doubleValue()<0){
                 throw new CommonException(ErrorCode.INSUFFICIENT_BALANCE.getCode(),"账户余额不足！");
             }
             reflect_apply.setClientID(thisUser.getClientID());

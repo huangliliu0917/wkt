@@ -62,7 +62,7 @@ class MysqlGenerator {
      *  table名字
      */
     private static String[] table={
-            "region"
+            "bs_goods"
     };
     /**
      *  table前缀
@@ -119,7 +119,7 @@ class MysqlGenerator {
                         //.setDbColumnUnderline(true)//全局下划线命名
                         .setTablePrefix(new String[]{prefix})// 此处可以修改为您的表前缀
                         .setNaming(NamingStrategy.nochange)// 表名生成策略
-                        .setInclude(table ) // 需要生成的表
+                        //.setInclude(table ) // 需要生成的表
                         .setRestControllerStyle(true)
                         //.setExclude(new String[]{"test"}) // 排除生成的表
                         // 自定义实体父类

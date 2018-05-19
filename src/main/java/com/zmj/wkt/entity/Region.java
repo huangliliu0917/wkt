@@ -1,10 +1,9 @@
 package com.zmj.wkt.entity;
 
-import com.baomidou.mybatisplus.activerecord.Model;
-import com.baomidou.mybatisplus.annotations.TableId;
-import com.baomidou.mybatisplus.annotations.TableName;
-import com.baomidou.mybatisplus.enums.IdType;
+import java.io.Serializable;
 
+import com.baomidou.mybatisplus.activerecord.Model;
+import com.baomidou.mybatisplus.annotations.TableName;
 import java.io.Serializable;
 
 /**
@@ -13,14 +12,13 @@ import java.io.Serializable;
  * </p>
  *
  * @author zmj
- * @since 2018-04-27
+ * @since 2018-05-19
  */
 @TableName("region")
 public class Region extends Model<Region> {
 
     private static final long serialVersionUID = 1L;
 
-	@TableId(value="id", type= IdType.AUTO)
 	private Integer id;
 	private Integer parent_id;
 	private String region_name;

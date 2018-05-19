@@ -2,6 +2,7 @@ package com.zmj.wkt.entity;
 
 import java.io.Serializable;
 
+import java.math.BigDecimal;
 import java.util.Date;
 import com.baomidou.mybatisplus.activerecord.Model;
 import com.baomidou.mybatisplus.annotations.TableName;
@@ -13,7 +14,7 @@ import java.io.Serializable;
  * </p>
  *
  * @author zmj
- * @since 2018-05-15
+ * @since 2018-05-19
  */
 @TableName("bs_goods")
 public class Bs_goods extends Model<Bs_goods> {
@@ -55,7 +56,7 @@ public class Bs_goods extends Model<Bs_goods> {
     /**
      * 淘宝客推广单价
      */
-	private Integer GTbkPrice;
+	private BigDecimal GTbkPrice;
     /**
      * 群活动价格
      */
@@ -206,11 +207,11 @@ public class Bs_goods extends Model<Bs_goods> {
 		this.GPrice = GPrice;
 	}
 
-	public Integer getGTbkPrice() {
+	public BigDecimal getGTbkPrice() {
 		return GTbkPrice;
 	}
 
-	public void setGTbkPrice(Integer GTbkPrice) {
+	public void setGTbkPrice(BigDecimal GTbkPrice) {
 		this.GTbkPrice = GTbkPrice;
 	}
 
