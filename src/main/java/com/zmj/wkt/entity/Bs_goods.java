@@ -52,7 +52,7 @@ public class Bs_goods extends Model<Bs_goods> {
     /**
      * 群推广单价
      */
-	private Double GPrice;
+	private BigDecimal GPrice;
     /**
      * 淘宝客推广单价
      */
@@ -199,11 +199,11 @@ public class Bs_goods extends Model<Bs_goods> {
 		this.GName = GName;
 	}
 
-	public Double getGPrice() {
+	public BigDecimal getGPrice() {
 		return GPrice;
 	}
 
-	public void setGPrice(Double GPrice) {
+	public void setGPrice(BigDecimal GPrice) {
 		this.GPrice = GPrice;
 	}
 

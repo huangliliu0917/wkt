@@ -2,6 +2,7 @@ package com.zmj.wkt.entity;
 
 import java.io.Serializable;
 
+import java.math.BigDecimal;
 import java.util.Date;
 import com.baomidou.mybatisplus.activerecord.Model;
 import com.baomidou.mybatisplus.annotations.TableName;
@@ -63,7 +64,7 @@ public class Bs_orderform extends Model<Bs_orderform> {
     /**
      * 单价
      */
-	private Double GPrice;
+	private BigDecimal GPrice;
     /**
      * 发票号
      */
@@ -71,7 +72,7 @@ public class Bs_orderform extends Model<Bs_orderform> {
     /**
      * 订单金额
      */
-	private Double SpPrice;
+	private BigDecimal SpPrice;
     /**
      * 发货时间
      */
@@ -200,11 +201,11 @@ public class Bs_orderform extends Model<Bs_orderform> {
 		this.SpCount = SpCount;
 	}
 
-	public Double getGPrice() {
+	public BigDecimal getGPrice() {
 		return GPrice;
 	}
 
-	public void setGPrice(Double GPrice) {
+	public void setGPrice(BigDecimal GPrice) {
 		this.GPrice = GPrice;
 	}
 
@@ -216,11 +217,11 @@ public class Bs_orderform extends Model<Bs_orderform> {
 		this.ReceiptID = ReceiptID;
 	}
 
-	public Double getSpPrice() {
+	public BigDecimal getSpPrice() {
 		return SpPrice;
 	}
 
-	public void setSpPrice(Double SpPrice) {
+	public void setSpPrice(BigDecimal SpPrice) {
 		this.SpPrice = SpPrice;
 	}
 

@@ -82,7 +82,7 @@ public class Bs_orderformServiceImpl extends CommonManagerImpl<Bs_orderformMappe
         acc_daybook.setBeforeBalance(userBalance.getBalance());
 
         //扣款
-        userBalance.setBalance(userBalance.getBalance().subtract(BigDecimal.valueOf(bs_orderform.getSpPrice())));
+        userBalance.setBalance(userBalance.getBalance().subtract(bs_orderform.getSpPrice()));
         if (userBalance.getBalance().doubleValue()<0){
             throw new CommonException(ErrorCode.INSUFFICIENT_BALANCE);
         }
@@ -98,7 +98,7 @@ public class Bs_orderformServiceImpl extends CommonManagerImpl<Bs_orderformMappe
         acc_daybook.setSubID(bs_orderform.getSubID());
         //生成流水号
         acc_daybook.setAction_no(ZmjUtil.getOrderIdByUUId());
-        acc_daybook.setAmt(BigDecimal.valueOf(bs_orderform.getSpPrice()));
+        acc_daybook.setAmt(bs_orderform.getSpPrice());
         acc_daybook.setState(SysCode.STATE_T.getCode());
         acc_daybook.setTr_code(TrCode.WITHHOLDING.getCode());
 

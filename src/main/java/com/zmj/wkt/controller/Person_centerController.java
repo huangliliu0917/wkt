@@ -27,6 +27,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
+import java.math.BigDecimal;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -124,7 +125,10 @@ public class Person_centerController extends CommonController {
         bs_orderform.setIsAble(SysCode.IS_ABLE_YES.getCode());
         //获取最新单价
         Bs_goods bs_goods = bs_goodsService.selectOne(new EntityWrapper<Bs_goods>().where("GoodsID = {0}", bs_orderform.getGoodsID()));
-        bs_orderform.setSpPrice(bs_goods.getGPrice()*newOrder.getSpCount());
+
+        BigDecimal multiply = bs_goods.getGPrice().multiply(BigDecimal.valueOf(newOrder.getSpCount()));
+        System.out.println(multiply);
+        bs_orderform.setSpPrice(multiply);
         //申请时间
         bs_orderform.setSpDate(DateUtil.getNowTimestamp());
         if(bs_goods.getGCount()+newOrder.getSpCount()>bs_goods.getGMaxCount()){

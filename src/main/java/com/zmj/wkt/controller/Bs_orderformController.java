@@ -30,6 +30,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.constraints.NotNull;
+import java.math.BigDecimal;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -90,7 +91,7 @@ public class Bs_orderformController  extends CommonController{
             bs_orderform.setSubID("Sub_"+ UUID.randomUUID().toString().toUpperCase());
             bs_orderform.setState(SysCode.IS_ABLE_WAIT.getCode());
             bs_orderform.setIsAble(SysCode.IS_ABLE_WAIT.getCode());
-            bs_orderform.setSpPrice(bs_orderform.getGPrice()*bs_orderform.getSpCount());
+            bs_orderform.setSpPrice(bs_orderform.getGPrice().multiply(BigDecimal.valueOf(bs_orderform.getSpCount())));
             //申请时间
             bs_orderform.setSpDate(DateUtil.getNowTimestamp());
         Bs_goods bs_goods = bs_goodsService.selectOne(new EntityWrapper<Bs_goods>().where("GoodsID = {0}", bs_orderform.getGoodsID()));
