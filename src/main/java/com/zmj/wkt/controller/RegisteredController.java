@@ -154,7 +154,7 @@ public class RegisteredController extends CommonController {
                 bs_person.setPersonPassword(MD5Util.encode(password));
             }
             //邀请码判断
-            if(ZmjUtil.isNullOrEmpty(invitation_code)){
+            if(!ZmjUtil.isNullOrEmpty(invitation_code)){
                 Bs_person inviter = bs_personService.selectOne(new EntityWrapper<Bs_person>().where("Invitation_code = {0}", invitation_code));
                 bs_person.setInviterID(inviter.getClientID());
             }
