@@ -1,6 +1,8 @@
 package com.zmj.wkt.common.exception;
 
 import com.google.common.base.Strings;
+import com.zmj.wkt.common.RestfulResult;
+import com.zmj.wkt.utils.RestfulResultUtils;
 import com.zmj.wkt.utils.sysenum.ErrorCode;
 import com.zmj.wkt.utils.sysenum.SysCode;
 import io.jsonwebtoken.ExpiredJwtException;
@@ -50,23 +52,21 @@ public class TokenErrorController  extends BasicErrorController {
 
     @RequestMapping(produces = {MediaType.APPLICATION_JSON_VALUE})
     @Override
-    public ResponseEntity<Map<String, Object>> error(HttpServletRequest request) {
+    public ResponseEntity error(HttpServletRequest request) {
         Map<String, Object> body = getErrorAttributes(request,
                 isIncludeStackTrace(request, MediaType.ALL));
         //HttpStatus status = getStatus(request);
         int status;
         if(request.getAttribute("myStatus")!=null){
             status = (int) request.getAttribute("myStatus");
-            throw new  CommonException(status,body.get("error")+":"+body.get("message").toString());
         }else {
             status = getStatus(request).value();
         }
         //token异常
-        if("io.jsonwebtoken.ExpiredJwtException".equals(body.get("exception"))){
+        /*if("io.jsonwebtoken.ExpiredJwtException".equals(body.get("exception"))){
             throw new  CommonException(ErrorCode.TOKEN_ERROR,body.get("error")+":"+body.get("message").toString());
-        }
-        throw new  CommonException(status,body.get("error")+":"+body.get("message").toString());
-        //return new ResponseEntity<Map<String, Object>>(body, status);
+        }*/
+        return new ResponseEntity(RestfulResultUtils.error(status,body.get("error")+":"+body.get("message")), HttpStatus.OK);
     }
 
     @Override

@@ -20,6 +20,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Objects;
+import java.util.Optional;
 
 /**
  * code is far away from bug with the animal protecting
@@ -141,13 +142,16 @@ public class RegisteredController extends CommonController {
     @RequestMapping(value = "/mobileRegister" ,produces="application/json;charset=UTF-8")
     @ResponseBody
     @RestfulAnnotation
-    public RestfulResult mobileRegister(String password,String mobile,String code,String bizId,String invitation_code)throws CommonException {
+    public RestfulResult mobileRegister(String password,String mobile,String code,String bizId,String invitation_code,String username)throws CommonException {
         try {
             RestfulResult restfulResult = verifyCode(mobile, code, bizId);
             if(restfulResult.getStatus()!=200){
                 return restfulResult;
             }
             Bs_person bs_person = new Bs_person();
+            if(ZmjUtil.isNullOrEmpty(username)){
+                throw new CommonException(ErrorCode.VERIFY_ERROR,"用户名不能为空！");
+            }
             if(ZmjUtil.isNullOrEmpty(password)){
                 throw new CommonException(ErrorCode.VERIFY_ERROR,"密码不能为空！");
             }else {
@@ -155,12 +159,19 @@ public class RegisteredController extends CommonController {
             }
             //邀请码判断
             if(!ZmjUtil.isNullOrEmpty(invitation_code)){
-                Bs_person inviter = bs_personService.selectOne(new EntityWrapper<Bs_person>().where("Invitation_code = {0}", invitation_code));
-                bs_person.setInviterID(inviter.getClientID());
+                Optional<Bs_person> bs_personOptional = Optional.ofNullable(
+                        bs_personService.selectOne(new EntityWrapper<Bs_person>().where("Invitation_code = {0}", invitation_code)
+                        ));
+                if(bs_personOptional.isPresent()){
+                    bs_person.setInviterID(bs_personOptional.get().getClientID());
+                }else {
+                    throw new CommonException(ErrorCode.VERIFY_ERROR,"邀请码无效");
+                }
+
             }
             //生成用户邀请码
             bs_person.setInvitation_code(ZmjUtil.getInvitation_code());
-            bs_person.setUserName(mobile);
+            bs_person.setUserName(username);
             bs_person.setNickName("mobile_"+mobile);
             bs_person.setPhone(mobile);
             //获取系统时间

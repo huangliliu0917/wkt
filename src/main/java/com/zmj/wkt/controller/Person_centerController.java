@@ -77,7 +77,7 @@ public class Person_centerController extends CommonController {
      * @return
      * @throws Exception
      */
-    @GetMapping("/addPersonCenter")
+    @RequestMapping("/addPersonCenter")
     public RestfulResult addPersonCenter(String SubID) throws Exception {
         if(ZmjUtil.isNullOrEmpty(SubID)){
             throw new CommonException(ErrorCode.VERIFY_ERROR,"SubID不能为空");
