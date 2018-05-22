@@ -13,7 +13,7 @@ import java.io.Serializable;
  * </p>
  *
  * @author zmj
- * @since 2018-05-19
+ * @since 2018-05-22
  */
 @TableName("bs_person")
 public class Bs_person extends Model<Bs_person> {
@@ -97,6 +97,14 @@ public class Bs_person extends Model<Bs_person> {
      * 淘客宝用PID(默认PID)
      */
 	private String PID;
+    /**
+     * 邀请码
+     */
+	private String Invitation_code;
+    /**
+     * 邀请者ID
+     */
+	private String InviterID;
 
 
 	public String getClientID() {
@@ -259,6 +267,22 @@ public class Bs_person extends Model<Bs_person> {
 		this.PID = PID;
 	}
 
+	public String getInvitation_code() {
+		return Invitation_code;
+	}
+
+	public void setInvitation_code(String Invitation_code) {
+		this.Invitation_code = Invitation_code;
+	}
+
+	public String getInviterID() {
+		return InviterID;
+	}
+
+	public void setInviterID(String InviterID) {
+		this.InviterID = InviterID;
+	}
+
 	@Override
 	protected Serializable pkVal() {
 		return this.ClientID;
@@ -287,6 +311,8 @@ public class Bs_person extends Model<Bs_person> {
 			", isTry=" + isTry +
 			", activationTime=" + activationTime +
 			", PID=" + PID +
+			", Invitation_code=" + Invitation_code +
+			", InviterID=" + InviterID +
 			"}";
 	}
 }
