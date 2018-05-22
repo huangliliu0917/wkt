@@ -232,10 +232,21 @@ public class ZmjUtil {
         return machineId + String.format("%015d", hashCodeV);
     }
 
+    /**
+     * 生成邀请码
+     * @return
+     */
+    public static String getInvitation_code(){
+        return "I_"+UUID.randomUUID().toString().toUpperCase().replaceAll("-", "");
+    }
+
     public static void main(String[] args) {
+        for (int i = 0; i <10 ; i++) {
+            System.out.println(getInvitation_code());
+        }
         /*String s = "";
         System.out.println(ZmjUtil.isNullOrEmpty(s));*/
        // System.out.println(getNum19());
-        System.out.println(getOrderIdByUUId());
+        //System.out.println(getOrderIdByUUId());
     }
 }

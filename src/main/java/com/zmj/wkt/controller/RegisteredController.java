@@ -3,6 +3,7 @@ package com.zmj.wkt.controller;
 import com.aliyuncs.dysmsapi.model.v20170525.QuerySendDetailsResponse;
 import com.aliyuncs.dysmsapi.model.v20170525.SendSmsResponse;
 import com.aliyuncs.exceptions.ClientException;
+import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.zmj.wkt.common.CommonController;
 import com.zmj.wkt.common.RestfulResult;
 import com.zmj.wkt.common.aspect.RestfulAnnotation;
@@ -140,7 +141,7 @@ public class RegisteredController extends CommonController {
     @RequestMapping(value = "/mobileRegister" ,produces="application/json;charset=UTF-8")
     @ResponseBody
     @RestfulAnnotation
-    public RestfulResult mobileRegister(String password,String mobile,String code,String bizId)throws CommonException {
+    public RestfulResult mobileRegister(String password,String mobile,String code,String bizId,String invitation_code)throws CommonException {
         try {
             RestfulResult restfulResult = verifyCode(mobile, code, bizId);
             if(restfulResult.getStatus()!=200){
@@ -152,6 +153,13 @@ public class RegisteredController extends CommonController {
             }else {
                 bs_person.setPersonPassword(MD5Util.encode(password));
             }
+            //邀请码判断
+            if(ZmjUtil.isNullOrEmpty(invitation_code)){
+                Bs_person inviter = bs_personService.selectOne(new EntityWrapper<Bs_person>().where("Invitation_code = {0}", invitation_code));
+                bs_person.setInviterID(inviter.getClientID());
+            }
+            //生成用户邀请码
+            bs_person.setInvitation_code(ZmjUtil.getInvitation_code());
             bs_person.setUserName(mobile);
             bs_person.setNickName("mobile_"+mobile);
             bs_person.setPhone(mobile);
@@ -159,6 +167,7 @@ public class RegisteredController extends CommonController {
             bs_person.setRegTime(DateUtil.getNowTimestamp());
             bs_person.setMemberPoints(0L);
             bs_person.setGradeID(1L);
+
             String ClientID = bs_personService.registered(bs_person,"mobile");
             return RestfulResultUtils.success("注册成功！");
         }catch (Exception e){
