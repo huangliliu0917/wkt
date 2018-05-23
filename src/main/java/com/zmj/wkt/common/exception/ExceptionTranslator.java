@@ -30,6 +30,13 @@ public class ExceptionTranslator {
     @Autowired
     Sys_error_logMapper sys_error_logMapper;
 
+    /**
+     * 未知异常
+     * @param req
+     * @param e
+     * @return
+     * @throws Exception
+     */
     @ExceptionHandler(value = Exception.class)
     public ModelAndView defaultErrorHandler(HttpServletRequest req, Exception e) throws Exception {
         ModelAndView mav = new ModelAndView();
@@ -44,6 +51,11 @@ public class ExceptionTranslator {
         return mav;
     }
 
+    /**
+     * 自定义异常
+     * @param e
+     * @return
+     */
     @ExceptionHandler(value = CommonException.class)
     @ResponseBody
     public RestfulResult handle(CommonException e){
@@ -68,6 +80,11 @@ public class ExceptionTranslator {
         }
     }
 
+    /**
+     * httpMethod异常
+     * @param e
+     * @return
+     */
     @ExceptionHandler(value = HttpRequestMethodNotSupportedException.class)
     @ResponseBody
     public RestfulResult handle(HttpRequestMethodNotSupportedException e){
@@ -81,6 +98,11 @@ public class ExceptionTranslator {
         return RestfulResultUtils.error(ErrorCode.HTTPREQUESTMETHODNOTSUPPORTED.getCode(),ErrorCode.HTTPREQUESTMETHODNOTSUPPORTED.getDescription()+":"+e.getMessage().trim());
     }
 
+    /**
+     * token异常
+     * @param e
+     * @return
+     */
     @ExceptionHandler(value = io.jsonwebtoken.ExpiredJwtException.class)
     @ResponseBody
     public RestfulResult handle(io.jsonwebtoken.ExpiredJwtException e){
@@ -91,7 +113,24 @@ public class ExceptionTranslator {
         sys_error_log.setMessage(e.getMessage());
         sys_error_log.setDatetime(DateUtil.getNowTimestamp());
         sys_error_logMapper.insert(sys_error_log);
-        return RestfulResultUtils.error(ErrorCode.TOKEN_ERROR.getCode(),ErrorCode.TOKEN_ERROR.getDescription()+":"+e.getMessage().trim());
+        return RestfulResultUtils.error(ErrorCode.TOKEN_ERROR.getCode(),e.getMessage().trim());
     }
 
+    /**
+     * 断言校验异常
+     * @param e
+     * @return
+     */
+    @ExceptionHandler(value = IllegalArgumentException.class)
+    @ResponseBody
+    public RestfulResult handle(IllegalArgumentException e){
+        logger.warn(RestfulResultUtils.error(ErrorCode.VERIFY_ERROR.getCode(), ErrorCode.VERIFY_ERROR.getDescription() + ":" + e.getMessage().trim()).toString());
+        //插入数据库
+        Sys_error_log sys_error_log = new Sys_error_log();
+        sys_error_log.setErrorCode(String.valueOf(ErrorCode.VERIFY_ERROR.getCode()));
+        sys_error_log.setMessage(e.getMessage());
+        sys_error_log.setDatetime(DateUtil.getNowTimestamp());
+        sys_error_logMapper.insert(sys_error_log);
+        return RestfulResultUtils.error(ErrorCode.VERIFY_ERROR.getCode(),e.getMessage().trim());
+    }
 }

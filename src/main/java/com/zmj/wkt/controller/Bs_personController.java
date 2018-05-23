@@ -16,6 +16,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.security.access.method.P;
 import org.springframework.stereotype.Controller;
+import org.springframework.util.Assert;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -137,13 +138,11 @@ public class Bs_personController extends CommonController {
      */
     @PostMapping("/uploadPersonPhoto")
     public RestfulResult uploadPersonPhoto(MultipartFile file) throws Exception {
-        if(ZmjUtil.isNullOrEmpty(file)){
-            throw new CommonException(ErrorCode.NULL_ERROR,"Photo不能为空！");
-        }
-        Bs_person thisUser = getThisUser();
-        String url = "person-img/";
         try {
-            String photoUrl = url + thisUser.getClientID() + "." + ZmjUtil.getExtensionName(file.getOriginalFilename());
+            Assert.notNull(file,"照片file字段不能为空！");
+            Bs_person thisUser = getThisUser();
+            String url = "person-img/";
+            String photoUrl = url + ZmjUtil.getUUID() + "." + ZmjUtil.getExtensionName(file.getOriginalFilename());
             bs_personService.uploadfile(file,photoUrl);
             Bs_person newPerson = new Bs_person();
             newPerson.setClientID(thisUser.getClientID());

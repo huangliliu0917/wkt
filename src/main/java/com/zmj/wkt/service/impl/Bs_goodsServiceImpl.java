@@ -104,7 +104,7 @@ public class Bs_goodsServiceImpl extends CommonManagerImpl<Bs_goodsMapper,Bs_goo
     public void goodsUpdatePic(Bs_goods bs_goods, MultipartFile imgFile) {
         String url = "goods-img/";
         try {
-            String photoUrl = url+bs_goods.getGoodsID()+"."+ ZmjUtil.getExtensionName(imgFile.getOriginalFilename());
+            String photoUrl = url+ZmjUtil.getUUID()+"."+ ZmjUtil.getExtensionName(imgFile.getOriginalFilename());
             uploadfile(imgFile,photoUrl);
             EntityWrapper entityWrapper = new EntityWrapper();
             //更新时间

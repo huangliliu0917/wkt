@@ -240,6 +240,14 @@ public class ZmjUtil {
         return "I_"+UUID.randomUUID().toString().toUpperCase().replaceAll("-", "");
     }
 
+    /**
+     * 获取uuid
+     * @return
+     */
+    public static String getUUID(){
+        return UUID.randomUUID().toString().toUpperCase().replaceAll("-", "");
+    }
+
     public static void main(String[] args) {
         for (int i = 0; i <10 ; i++) {
             System.out.println(getInvitation_code());
