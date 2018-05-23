@@ -142,7 +142,7 @@ public class RegisteredController extends CommonController {
     @RequestMapping(value = "/mobileRegister" ,produces="application/json;charset=UTF-8")
     @ResponseBody
     @RestfulAnnotation
-    public RestfulResult mobileRegister(String password,String mobile,String code,String bizId,String invitation_code,String username)throws CommonException {
+    public RestfulResult mobileRegister(String password,String mobile,String code,String bizId,String invitation_code,String username,String realName)throws CommonException {
         try {
             RestfulResult restfulResult = verifyCode(mobile, code, bizId);
             if(restfulResult.getStatus()!=200){
@@ -173,6 +173,7 @@ public class RegisteredController extends CommonController {
             bs_person.setInvitation_code(ZmjUtil.getInvitation_code());
             bs_person.setUserName(username);
             bs_person.setNickName("mobile_"+mobile);
+            bs_person.setRealName(realName);
             bs_person.setPhone(mobile);
             //获取系统时间
             bs_person.setRegTime(DateUtil.getNowTimestamp());
