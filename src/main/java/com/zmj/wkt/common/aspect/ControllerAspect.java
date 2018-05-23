@@ -1,9 +1,11 @@
 package com.zmj.wkt.common.aspect;
 
 import com.zmj.wkt.common.CommonController;
+import com.zmj.wkt.common.exception.CommonException;
 import com.zmj.wkt.entity.Sys_log;
 import com.zmj.wkt.mapper.Sys_logMapper;
 import com.zmj.wkt.utils.DateUtil;
+import com.zmj.wkt.utils.sysenum.ErrorCode;
 import net.sf.json.JSONObject;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.annotation.*;
@@ -11,6 +13,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.validation.BeanPropertyBindingResult;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 import com.zmj.wkt.common.RestfulResult;
@@ -64,6 +68,19 @@ public class ControllerAspect extends CommonController{
         //参数
         logger.info("args={}", Arrays.toString(joinPoint.getArgs()));
         sys_log.setArgs( Arrays.toString(joinPoint.getArgs()));
+
+        //校验参数
+        Arrays.stream(joinPoint.getArgs())
+                .filter(arg->arg instanceof BeanPropertyBindingResult)
+                .findFirst()
+                .ifPresent(arg->
+                    ((BeanPropertyBindingResult) arg).getAllErrors().stream()
+                            .findFirst()
+                            .ifPresent((objectError) -> {
+                                logger.warn("args异常：{}:{}",ErrorCode.VERIFY_ERROR.getDescription(), objectError.getDefaultMessage());
+                                throw new CommonException(ErrorCode.VERIFY_ERROR,objectError.getDefaultMessage());
+                            })
+                );
     }
 
     /**

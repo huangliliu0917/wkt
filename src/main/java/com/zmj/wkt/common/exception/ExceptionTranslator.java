@@ -49,7 +49,7 @@ public class ExceptionTranslator {
     public RestfulResult handle(CommonException e){
         Sys_error_log sys_error_log = new Sys_error_log();
         if(ZmjUtil.isNullOrEmpty(e.getCode())){
-            logger.info(RestfulResultUtils.error(ErrorCode.UNKNOWNS_ERROR.getCode(), e.getMessage().trim()).toString());
+            logger.warn(RestfulResultUtils.error(ErrorCode.UNKNOWNS_ERROR.getCode(), e.getMessage().trim()).toString());
             //插入数据库
             sys_error_log.setErrorCode(String.valueOf(ErrorCode.UNKNOWNS_ERROR.getCode()));
             sys_error_log.setMessage(e.getMessage());
@@ -58,7 +58,7 @@ public class ExceptionTranslator {
             return RestfulResultUtils.error(ErrorCode.UNKNOWNS_ERROR.getCode(),e.getMessage().trim());
         }
         else{
-            logger.info(RestfulResultUtils.error(e.getCode(), e.getMessage().trim()).toString());
+            logger.warn(RestfulResultUtils.error(e.getCode(), e.getMessage().trim()).toString());
             //插入数据库
             sys_error_log.setErrorCode(String.valueOf(e.getCode()));
             sys_error_log.setMessage(e.getMessage());
@@ -71,7 +71,7 @@ public class ExceptionTranslator {
     @ExceptionHandler(value = HttpRequestMethodNotSupportedException.class)
     @ResponseBody
     public RestfulResult handle(HttpRequestMethodNotSupportedException e){
-        logger.info(RestfulResultUtils.error(ErrorCode.HTTPREQUESTMETHODNOTSUPPORTED.getCode(), ErrorCode.HTTPREQUESTMETHODNOTSUPPORTED.getDescription() + ":" + e.getMessage().trim()).toString());
+        logger.warn(RestfulResultUtils.error(ErrorCode.HTTPREQUESTMETHODNOTSUPPORTED.getCode(), ErrorCode.HTTPREQUESTMETHODNOTSUPPORTED.getDescription() + ":" + e.getMessage().trim()).toString());
         //插入数据库
         Sys_error_log sys_error_log = new Sys_error_log();
         sys_error_log.setErrorCode(String.valueOf(ErrorCode.HTTPREQUESTMETHODNOTSUPPORTED.getCode()));
@@ -84,7 +84,7 @@ public class ExceptionTranslator {
     @ExceptionHandler(value = io.jsonwebtoken.ExpiredJwtException.class)
     @ResponseBody
     public RestfulResult handle(io.jsonwebtoken.ExpiredJwtException e){
-        logger.info(RestfulResultUtils.error(ErrorCode.TOKEN_ERROR.getCode(), ErrorCode.TOKEN_ERROR.getDescription() + ":" + e.getMessage().trim()).toString());
+        logger.warn(RestfulResultUtils.error(ErrorCode.TOKEN_ERROR.getCode(), ErrorCode.TOKEN_ERROR.getDescription() + ":" + e.getMessage().trim()).toString());
         //插入数据库
         Sys_error_log sys_error_log = new Sys_error_log();
         sys_error_log.setErrorCode(String.valueOf(ErrorCode.TOKEN_ERROR.getCode()));

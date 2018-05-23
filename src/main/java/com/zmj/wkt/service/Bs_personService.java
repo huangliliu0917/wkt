@@ -1,6 +1,7 @@
 package com.zmj.wkt.service;
 
 import com.baomidou.mybatisplus.service.IService;
+import com.zmj.wkt.common.CommonManager;
 import com.zmj.wkt.entity.Acc_person;
 import com.zmj.wkt.entity.Bs_goods;
 import com.zmj.wkt.entity.Bs_person;
@@ -19,7 +20,7 @@ import java.util.List;
  * @author zmj
  * @since 2017-12-27
  */
-public interface Bs_personService extends IService<Bs_person> {
+public interface Bs_personService extends  CommonManager<Bs_person>{
     public Bs_person findByName(String name) ;
     public String registered(Bs_person bs_person, String registerWay);
     public Boolean updatePersonInfo(Bs_person bs_person);

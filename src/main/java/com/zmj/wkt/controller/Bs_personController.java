@@ -17,6 +17,9 @@ import org.springframework.cache.annotation.Cacheable;
 import org.springframework.security.access.method.P;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.io.IOException;
 
 /**
  * code is far away from bug with the animal protecting
@@ -125,5 +128,31 @@ public class Bs_personController extends CommonController {
         bs_person.setPID(PID);
         bs_personService.updatePersonInfo(bs_person);
         return RestfulResultUtils.success("新增/修改PID成功!");
+    }
+
+    /**
+     * 上传头像
+     * @param file
+     * @return
+     */
+    @PostMapping("/uploadPersonPhoto")
+    public RestfulResult uploadPersonPhoto(MultipartFile file) throws Exception {
+        if(ZmjUtil.isNullOrEmpty(file)){
+            throw new CommonException(ErrorCode.NULL_ERROR,"Photo不能为空！");
+        }
+        Bs_person thisUser = getThisUser();
+        String url = "person-img/";
+        try {
+            String photoUrl = url + thisUser.getClientID() + "." + ZmjUtil.getExtensionName(file.getOriginalFilename());
+            bs_personService.uploadfile(file,photoUrl);
+            Bs_person newPerson = new Bs_person();
+            newPerson.setClientID(thisUser.getClientID());
+            newPerson.setPhoto(photoUrl);
+            bs_personService.updatePersonInfo(newPerson);
+            return RestfulResultUtils.success();
+        }catch (IOException e) {
+            e.printStackTrace();
+            throw new CommonException(ErrorCode.FILE_UPLOAD_ERROR,"文件上传失败！IOException:"+e.getMessage());
+        }
     }
 }

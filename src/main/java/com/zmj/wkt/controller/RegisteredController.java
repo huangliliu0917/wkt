@@ -9,6 +9,7 @@ import com.zmj.wkt.common.RestfulResult;
 import com.zmj.wkt.common.aspect.RestfulAnnotation;
 import com.zmj.wkt.common.exception.CommonException;
 import com.zmj.wkt.entity.Bs_person;
+import com.zmj.wkt.entity.request.MobileRegisterReq;
 import com.zmj.wkt.service.Bs_personService;
 import com.zmj.wkt.service.Bs_role_personService;
 import com.zmj.wkt.utils.*;
@@ -17,8 +18,12 @@ import com.zmj.wkt.utils.sysenum.RoleCode;
 import com.zmj.wkt.utils.sysenum.SysCode;
 import net.sf.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
+import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
@@ -142,25 +147,18 @@ public class RegisteredController extends CommonController {
     @RequestMapping(value = "/mobileRegister" ,produces="application/json;charset=UTF-8")
     @ResponseBody
     @RestfulAnnotation
-    public RestfulResult mobileRegister(String password,String mobile,String code,String bizId,String invitation_code,String username,String realName)throws CommonException {
+    public RestfulResult mobileRegister(@Valid MobileRegisterReq req, BindingResult result)throws CommonException {
         try {
-            RestfulResult restfulResult = verifyCode(mobile, code, bizId);
+            RestfulResult restfulResult = verifyCode(req.getMobile(), req.getCode(), req.getBizId());
             if(restfulResult.getStatus()!=200){
                 return restfulResult;
             }
             Bs_person bs_person = new Bs_person();
-            if(ZmjUtil.isNullOrEmpty(username)){
-                throw new CommonException(ErrorCode.VERIFY_ERROR,"用户名不能为空！");
-            }
-            if(ZmjUtil.isNullOrEmpty(password)){
-                throw new CommonException(ErrorCode.VERIFY_ERROR,"密码不能为空！");
-            }else {
-                bs_person.setPersonPassword(MD5Util.encode(password));
-            }
+            bs_person.setPersonPassword(MD5Util.encode(req.getPassword()));
             //邀请码判断
-            if(!ZmjUtil.isNullOrEmpty(invitation_code)){
+            if(!ZmjUtil.isNullOrEmpty(req.getInvitation_code())){
                 Optional<Bs_person> bs_personOptional = Optional.ofNullable(
-                        bs_personService.selectOne(new EntityWrapper<Bs_person>().where("Invitation_code = {0}", invitation_code)
+                        bs_personService.selectOne(new EntityWrapper<Bs_person>().where("Invitation_code = {0}", req.getInvitation_code())
                         ));
                 if(bs_personOptional.isPresent()){
                     bs_person.setInviterID(bs_personOptional.get().getClientID());
@@ -171,10 +169,10 @@ public class RegisteredController extends CommonController {
             }
             //生成用户邀请码
             bs_person.setInvitation_code(ZmjUtil.getInvitation_code());
-            bs_person.setUserName(username);
-            bs_person.setNickName("mobile_"+mobile);
-            bs_person.setRealName(realName);
-            bs_person.setPhone(mobile);
+            bs_person.setUserName(req.getUsername());
+            bs_person.setNickName("mobile_"+req.getMobile());
+            bs_person.setRealName(req.getRealName());
+            bs_person.setPhone(req.getMobile());
             //获取系统时间
             bs_person.setRegTime(DateUtil.getNowTimestamp());
             bs_person.setMemberPoints(0L);
@@ -182,7 +180,10 @@ public class RegisteredController extends CommonController {
 
             String ClientID = bs_personService.registered(bs_person,"mobile");
             return RestfulResultUtils.success("注册成功！");
-        }catch (Exception e){
+        }catch (CommonException e){
+            throw e;
+        }
+        catch (Exception e){
             e.printStackTrace();
             throw new CommonException("注册失败,"+e.getMessage());
         }

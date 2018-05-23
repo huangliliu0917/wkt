@@ -45,6 +45,7 @@ public class CommonManagerImpl  <M extends BaseMapper<T>, T>  extends ServiceImp
      * @throws CommonException
      * @throws IOException
      */
+    @Override
     public void uploadfile(MultipartFile file, String fileName) throws CommonException, IOException {
         PropertyConfigurator.configure("conf/log4j-AliOSS.properties");
         OSSClient ossClient = new OSSClient(HelloOSS.ENDPOINT, HelloOSS.ACCESS_KEY_ID, HelloOSS.ACCESS_KEY_SECRET);
@@ -59,6 +60,7 @@ public class CommonManagerImpl  <M extends BaseMapper<T>, T>  extends ServiceImp
      * @throws CommonException
      * @throws IOException
      */
+    @Override
     public void uploadfile(MultipartFile file) throws CommonException, IOException {
         PropertyConfigurator.configure("conf/log4j-AliOSS.properties");
         OSSClient ossClient = new OSSClient(HelloOSS.ENDPOINT, HelloOSS.ACCESS_KEY_ID, HelloOSS.ACCESS_KEY_SECRET);

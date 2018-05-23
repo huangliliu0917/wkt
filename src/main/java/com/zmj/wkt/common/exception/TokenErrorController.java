@@ -62,10 +62,6 @@ public class TokenErrorController  extends BasicErrorController {
         }else {
             status = getStatus(request).value();
         }
-        //token异常
-        /*if("io.jsonwebtoken.ExpiredJwtException".equals(body.get("exception"))){
-            throw new  CommonException(ErrorCode.TOKEN_ERROR,body.get("error")+":"+body.get("message").toString());
-        }*/
         return new ResponseEntity(RestfulResultUtils.error(status,body.get("error")+":"+body.get("message")), HttpStatus.OK);
     }
 
