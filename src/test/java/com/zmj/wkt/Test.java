@@ -1,9 +1,9 @@
 package com.zmj.wkt;
 
-import com.baomidou.mybatisplus.annotations.TableId;
 import com.taobao.api.ApiException;
 import com.zmj.wkt.utils.HttpsClientUtil;
 import com.zmj.wkt.utils.sysenum.SysConstant;
+import org.springframework.util.Assert;
 
 import java.math.BigDecimal;
 
@@ -70,5 +70,24 @@ public class Test {
         BigDecimal a= new BigDecimal("2.5");
         BigDecimal b= new BigDecimal("10");
         System.out.println(a.multiply(b));
+    }
+
+    @org.junit.Test
+    public void test3(){
+        BigDecimal a= new BigDecimal("20.5");
+        BigDecimal b= new BigDecimal("2");
+        long a1= a.longValue();
+        long b1= b.longValue();
+        System.out.println("a1 = "+a1);
+        System.out.println("b1 = "+b1);
+        System.out.println(a1^a1>>>32);
+    }
+
+
+    @org.junit.Test
+    public void test2(){
+        String a = "a";
+        String b = "fsbjhkadhsjk";
+        Assert.doesNotContain(b,a,"contain");
     }
 }
