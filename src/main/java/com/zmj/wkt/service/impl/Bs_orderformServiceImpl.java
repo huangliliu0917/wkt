@@ -2,6 +2,7 @@ package com.zmj.wkt.service.impl;
 
 import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.zmj.wkt.common.exception.CommonException;
+import com.zmj.wkt.common.validate.Validator;
 import com.zmj.wkt.entity.*;
 import com.zmj.wkt.mapper.Acc_daybookMapper;
 import com.zmj.wkt.mapper.Acc_personMapper;
@@ -167,6 +168,12 @@ public class Bs_orderformServiceImpl extends CommonManagerImpl<Bs_orderformMappe
         bs_goodsWrapper.where("GoodsID = {0} " ,bs_orderform.getGoodsID());
         Bs_goods bs_goods = bs_goodsService.selectOne(bs_goodsWrapper);
         bs_goods.setGCount(bs_goods.getGCount()+bs_orderform.getSpCount());
+        //判断可接单数
+        if(bs_goods.getGMaxCount().longValue() == bs_goods.getGCount()){
+            bs_goods.setIsShow(SysCode.STATE_F.getCode());
+        }else if(bs_goods.getGMaxCount().longValue()<bs_goods.getGCount()){
+            throw new CommonException(ErrorCode.MORE_THAN_AVAILABLE);
+        }
         bs_goods.setGSail(bs_goods.getGSail()+bs_orderform.getSpCount());
         bs_goodsService.updateGoodsByID(bs_goods);
     }

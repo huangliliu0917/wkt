@@ -13,6 +13,7 @@ public enum ErrorCode {
     NOT_FIND_USER_ERROR2(604,"未找到该用户"),
     TOKEN_ERROR(605,"token异常"),
     GET_TOKEN_ERROR(607,"验证token异常"),
+    MORE_THAN_AVAILABLE(608,"超过最大可接单数"),
     KNOWS_ERROR(500, "已知异常"),
     UNKNOWNS_ERROR(501, "未知异常"),
     HTTPREQUESTMETHODNOTSUPPORTED(405,"请求方法不被允许"),

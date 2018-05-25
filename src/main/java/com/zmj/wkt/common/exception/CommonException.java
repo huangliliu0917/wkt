@@ -17,7 +17,7 @@ public class CommonException extends RuntimeException {
      * @param addMessage
      */
     public CommonException(ErrorCode errorCode, String addMessage) {
-        super(errorCode.getDescription()+":"+addMessage);
+        super(addMessage);
         this.code = errorCode.getCode();
     }
 
