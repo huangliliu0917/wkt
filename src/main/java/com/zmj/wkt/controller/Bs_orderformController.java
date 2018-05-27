@@ -213,6 +213,9 @@ public class Bs_orderformController  extends CommonController{
         if(ZmjUtil.isNullOrEmpty(bs_orderform)){
             throw new CommonException(ErrorCode.NOT_FIND_ERROR,"找不到该订单！");
         }
+        if(SysCode.STATE_T.getCode()!=bs_orderform.getMerchantConfirmation()){
+            throw new CommonException("商户尚未确认该订单！");
+        }
         EntityWrapper acc_daybookWrapper = new EntityWrapper();
         acc_daybookWrapper.setEntity(new Acc_daybook());
         acc_daybookWrapper.where("tr_code = {0} and State = {1} and SubID = {2}",TrCode.WITHHOLDING.getCode(),SysCode.STATE_T.getCode(),bs_orderform.getSubID());

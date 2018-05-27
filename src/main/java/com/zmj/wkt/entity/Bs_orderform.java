@@ -14,7 +14,7 @@ import java.io.Serializable;
  * </p>
  *
  * @author zmj
- * @since 2018-05-19
+ * @since 2018-05-27
  */
 @TableName("bs_orderform")
 public class Bs_orderform extends Model<Bs_orderform> {
@@ -119,6 +119,10 @@ public class Bs_orderform extends Model<Bs_orderform> {
 (0通过 1未通过 2待审核)
      */
 	private Integer IsAble;
+    /**
+     * 商户确认状态(0确认 1未确认)
+     */
+	private Integer MerchantConfirmation;
 
 
 	public String getSubID() {
@@ -313,6 +317,14 @@ public class Bs_orderform extends Model<Bs_orderform> {
 		this.IsAble = IsAble;
 	}
 
+	public Integer getMerchantConfirmation() {
+		return MerchantConfirmation;
+	}
+
+	public void setMerchantConfirmation(Integer MerchantConfirmation) {
+		this.MerchantConfirmation = MerchantConfirmation;
+	}
+
 	@Override
 	protected Serializable pkVal() {
 		return this.SubID;
@@ -345,6 +357,7 @@ public class Bs_orderform extends Model<Bs_orderform> {
 			", ItemPic=" + ItemPic +
 			", State=" + State +
 			", IsAble=" + IsAble +
+			", MerchantConfirmation=" + MerchantConfirmation +
 			"}";
 	}
 }

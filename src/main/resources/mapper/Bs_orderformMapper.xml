@@ -28,11 +28,12 @@
         <result column="ItemPic" property="ItemPic" />
         <result column="State" property="State" />
         <result column="IsAble" property="IsAble" />
+        <result column="MerchantConfirmation" property="MerchantConfirmation" />
     </resultMap>
 
     <!-- 通用查询结果列 -->
     <sql id="Base_Column_List">
-        SubID, ClientID, ConsumerUserName, ProductUserName, GoodsID, GName, GTypeID, RAddress, SpDate, SpCount, GPrice, ReceiptID, SpPrice, SendDate, Payment, SendType, SendPrice, ItemTitle, ItemPrice, ItemActivePrice, ItemDescription, ItemPic, State, IsAble
+        SubID, ClientID, ConsumerUserName, ProductUserName, GoodsID, GName, GTypeID, RAddress, SpDate, SpCount, GPrice, ReceiptID, SpPrice, SendDate, Payment, SendType, SendPrice, ItemTitle, ItemPrice, ItemActivePrice, ItemDescription, ItemPic, State, IsAble ,MerchantConfirmation
     </sql>
 
 </mapper>
