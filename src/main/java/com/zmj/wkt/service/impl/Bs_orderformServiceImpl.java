@@ -117,7 +117,10 @@ public class Bs_orderformServiceImpl extends CommonManagerImpl<Bs_orderformMappe
     public void orderPaySuccess(Bs_orderform bs_orderform, Bs_person bs_person,Acc_daybook oldAcc_daybook) {
         //记录交易前金额
         Acc_daybook newAcc_daybook = new Acc_daybook();
-        Acc_person userBalance = acc_personService.getUserBalance(bs_orderform.getClientID());
+        //代方ID
+        Bs_person creditClient = bs_personService.findByName(bs_orderform.getProductUserName());
+        //贷方余额
+        Acc_person userBalance = acc_personService.getUserBalance(creditClient.getClientID());
         newAcc_daybook.setBeforeBalance(userBalance.getBalance());
 
         //转账
@@ -137,11 +140,9 @@ public class Bs_orderformServiceImpl extends CommonManagerImpl<Bs_orderformMappe
         newAcc_daybook.setAmt(oldAcc_daybook.getAmt());
         newAcc_daybook.setState(SysCode.STATE_T.getCode());
         newAcc_daybook.setTr_code(TrCode.TRANSFER.getCode());
-
-        //借方ID
-        Bs_person debit_person = bs_personService.findByName(bs_orderform.getProductUserName());
-        newAcc_daybook.setDebit(debit_person.getClientID());
-        newAcc_daybook.setNote("代扣转账，用户名："+debit_person.getUserName()+"，转账金额："+oldAcc_daybook.getAmt());
+        //记录贷方id
+        newAcc_daybook.setCreditClientID(creditClient.getClientID());
+        newAcc_daybook.setNote("代扣转账，用户名："+creditClient.getUserName()+"，转账金额："+oldAcc_daybook.getAmt());
 
         //记录交易后金额
         newAcc_daybook.setAfterBalance(userBalance.getBalance());
