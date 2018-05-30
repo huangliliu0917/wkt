@@ -127,7 +127,7 @@ public class Bs_orderformServiceImpl extends CommonManagerImpl<Bs_orderformMappe
         userBalance.setBalance(userBalance.getBalance().add(oldAcc_daybook.getAmt()));
         EntityWrapper entityWrapper1 = new EntityWrapper();
         entityWrapper1.setEntity(new Acc_person());
-        entityWrapper1.where("ClientID = {0}",bs_orderform.getClientID());
+        entityWrapper1.where("ClientID = {0}",creditClient.getClientID());
         acc_personMapper.update(userBalance,entityWrapper1);
 
         //记流水日志
