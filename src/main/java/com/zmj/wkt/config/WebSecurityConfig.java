@@ -61,7 +61,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         http
                 .csrf().disable()
                 .authorizeRequests()
-                .antMatchers("/login2","/login","/home","/loginError","/register","/authImage","/checkImageCode","/authImageBase64","/sendSmsCode","/verifyCode","/showSlideshowInfo","/noRoot/**","/css/**","/img/**","/js/**","loginSuccess",matcher).permitAll()
+                .antMatchers("/login2","/login","/home","/loginError","/register","/authImage","/checkImageCode","/authImageBase64","/sendSmsCode"
+                        ,"/verifyCode","/showSlideshowInfo","/noRoot/**","/css/**","/img/**","/js/**","loginSuccess",matcher
+                        ,"/getGoodsType","/getGoods","/getQQGoods","/getGoodsByID","/clearGoods").permitAll()
                 .anyRequest().authenticated() //任何请求,登录后才可以访问
                 .and()
                 .sessionManagement()

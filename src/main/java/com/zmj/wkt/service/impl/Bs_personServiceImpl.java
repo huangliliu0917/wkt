@@ -81,7 +81,8 @@ public class Bs_personServiceImpl extends CommonManagerImpl<Bs_personMapper, Bs_
         }
         bs_personMapper.insert(bs_person);
         //默认权限
-        addPersonAsRoleName(bs_person.getClientID(), RoleCode.ROLE_USER.getCode());
+        //自动添加权限（默认已激活）
+        addPersonAsRoleName(bs_person.getClientID(), RoleCode.ROLE_MERCHANTS.getCode());
         //添加账户表
         addAccPerson(bs_person.getClientID());
         return bs_person.getClientID();

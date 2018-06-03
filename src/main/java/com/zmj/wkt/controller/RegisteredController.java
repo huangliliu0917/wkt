@@ -9,8 +9,11 @@ import com.zmj.wkt.common.RestfulResult;
 import com.zmj.wkt.common.aspect.RestfulAnnotation;
 import com.zmj.wkt.common.exception.CommonException;
 import com.zmj.wkt.entity.Bs_person;
+import com.zmj.wkt.entity.Bs_role;
+import com.zmj.wkt.entity.Bs_role_person;
 import com.zmj.wkt.entity.request.MobileRegisterReq;
 import com.zmj.wkt.service.Bs_personService;
+import com.zmj.wkt.service.Bs_roleService;
 import com.zmj.wkt.service.Bs_role_personService;
 import com.zmj.wkt.utils.*;
 import com.zmj.wkt.utils.sysenum.ErrorCode;
@@ -165,7 +168,6 @@ public class RegisteredController extends CommonController {
                 }else {
                     throw new CommonException(ErrorCode.VERIFY_ERROR,"邀请码无效");
                 }
-
             }
             //生成用户邀请码
             bs_person.setInvitation_code(ZmjUtil.getInvitation_code());
@@ -177,7 +179,8 @@ public class RegisteredController extends CommonController {
             bs_person.setRegTime(DateUtil.getNowTimestamp());
             bs_person.setMemberPoints(0L);
             bs_person.setGradeID(1L);
-
+            //自动激活（不是试用）
+            bs_person.setIsTry(SysCode.STATE_F.getCode());
             String ClientID = bs_personService.registered(bs_person,"mobile");
             return RestfulResultUtils.success("注册成功！");
         }catch (CommonException e){
