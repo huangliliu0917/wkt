@@ -23,6 +23,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.math.BigDecimal;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
@@ -194,6 +195,8 @@ public class TbkController extends CommonController {
             throw new CommonException(ErrorCode.ISHAVEN_ERROR,"已经添加！");
         }
         bs_tbkCollections.setClientID(getThisUser().getClientID());
+        //添加时间
+        bs_tbkCollections.setCreate_time(new Date());
         bs_tbkCollectionsService.addTbkCollection(bs_tbkCollections);
         return RestfulResultUtils.success();
     }
@@ -209,6 +212,7 @@ public class TbkController extends CommonController {
         EntityWrapper entityWrapper = new EntityWrapper();
         entityWrapper.setEntity(new Bs_tbkCollections());
         entityWrapper.where("ClientID = {0}",bs_person.getClientID());
+        entityWrapper.orderBy("create_time",false);
         return RestfulResultUtils.success(bs_tbkCollectionsMapper.selectList(entityWrapper));
     }
 

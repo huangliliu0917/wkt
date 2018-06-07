@@ -2,6 +2,7 @@ package com.zmj.wkt.entity;
 
 import java.io.Serializable;
 
+import java.util.Date;
 import com.baomidou.mybatisplus.activerecord.Model;
 import com.baomidou.mybatisplus.annotations.TableName;
 import java.io.Serializable;
@@ -12,7 +13,7 @@ import java.io.Serializable;
  * </p>
  *
  * @author zmj
- * @since 2018-05-19
+ * @since 2018-06-07
  */
 @TableName("Bs_tbkCollections")
 public class Bs_tbkCollections extends Model<Bs_tbkCollections> {
@@ -53,6 +54,10 @@ public class Bs_tbkCollections extends Model<Bs_tbkCollections> {
      * 佣金比例
      */
 	private Double tkRate;
+    /**
+     * 创建时间
+     */
+	private Date create_time;
 
 
 	public String getTbkID() {
@@ -183,6 +188,14 @@ public class Bs_tbkCollections extends Model<Bs_tbkCollections> {
 		this.tkRate = tkRate;
 	}
 
+	public Date getCreate_time() {
+		return create_time;
+	}
+
+	public void setCreate_time(Date create_time) {
+		this.create_time = create_time;
+	}
+
 	@Override
 	protected Serializable pkVal() {
 		return this.tbkID;
@@ -207,6 +220,7 @@ public class Bs_tbkCollections extends Model<Bs_tbkCollections> {
 			", coupon_click_url=" + coupon_click_url +
 			", couponInfo=" + couponInfo +
 			", tkRate=" + tkRate +
+			", create_time=" + create_time +
 			"}";
 	}
 }
