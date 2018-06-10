@@ -54,6 +54,8 @@ public class TbkUtil {
     private static final String SECRET = "20171995c8a67b8fecc47058c616704b";
     private static String SESSION_KEY = "6201810b80e662d44bdfd7c9453a340125cd41aedfbef901091412511";
     private static final String PID = "mm_46667186_35066962_277674842";
+    public static final String DEFULT_PID = "mm_46667186_35066962_470114895";
+
     private static final String REFRESHTOKEN = "6100d25a988e33cc1e5146c0d2341f78b1feb172ecf96e81091412511";
     /**
      * SessionKey非法错误代码

@@ -6,20 +6,19 @@ import com.zmj.wkt.common.CommonController;
 import com.zmj.wkt.common.RestfulResult;
 import com.zmj.wkt.common.exception.CommonException;
 import com.zmj.wkt.entity.*;
+import com.zmj.wkt.entity.domain.FavoritesItem;
+import com.zmj.wkt.entity.domain.TpwdItem;
 import com.zmj.wkt.mapper.Bs_tbkCollectionsMapper;
 import com.zmj.wkt.service.*;
-import com.zmj.wkt.utils.DateUtil;
-import com.zmj.wkt.utils.RestfulResultUtils;
-import com.zmj.wkt.utils.TbkUtil;
-import com.zmj.wkt.utils.ZmjUtil;
+import com.zmj.wkt.utils.*;
 import com.zmj.wkt.utils.sysenum.ErrorCode;
 import com.zmj.wkt.utils.sysenum.SysCode;
 import net.sf.json.JSONArray;
+import net.sf.json.JSONObject;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.data.repository.query.Param;
+import org.springframework.web.bind.annotation.*;
 
 import java.math.BigDecimal;
 import java.util.Arrays;
@@ -120,28 +119,12 @@ public class TbkController extends CommonController {
         int i=0;
         for (Bs_tbkCollections tbkCollections: list){
             i++;
-            tpwd.append(i);
-            tpwd.append(".");
-            tpwd.append("\r\n");
-            tpwd.append("商品:").append(tbkCollections.getTitle());
-            tpwd.append("\r\n");
-            tpwd.append("【一口价】:").append(tbkCollections.getZk_final_price()).append("元");
-            tpwd.append("\r\n");
-            tpwd.append("【优惠券】:").append(tbkCollections.getCouponInfo());
-            tpwd.append("\r\n");
-            tpwd.append("【劵后价】:一口价 — 优惠劵");
-            tpwd.append("\r\n");
-            tpwd.append("复制这条淘口令，[打开手机淘宝]即可领券下单，淘口令:");
-            tpwd.append("\r\n");
-            tpwd.append(TbkUtil.tpwdCreate(client.getPID(), tbkCollections.getTitle(), tbkCollections.getCoupon_click_url(), tbkCollections.getPict_url(), null));
-            tpwd.append("\r\n");
-            tpwd.append("★提示:本内容发送给朋友，同样可享受内部优惠");
-            tpwd.append("\r\n");
-            tpwd.append("======================");
-            tpwd.append("\r\n");
+            TpwdItem tpwdItem = TpwdBuilder.convertBs_tbkCollections2Tpwd(tbkCollections, client);
+            TpwdBuilder.buildTpwd(tpwd,i,tpwdItem);
         }
         return  RestfulResultUtils.success(tpwd.toString());
     }
+
 
     /**
      * 获取热词
@@ -295,5 +278,17 @@ public class TbkController extends CommonController {
         return RestfulResultUtils.success(bs_tbkCollectionsMapper.selectList(entityWrapper));
     }
 
+    /**
+     * 构造淘口令（无需登陆）
+     * @param favoritesItem
+     * @return
+     */
+    @PostMapping("/noRoot/tpwdCreateNoLogin")
+    public RestfulResult tpwdCreateNoLogin(@RequestBody FavoritesItem favoritesItem){
+        StringBuilder stb = new StringBuilder();
+        TpwdItem tpwdItem = TpwdBuilder.convertFavoritesItem2Tpwd(favoritesItem);
+        TpwdBuilder.buildTpwd(stb,1,tpwdItem);
+        return RestfulResultUtils.success(stb.toString());
+    }
 
 }
