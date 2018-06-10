@@ -36,4 +36,6 @@ public class MobileRegisterReq implements Serializable {
     String realName;
 
     String invitation_code;
+
+    String address;
 }

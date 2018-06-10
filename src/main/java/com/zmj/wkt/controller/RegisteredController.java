@@ -175,6 +175,7 @@ public class RegisteredController extends CommonController {
             bs_person.setNickName("mobile_"+req.getMobile());
             bs_person.setRealName(req.getRealName());
             bs_person.setPhone(req.getMobile());
+            bs_person.setAddress(req.getAddress());
             //获取系统时间
             bs_person.setRegTime(DateUtil.getNowTimestamp());
             bs_person.setMemberPoints(0L);

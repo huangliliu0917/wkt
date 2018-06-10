@@ -226,6 +226,4 @@ public class Bs_orderformController  extends CommonController{
         bs_orderformService.orderPaySuccess(bs_orderform,bs_person,acc_daybook);
         return  RestfulResultUtils.success("确认成功！");
     }
-
-
 }
