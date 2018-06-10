@@ -62,7 +62,7 @@ class MysqlGenerator {
      *  table名字
      */
     private static String[] table={
-            "Bs_tbkCollections"
+            "bs_goods"
     };
     /**
      *  table前缀

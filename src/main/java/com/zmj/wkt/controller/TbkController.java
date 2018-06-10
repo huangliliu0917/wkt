@@ -15,6 +15,7 @@ import com.zmj.wkt.utils.sysenum.ErrorCode;
 import com.zmj.wkt.utils.sysenum.SysCode;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
+import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.repository.query.Param;
@@ -208,7 +209,7 @@ public class TbkController extends CommonController {
      * @return
      */
     @PostMapping("/createOrder")
-    public RestfulResult createOrder(String goodsID,String[] num_iids) throws Exception {
+    public RestfulResult createOrder(String[] goodsID,String[] num_iids) throws Exception {
         Bs_person bs_person = getThisUser();
         if(ZmjUtil.isNullOrEmpty(goodsID)){
             throw new CommonException(ErrorCode.NULL_ERROR,"goodsID不能为空");
@@ -216,6 +217,12 @@ public class TbkController extends CommonController {
         if(ZmjUtil.isNullOrEmpty(num_iids)){
             throw new CommonException(ErrorCode.NULL_ERROR,"num_iids不能为空");
         }
+        List<String> goodsIDs = Arrays.asList(goodsID);
+        goodsIDs.parallelStream().forEach(goodId->createOrder(goodId,num_iids,bs_person));
+        return RestfulResultUtils.success("上传成功!等待是商户确认!");
+    }
+
+    private void createOrder(String goodsID, String[] num_iids, Bs_person bs_person) {
         //获取微信群对象
         EntityWrapper entityWrapper = new EntityWrapper();
         entityWrapper.setEntity(new Bs_goods());
@@ -241,9 +248,7 @@ public class TbkController extends CommonController {
         bs_orderform.setItemDescription(Arrays.toString(num_iids));
         //申请时间
         bs_orderform.setSpDate(DateUtil.getNowTimestamp());
-
         bs_orderformService.orderFormApply(bs_orderform);
-        return RestfulResultUtils.success("上传成功!等待是商户确认!");
     }
 
     /**
@@ -284,7 +289,9 @@ public class TbkController extends CommonController {
      * @return
      */
     @PostMapping("/noRoot/tpwdCreateNoLogin")
-    public RestfulResult tpwdCreateNoLogin(@RequestBody FavoritesItem favoritesItem){
+    public RestfulResult tpwdCreateNoLogin(String item){
+        JSONObject jsonObject=JSONObject.fromObject(item);
+        FavoritesItem favoritesItem = (FavoritesItem) JSONObject.toBean(jsonObject,FavoritesItem.class);
         StringBuilder stb = new StringBuilder();
         TpwdItem tpwdItem = TpwdBuilder.convertFavoritesItem2Tpwd(favoritesItem);
         TpwdBuilder.buildTpwd(stb,1,tpwdItem);

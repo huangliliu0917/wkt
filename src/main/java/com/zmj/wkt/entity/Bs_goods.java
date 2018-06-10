@@ -14,7 +14,7 @@ import java.io.Serializable;
  * </p>
  *
  * @author zmj
- * @since 2018-05-19
+ * @since 2018-06-10
  */
 @TableName("bs_goods")
 public class Bs_goods extends Model<Bs_goods> {
@@ -141,6 +141,10 @@ public class Bs_goods extends Model<Bs_goods> {
      * 0不是qq 1 是qq
      */
 	private Integer IsQQ;
+    /**
+     * 推广方式
+     */
+	private String GPromoteWay;
 
 
 	public String getGoodsID() {
@@ -383,6 +387,14 @@ public class Bs_goods extends Model<Bs_goods> {
 		this.IsQQ = IsQQ;
 	}
 
+	public String getGPromoteWay() {
+		return GPromoteWay;
+	}
+
+	public void setGPromoteWay(String GPromoteWay) {
+		this.GPromoteWay = GPromoteWay;
+	}
+
 	@Override
 	protected Serializable pkVal() {
 		return this.GoodsID;
@@ -421,6 +433,7 @@ public class Bs_goods extends Model<Bs_goods> {
 			", IsShow=" + IsShow +
 			", GAddedTime=" + GAddedTime +
 			", IsQQ=" + IsQQ +
+			", GPromoteWay=" + GPromoteWay +
 			"}";
 	}
 }
