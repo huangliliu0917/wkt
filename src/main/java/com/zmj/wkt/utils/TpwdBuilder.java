@@ -1,5 +1,6 @@
 package com.zmj.wkt.utils;
 
+import com.zmj.wkt.common.exception.CommonException;
 import com.zmj.wkt.entity.Bs_person;
 import com.zmj.wkt.entity.Bs_tbkCollections;
 import com.zmj.wkt.entity.domain.FavoritesItem;
@@ -62,6 +63,11 @@ public class TpwdBuilder {
 
     public static TpwdItem convertBs_tbkCollections2Tpwd(Bs_tbkCollections bs_tbkCollections, Bs_person bs_person){
         TpwdItem tpwdItem = new TpwdItem();
+        if(ZmjUtil.isNullOrEmpty(bs_tbkCollections)){
+            throw new CommonException("转化出错！");
+        }else if(ZmjUtil.isNullOrEmpty(bs_tbkCollections.getCoupon_click_url())){
+            throw new CommonException("该商品没有推广链接！");
+        }
         tpwdItem.setCoupon_click_url(bs_tbkCollections.getCoupon_click_url());
         tpwdItem.setCouponInfo(bs_tbkCollections.getCouponInfo());
         tpwdItem.setPID(bs_person.getPID());
@@ -73,6 +79,11 @@ public class TpwdBuilder {
 
     public static TpwdItem convertFavoritesItem2Tpwd(FavoritesItem favoritesItem){
         TpwdItem tpwdItem = new TpwdItem();
+        if(ZmjUtil.isNullOrEmpty(favoritesItem)){
+            throw new CommonException("转化出错！");
+        }else if(ZmjUtil.isNullOrEmpty(favoritesItem.getCouponClickUrl())){
+            throw new CommonException("该商品没有推广链接！");
+        }
         tpwdItem.setCoupon_click_url(favoritesItem.getCouponClickUrl());
         tpwdItem.setCouponInfo(favoritesItem.getCouponInfo());
         tpwdItem.setPID(TbkUtil.DEFULT_PID);

@@ -64,15 +64,15 @@ public class FavoritesItem {
      * zkFinalPriceWap : 27.80
      */
 
-    private int category;
+    private String category;
     private String clickUrl;
-    private Object commissionRate;
+    private String commissionRate;
     private String couponClickUrl;
     private String couponEndTime;
     private String couponInfo;
-    private Object couponRemainCount;
-    private Object couponStartTime;
-    private int couponTotalCount;
+    private String couponRemainCount;
+    private String couponStartTime;
+    private String couponTotalCount;
     private long eventEndTime;
     private long eventStartTime;
     private String itemUrl;

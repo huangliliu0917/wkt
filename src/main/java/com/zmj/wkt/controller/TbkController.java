@@ -285,7 +285,7 @@ public class TbkController extends CommonController {
 
     /**
      * 构造淘口令（无需登陆）
-     * @param favoritesItem
+     * @param item
      * @return
      */
     @PostMapping("/noRoot/tpwdCreateNoLogin")
