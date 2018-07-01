@@ -143,8 +143,15 @@ public class TbkController extends CommonController {
      * @return
      */
     @PostMapping("/favoritesItemGet")
-    public RestfulResult favoritesItemGet(Long favoritesId , Long pageNo , Long pageSize) throws Exception {
-        Bs_person thisUser = getThisUser();
+    public RestfulResult favoritesItemGet(Long favoritesId , Long pageNo , Long pageSize) throws ApiException {
+
+        Bs_person thisUser = null;
+        try {
+            thisUser = getThisUser();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return RestfulResultUtils.success(TbkUtil.favoritesItemGet(TbkUtil.DEFULT_PID,favoritesId,pageNo,pageSize));
+        }
         return RestfulResultUtils.success(TbkUtil.favoritesItemGet(thisUser.getPID(),favoritesId,pageNo,pageSize));
     }
 
