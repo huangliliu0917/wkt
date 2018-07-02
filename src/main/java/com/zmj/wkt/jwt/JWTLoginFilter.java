@@ -72,10 +72,10 @@ public class JWTLoginFilter extends UsernamePasswordAuthenticationFilter impleme
     @Autowired
     Bs_personService bs_personService;
 
-    private AuthenticationManager authenticationManager;
+    private static AuthenticationManager authenticationManager;
 
     public JWTLoginFilter(AuthenticationManager authenticationManager) {
-        this.authenticationManager = authenticationManager;
+        JWTLoginFilter.authenticationManager = authenticationManager;
     }
 
     @Override
@@ -135,6 +135,8 @@ public class JWTLoginFilter extends UsernamePasswordAuthenticationFilter impleme
         res.getWriter().print(RestfulResultUtils.success(jsonObject).toString());
         res.getWriter().flush();
     }
+
+
 
     /**
      * 获取微信小程序 session_key 和 openid
@@ -203,6 +205,20 @@ public class JWTLoginFilter extends UsernamePasswordAuthenticationFilter impleme
             req.setAttribute("myStatus",ErrorCode.VERIFY_ERROR.getCode());
             throw new CommonException(ErrorCode.VERIFY_ERROR,"密码错误！");
         }
+        return authenticationManager.authenticate(
+                new UsernamePasswordAuthenticationToken(
+                        bs_person.getUserName(),
+                        bs_person.getPersonPassword(),
+                        new ArrayList<>())
+        );
+    }
+
+    /**
+     * 默认登录
+     * @return
+     * @throws CommonException
+     */
+    public static Authentication defaultAuthentication(Bs_person bs_person) throws CommonException {
         return authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(
                         bs_person.getUserName(),
