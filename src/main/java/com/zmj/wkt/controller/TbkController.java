@@ -148,6 +148,9 @@ public class TbkController extends CommonController {
         Bs_person thisUser = null;
         try {
             thisUser = getThisUser();
+            if(ZmjUtil.isNullOrEmpty(thisUser)){
+                return RestfulResultUtils.success(TbkUtil.favoritesItemGet(TbkUtil.DEFULT_PID,favoritesId,pageNo,pageSize));
+            }
         } catch (Exception e) {
             e.printStackTrace();
             return RestfulResultUtils.success(TbkUtil.favoritesItemGet(TbkUtil.DEFULT_PID,favoritesId,pageNo,pageSize));
